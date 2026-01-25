@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.jakarta {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.home-background-img {
+  background-image: url(./assets/images/banner/1920.webp);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: auto;
+  width: 100%;
+}
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .custom-scrollbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 8px;
+  }
+  
+  .chart-container {
+    height: 60vh;
+  }
+  
+  .legend-item {
+    min-width: 140px;
+    padding: 8px;
+  }
+}
+
+
+/* Desktop specific adjustments */
+@media (min-width: 769px) {
+  .custom-scrollbar {
+    max-height: 380px;
+    overflow-y: auto;
+  }
+}
+
+/* For screens up to 1566px wide */
+@media (max-width: 1566px) {
+  .home-background-img {
+    background-image: url(./assets/images/banner/1566.webp);
+  }
+}
+
+/* For screens up to 1536px wide */
+@media (max-width: 1536px) {
+  .home-background-img {
+    background-image: url(./assets/images/banner/1536.webp);
+  }
+}
+
+/* For screens up to 1440px wide */
+@media (max-width: 1440px) {
+  .home-background-img {
+    background-image: url(./assets/images/banner/1440.webp);
+  }
+}
+
+/* For screens up to 800px wide */
+@media (max-width: 800px) {
+  .home-background-img {
+    background-image: url(./assets/images/banner/800.webp);
+  }
+}
+
+/* For smaller screens (e.g., mobile devices) */
+@media (max-width: 412px) {
+  .home-background-img {
+    background-image: url(./assets/images/banner/412.webp);
+  }
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Mobile-specific table styles */
+.mobile-responsive-table {
+  width: 100%;
+}
+
+.mobile-responsive-table .ant-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Responsive Table Styles */
+.responsive-table {
+  width: 100%;
+}
+
+.responsive-table .ant-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-table .ant-table-body {
+  min-width: 100%;
+}
+
+@media (max-width: 768px) {
+  /* Mobile table styles */
+  .mobile-responsive-table .ant-table {
+    font-size: 12px;
+  }
+  
+  .mobile-responsive-table .ant-table-thead > tr > th,
+  .responsive-table .ant-table-thead > tr > th {
+    padding: 8px 4px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .mobile-responsive-table .ant-table-tbody > tr > td,
+  .responsive-table .ant-table-tbody > tr > td {
+    padding: 8px 4px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .mobile-responsive-table .ant-table-pagination,
+  .responsive-table .ant-table-pagination {
+    margin: 16px 0;
+  }
+  
+  .mobile-responsive-table .ant-pagination-options,
+  .responsive-table .ant-pagination-options {
+    display: none;
+  }
+  
+  .mobile-responsive-table .ant-pagination-total-text,
+  .responsive-table .ant-pagination-total-text {
+    display: none;
+  }
+  
+  /* Mobile card adjustments */
+  .ant-card {
+    margin: 0 !important;
+  }
+  
+  .ant-card-head {
+    padding: 8px 16px !important;
+  }
+  
+  .ant-card-head-title {
+    padding: 8px 0 !important;
+  }
+  
+  .ant-card-body {
+    padding: 16px !important;
+  }
+  
+  /* Mobile button improvements */
+  .ant-btn {
+    font-size: 12px !important;
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  /* Ensure mobile action buttons have proper spacing */
+  .ant-btn + .ant-btn {
+    margin-left: 0 !important;
+  }
+  
+  /* FeedbackButton mobile responsive styles */
+  .lg\\:hidden button {
+    width: 100% !important;
+    min-height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px !important;
+  }
+  
+  /* Mobile input improvements */
+  .ant-input {
+    font-size: 14px !important;
+  }
+  
+  /* Mobile statistic improvements */
+  .ant-statistic-content-value {
+    font-size: 18px !important;
+  }
+  
+  .ant-statistic-title {
+    font-size: 12px !important;
+  }
+}

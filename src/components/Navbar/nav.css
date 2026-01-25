@@ -1,0 +1,60 @@
+/* Desktop Dropdown Styles */
+.desktop-dropdown {
+    animation: slideDown 0.3s ease-out;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .nav-link {
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-item {
+    transition: all 0.2s ease;
+  }
+  
+  /* Mobile Menu Styles */
+  .mobile-menu {
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+  }
+  
+  .mobile-menu-item {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .mobile-submenu {
+    animation: fadeIn 0.3s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      max-height: 0;
+    }
+    to {
+      opacity: 1;
+      max-height: 500px;
+    }
+  }
+  
+  /* Donate Button Hover Effect */
+  .donate-btn {
+    transition: all 0.3s ease;
+  }
+  
+  /* Active Nav Link Style */
+  .active-nav-link {
+    color: #004c78 !important;
+    font-weight: 500 !important;
+  }
+  

@@ -1,0 +1,17 @@
+.filter_button {
+    display: none !important;
+}
+
+.blurred-box {
+    /* border-radius: 7px; */
+    background: rgba(52, 104, 150, 0.04);
+    backdrop-filter: blur(8.100000381469727px);
+}
+
+@media(max-width: 1024px) {
+    .filter_button {
+        display: block !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+    }
+}

@@ -1,0 +1,484 @@
+{
+    "status": true,
+    "article": {
+        "id": 207,
+        "mhid": "MHID-2987991",
+        "doi": "https:\/\/doi.org\/10.1016\/j.neulet.2017.12.013",
+        "pmid": null,
+        "publicData": {
+            "HIndex": {
+                "name": 194,
+                "status": "unverified"
+            },
+            "abstract": {
+                "name": "Objective: Hydrogen-rich water, which is a potent antioxidant agent, was investigated for its protective effects against ischemic damage of the cochlea in gerbils.\n\nMethods: The animals were subjected to transient cochlear ischemia by occluding the bilateral vertebral arteries for l5 minutes. Five milliliters of hydrogen-rich saline was then intravenously administered immediately after the insult. Saline without hydrogen was used as a control. Effects of hydrogen were evaluated using the auditory brainstem response (ABR) and histological studies of the inner ear.\nResults: In non-ischemia animals, ABR thresholds and histological findings of the cochlea did not change by administration of saline or hydrogen-rich saline. In contrast, transient cochlear ischemia caused a 24.2 \u00b1 3.8 dB increase in the ABR threshold at 8 kHz, and a decrease of 14.1% \u00b1 1.8% in the number of inner hair cells (IHCs) at the basal turn on day 7. Ischemic damage was more severe at 16 and 32 kHz. When the animals were treated with hydrogen-rich saline, cochlear damage was significantly reduced: the increase in ABR threshold was 11.7 \u00b1 2.6 dB at 8 kHz and the IHC loss was 7.5% \u00b1 2.1% at the basal turn on day 7. The effects of hydrogen-rich saline were more prominent at higher frequencies.\nConclusions: Intravenous administration of hydrogen-rich saline was effective in preventing acute hearing loss due to transient cochlear ischemia.",
+                "status": "unverified"
+            },
+            "authors": [
+                {
+                    "affiliation": "Ehime University Graduate School of Medicine, Otolaryngology Head and Neck Surgery, Shitsukawa, Toon, Ehime, 791-0295, Japan",
+                    "name": "Hideo Ogawa",
+                    "status": "unverified",
+                    "article_count": 1
+                },
+                {
+                    "affiliation": "Ehime University Graduate School of Medicine, Otolaryngology Head and Neck Surgery, Shitsukawa, Toon, Ehime, 791-0295, Japan",
+                    "name": "Masahiro Okada",
+                    "status": "unverified",
+                    "article_count": 1
+                },
+                {
+                    "affiliation": "Ehime University Graduate School of Medicine, Division of Analytical Bio-Medicine, Advanced Research Support Center (ADRES), Shitsukawa, Toon, Ehime, 791-0295, Japan",
+                    "name": "Masachika Shudou",
+                    "status": "unverified",
+                    "article_count": 1
+                },
+                {
+                    "affiliation": "Takanoko Hospital, Otolaryngology, Takanoko 525-1, Matsuyama, Ehime, 790-0925, Japan",
+                    "name": "Kiyofumi Gyo",
+                    "status": "unverified",
+                    "article_count": 1
+                },
+                {
+                    "affiliation": "Ehime University Graduate School of Medicine, Otolaryngology Head and Neck Surgery, Shitsukawa, Toon, Ehime, 791-0295, Japan",
+                    "name": "Naohito Hato",
+                    "status": "unverified",
+                    "article_count": 1
+                }
+            ],
+            "country": [
+                {
+                    "name": "Japan",
+                    "status": "unverified"
+                }
+            ],
+            "doi": {
+                "name": "https:\/\/doi.org\/10.1016\/j.neulet.2017.12.013",
+                "status": "unverified"
+            },
+            "grantCountry": null,
+            "impactFactor": {
+                "name": 2.201000000000000067501559897209517657756805419921875,
+                "status": "unverified"
+            },
+            "issue": null,
+            "journal": {
+                "name": "Neuroscience Letters",
+                "status": "unverified"
+            },
+            "keywords": {
+                "name": "hydrogen-rich water, anti-oxidative effect, transient cochlear ischemia, Mongolian gerbil, prevention of hearing loss",
+                "status": "unverified"
+            },
+            "pages": null,
+            "pmid": "29223865",
+            "publisher": {
+                "name": "Elsevier",
+                "status": "unverified"
+            },
+            "researchCountry": [
+                {
+                    "name": "Japan",
+                    "status": "unverified"
+                }
+            ],
+            "sciMAGO": {
+                "name": "Q2",
+                "status": "unverified"
+            },
+            "status": "unverified",
+            "title": {
+                "name": "Prevention of ischemia-induced hearing loss by intravenous administration of hydrogen-rich saline in gerbil",
+                "status": "unverified"
+            },
+            "volume": null,
+            "year": {
+                "name": "2017",
+                "status": "unverified"
+            },
+            "pdf_url": [
+                {
+                    "name": "https:\/\/h2research.org\/backend\/public\/assets\/pdf\/1_1748892249_EE2 (1).pdf",
+                    "status": "Unverified",
+                    "isPaywall": true
+                }
+            ]
+        },
+        "articleGeneralData": {
+            "HighlightArticle": {
+                "name": true,
+                "status": "unverified"
+            },
+            "Hypothesis": null,
+            "NonExperimentalSelect": [],
+            "OpinionPiece": null,
+            "Other": null,
+            "ReviewStudyType": null,
+            "TherapeuticDeliverySystems": null,
+            "UnitOfStudyExVivo": null,
+            "UnitOfStudyInVitro": null,
+            "WhatCellTissueUsed": null,
+            "clinicalTrialDesign": [],
+            "descHighArt": {
+                "name": "This article demonstrates a significant protective effect of hydrogen-rich saline against ischemia-induced hearing loss and inner hair cell loss, suggesting a promising therapeutic approach for sudden sensorineural hearing loss.",
+                "status": "unverified"
+            },
+            "diseaseModel": {
+                "name": "Transient cochlear ischemia (model of sudden sensorineural hearing loss)",
+                "status": "unverified"
+            },
+            "durationOfStudy": {
+                "name": 7,
+                "status": "unverified"
+            },
+            "durationOfStudyExVivo": null,
+            "durationOfStudyinVitro": null,
+            "inVivo": [
+                {
+                    "name": "Animal",
+                    "status": "unverified"
+                }
+            ],
+            "observationalStudyObj": [],
+            "organ": [
+                {
+                    "name": "Ears",
+                    "status": "unverified"
+                }
+            ],
+            "outcome": {
+                "name": "Intravenous administration of hydrogen-rich saline immediately after transient cochlear ischemia significantly reduced hearing loss and inner hair cell loss in gerbils compared to saline controls, with more pronounced effects at higher frequencies.",
+                "status": "unverified"
+            },
+            "outcomeType": [
+                "positive"
+            ],
+            "rankThisArticle": {
+                "name": 85,
+                "status": "unverified"
+            },
+            "researchtopic": [
+                {
+                    "name": "Sensory Disorders",
+                    "status": "unverified"
+                },
+                {
+                    "name": "Oxidative Stress",
+                    "status": "unverified"
+                },
+                {
+                    "name": "Anti-inflammatory",
+                    "status": "unverified"
+                },
+                {
+                    "name": "Hydrogen Therapy",
+                    "status": "unverified"
+                }
+            ],
+            "selectedStudyTypes": [],
+            "specieDetails": {
+                "Animal": {
+                    "DescribeSpecies": {
+                        "name": "Adult male Mongolian gerbils (Meriones unguiculatus)",
+                        "status": "unverified"
+                    },
+                    "ageUnit": {
+                        "name": "weeks",
+                        "status": "unverified"
+                    },
+                    "averageAge": {
+                        "name": "14.0",
+                        "status": "unverified"
+                    },
+                    "averageWeight": {
+                        "name": "70.0",
+                        "status": "unverified"
+                    },
+                    "gender": {
+                        "name": "Male",
+                        "status": "unverified"
+                    },
+                    "health": {
+                        "name": "Healthy",
+                        "status": "unverified"
+                    },
+                    "name": {
+                        "name": "Animal",
+                        "status": "unverified"
+                    },
+                    "status": "unverified",
+                    "subjects": {
+                        "name": "24",
+                        "status": "unverified"
+                    },
+                    "weightUnit": {
+                        "name": "grams",
+                        "status": "unverified"
+                    }
+                }
+            },
+            "species": [
+                {
+                    "name": "Animal",
+                    "status": "unverified"
+                }
+            ],
+            
+            "status": "unverified",
+            "studyDurationUnit": "days",
+            "studyType": [
+                {
+                    "name": "in Vivo",
+                    "status": "unverified"
+                }
+            ],
+            "system": [
+                {
+                    "name": "Nervous Systems",
+                    "status": "unverified"
+                }
+            ],
+            "timingTreatmentExVivo": [],
+            "timingTreatmentInVitro": [],
+            "timingTreatmentInVivo": [
+                {
+                    "name": "Post-treatment",
+                    "status": "unverified"
+                }
+            ],
+            "speciesDetails": {
+                "Animal": {
+                    "DescribeSpecies": {
+                        "name": "Adult male Mongolian gerbils (Meriones unguiculatus)",
+                        "status": "unverified"
+                    },
+                    "ageUnit": {
+                        "name": "weeks",
+                        "status": "unverified"
+                    },
+                    "averageAge": {
+                        "name": "14.0",
+                        "status": "unverified"
+                    },
+                    "averageWeight": {
+                        "name": "70.0",
+                        "status": "unverified"
+                    },
+                    "gender": {
+                        "name": "Male",
+                        "status": "unverified"
+                    },
+                    "health": {
+                        "name": "Healthy",
+                        "status": "unverified"
+                    },
+                    "name": {
+                        "name": "Animal",
+                        "status": "unverified"
+                    },
+                    "status": "unverified",
+                    "subjects": {
+                        "name": "24",
+                        "status": "unverified"
+                    },
+                    "weightUnit": {
+                        "name": "grams",
+                        "status": "unverified"
+                    }
+                }
+            }
+        },
+        "researcherData": {
+            "CompMethodAdmin": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "CompMethodAdminDesc": null,
+            "PasteUrl": null,
+            "Video_WebpageLink": null,
+            "adverseEffects": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "adverseEffectsDescription": {
+                "name": "No side effects on the cochlea related to the administration of hydrogen-rich saline were observed.",
+                "status": "unverified"
+            },
+            "brandName": {
+                "name": "MiZ Co. (Fujisawa, Japan)",
+                "status": "unverified"
+            },
+            "commercialProduct": {
+                "name": "Yes",
+                "status": "unverified"
+            },
+            "comparisonDetail": null,
+            "doseComparison": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "doseComparisonDesc": null,
+            "doseDependentEffect": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "drugComparison": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "erwCompared": null,
+            "geneExpression": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "geneExpressionDesc": null,
+            "isERW": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "mechanisticInsights": {
+                "name": "True",
+                "status": "unverified"
+            },
+            "ph": null,
+            "pharmacokinetics": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "pharmacokineticsDescription": null,
+            "pregnantBreastfeeding": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "responderDifference": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "safetyProfile": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "safetyofhydrogen": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "sexDifference": {
+                "name": "False",
+                "status": "unverified"
+            },
+            "speciesData": {
+                "Animal": {
+                    "DurationFrequencyCellCultureTissues": null,
+                    "Frequency": null,
+                    "FrequencyCellCultureTissues": null,
+                    "HowManyConcentrations": {
+                        "name": 1,
+                        "status": "unverified"
+                    },
+                    "IngestionDurationfrequency": null,
+                    "Peakbreathhydrogen": null,
+                    "absoluteDoses": [
+                        {
+                            "status": "unverified",
+                            "unit": "mL\/kg",
+                            "value": "5"
+                        }
+                    ],
+                    "concentrationOfHydrogenForMedium": {
+                        "name": "1.3-1.5 ppm",
+                        "status": "unverified"
+                    },
+                    "concentrations": [
+                        {
+                            "status": "unverified",
+                            "unit": "ppm",
+                            "value": "1.3-1.5"
+                        }
+                    ],
+                    "inhalationConcentrations": null,
+                    "isCellTissueOpen": false,
+                    "isIngestionOpen": false,
+                    "isInhalationOpen": false,
+                    "isOpen": true,
+                    "methods": [
+                        "Hydrogen-rich Saline"
+                    ],
+                    "numInhalationConcentrations": {
+                        "name": "0",
+                        "status": "unverified"
+                    },
+                    "relativeDoses": [
+                        {
+                            "status": "unverified",
+                            "unit": "mL\/kg",
+                            "value": "5"
+                        }
+                    ],
+                    "topicalMethod": {
+                        "name": "No",
+                        "status": "unverified"
+                    },
+                    "volumes": [
+                        {
+                            "status": "unverified",
+                            "unit": "mL",
+                            "value": "5"
+                        }
+                    ],
+                    "wasOxyhydrogenUsed": {
+                        "name": "No",
+                        "status": "unverified"
+                    },
+                    "weight": "0.07"
+                }
+            },
+            "status": "unverified"
+        },
+        "biomaker": [
+            {
+                "Change": [
+                    "Statistically Increased",
+                    "Statistically Decreased"
+                ],
+                "Protein": null,
+                "category": [
+                    "Functional"
+                ],
+                "marker": "Auditory Brainstem Response (ABR) threshold",
+                "status": "unverified"
+            },
+            {
+                "Change": [
+                    "Statistically Decreased",
+                    "Statistically Increased"
+                ],
+                "Protein": null,
+                "category": [
+                    "Cellular"
+                ],
+                "marker": "Inner Hair Cell (IHC) count",
+                "status": "unverified"
+            },
+            {
+                "Change": [
+                    "No Change"
+                ],
+                "Protein": null,
+                "category": [
+                    "Cellular"
+                ],
+                "marker": "Outer Hair Cell (OHC) count",
+                "status": "unverified"
+            }
+        ],
+        "reviewer_id": null,
+        "verified_by": null,
+        "status": "Unverified",
+        "is_trending": 0,
+        "addedBy": 1,
+        "created_at": "2025-06-02T19:24:18.000000Z",
+        "updated_at": "2025-06-02T19:24:18.000000Z",
+        "revisions": []
+    }
+   
+}

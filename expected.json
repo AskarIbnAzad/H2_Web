@@ -1,0 +1,2016 @@
+{
+    "status": true,
+    "article": {
+        "id": 16,
+        "mhid": "MHID-5247261",
+        "doi": "10.3390\/cimb45120636",
+        "pmid": "38132482",
+        "publicData": {
+            "title": {
+                "name": "Hydrogen Attenuates Chronic Intermittent Hypoxia-Induced Cardiac Hypertrophy by Regulating Iron Metabolism",
+                "status": "Unverified"
+            },
+            "authors": [
+                {
+                    "name": "Jixian Song",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Qi Chen",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Shan Xu",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/  The First Affiliated Hospital, Hebei University of Chinese Medicine, Shijiazhuang 050013, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Yujing Gou",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Yajing Guo",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Cuiling Jia",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Chenbing Zhao",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Zhi Zhang",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Boliang Li",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Yashuo Zhao",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/  The First Affiliated Hospital, Hebei University of Chinese Medicine, Shijiazhuang 050013, China",
+                    "article_count": 1
+                },
+                {
+                    "name": "Ensheng Ji",
+                    "parent_id": 1,
+                    "status": "Unverified",
+                    "affiliation": "Hebei Technology Innovation Center of TCM Combined Hydrogen Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China \/\/ Department of Physiology, Institute of Basic Medicine, Hebei University of Chinese Medicine, Shijiazhuang 050200, China",
+                    "article_count": 1
+                }
+            ],
+            "year": {
+                "name": 2023,
+                "status": "Unverified"
+            },
+            "country": [
+                {
+                    "name": "China",
+                    "status": "Unverified"
+                }
+            ],
+            "grantCountry": {
+                "name": "China",
+                "status": "Unverified"
+            },
+            "researchCountry": [
+                {
+                    "name": "China",
+                    "status": "Unverified"
+                }
+            ],
+            "pmid": {
+                "name": "38132482",
+                "status": "Unverified"
+            },
+            "doi": {
+                "name": "10.3390\/cimb45120636",
+                "status": "Unverified"
+            },
+            "abstract": {
+                "name": "The present study aimed to investigate the impact of hydrogen (H2) on chronic intermittent hypoxia (CIH)-induced cardiac hypertrophy in mice by modulating iron metabolism. C57BL\/6N mice were randomly allocated into four groups: control (Con), CIH, CIH + H2, and H2. The mice were exposed to CIH (21-5% FiO2, 3 min\/cycle, 8 h\/d), and received inhalation of a hydrogen-oxygen mixture (2 h\/d) for 5 weeks. Cardiac and mitochondrial function, levels of reactive oxygen species (ROS), and iron levels were evaluated. The H9C2 cell line was subjected to intermittent hypoxia (IH) and treated with H2. Firstly, we found H2 had a notable impact on cardiac hypertrophy, ameliorated pathological alterations and mitochondrial morphology induced by CIH (p<0.05). Secondly, H2 exhibited a suppressive effect on oxidative injury by decreasing levels of inducible nitric oxide synthase (i-NOS) (p<0.05) and 4-hydroxynonenal (4-HNE) (p<0.01). Thirdly, H2 demonstrated a significant reduction in iron levels within myocardial cells through the upregulation of ferroportin 1 (FPN1) proteins (p<0.01) and the downregulation of transferrin receptor 1 (TfR1), divalent metal transporter 1 with iron-responsive element (DMT1(+ire)), and ferritin light chain (FTL) mRNA or proteins (p<0.05). Simultaneously, H2 exhibited the ability to decrease the levels of Fe2+ and ROS in H9C2 cells exposed to IH (p<0.05). Moreover, H2 mediated the expression of hepcidin, hypoxia-inducible factor-1\u03b1 (HIF-1\u03b1) (p<0.01), and iron regulatory proteins (IRPs), which might be involved in the regulation of iron-related transporter proteins. These results suggested that H2 may be beneficial in preventing cardiac hypertrophy, a condition associated with reduced iron toxicity.",
+                "status": "Unverified"
+            },
+            "publisher": {
+                "name": "MDPI",
+                "status": "Unverified"
+            },
+            "journal": {
+                "name": "Curr Issues Mol Biol",
+                "status": "Unverified"
+            },
+            "journalURL": {
+                "name": "https:\/\/www.mdpi.com\/journal\/cimb",
+                "status": "Unverified"
+            },
+            "volume": {
+                "name": "45",
+                "status": "Unverified"
+            },
+            "pages": {
+                "name": "10193-10210",
+                "status": "Unverified"
+            },
+            "impactFactor": {
+                "name": 2.839999999999999857891452847979962825775146484375,
+                "status": "Unverified"
+            },
+            "HIndex": {
+                "name": 61,
+                "status": "Unverified"
+            },
+            "sciMAGO": {
+                "name": "Q3",
+                "status": "Unverified"
+            },
+            "pdf_url": [
+                {
+                    "name": "https:\/\/h2research.org\/backend\/public\/assets\/pdf\/1_1752533319_cimb-45-00636-v3.pdf",
+                    "status": "Unverified",
+                    "isPaywall": false
+                }
+            ],
+            "keywords": {
+                "name": "obstructive sleep apnea; hydrogen; chronic intermittent hypoxia; cardiac hypertrophy; mitochondrial dysfunction; ferroportin 1; hepcidin",
+                "status": "Unverified"
+            },
+            "issue": {
+                "name": "12",
+                "status": "Unverified"
+            }
+        },
+        "articleGeneralData": {
+            "studyType": [
+                {
+                    "name": "in Vivo",
+                    "status": "Unverified"
+                },
+                {
+                    "name": "In Vitro",
+                    "status": "Unverified"
+                }
+            ],
+            "species": [
+                {
+                    "name": "Mice",
+                    "status": "Unverified"
+                }
+            ],
+            "speciesDetails": {
+                "Mice": {
+                    "name": {
+                        "name": null,
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "status": {
+                        "name": "Unverified",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "DescribeSpecies": {
+                        "name": "C57BL\/6N",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "subjects": {
+                        "name": "40",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "health": {
+                        "name": "Diseased",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "gender": {
+                        "name": "Male",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "averageAge": {
+                        "name": "6",
+                        "status": "Unverified",
+                        "statusConcentration": "provided"
+                    },
+                    "ageUnit": {
+                        "name": "weeks",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated"
+                    },
+                    "averageWeight": {
+                        "name": "25",
+                        "status": "Unverified",
+                        "statusConcentration": "estimated",
+                        "unit": "g"
+                    }
+                }
+            },
+            "researchtopic": [
+                {
+                    "name": "Cardiovascular Diseases",
+                    "status": "Unverified"
+                }
+            ],
+            "diseaseModel": {
+                "name": "Cardiac hypertrophy (intermittent hypoxia-related)",
+                "status": "Unverified"
+            },
+            "system": [
+                {
+                    "name": "Cardiovascular Systems",
+                    "status": "Unverified"
+                }
+            ],
+            "organ": [
+                {
+                    "name": "Heart",
+                    "status": "Unverified"
+                }
+            ],
+            "outcome": {
+                "name": "The results suggested that H2 may be beneficial in preventing cardiac hypertrophy, a condition associated with reduced iron toxicity.",
+                "status": "Unverified"
+            },
+            "outcomeType": [
+                "Positive"
+            ],
+            "inVivo": [
+                {
+                    "name": "Animal Study",
+                    "status": "Unverified"
+                }
+            ],
+            "durationOfStudy": {
+                "name": "5",
+                "status": "Unverified"
+            },
+            "studyDurationUnit": "week",
+            "timingTreatmentInVivo": [
+                {
+                    "name": "Simultaneous",
+                    "status": "Unverified"
+                }
+            ],
+            "WhatKindCell": {
+                "name": "H9C2",
+                "status": "Unverified"
+            },
+            "durationOfStudyinVitro": {
+                "name": "25",
+                "status": "Unverified"
+            },
+            "timingTreatmentInVitro": [
+                {
+                    "name": "Post-treatment",
+                    "status": "Unverified"
+                }
+            ]
+        },
+        "researcherData": {
+            "speciesData": {
+                "Mice": {
+                    "isOpen": true,
+                    "HowManyConcentrations": {
+                        "name": 0,
+                        "status": "Unverified"
+                    },
+                    "volumes": [],
+                    "concentrations": [],
+                    "absoluteDoses": [],
+                    "relativeDoses": [],
+                    "inhalationConcentrations": [
+                        {
+                            "percentPurity": {
+                                "name": "66",
+                                "status": "Unverified"
+                            },
+                            "frequency": {
+                                "name": "Once daily, for 35 days",
+                                "status": "Unverified"
+                            },
+                            "duration": {
+                                "name": "2",
+                                "status": "Unverified"
+                            },
+                            "unitDuration": {
+                                "name": "hours",
+                                "status": "Unverified"
+                            }
+                        }
+                    ],
+                    "wasOxyhydrogenUsed": {
+                        "name": "Yes",
+                        "status": "Unverified"
+                    },
+                    "isInhalationOpen": true,
+                    "isCellTissueOpen": false,
+                    "isIngestionOpen": false,
+                    "methods": [
+                        "Inhalation"
+                    ],
+                    "weight": {
+                        "name": "25",
+                        "unit": "g",
+                        "status": "Unverified"
+                    },
+                    "numInhalationConcentrations": {
+                        "name": "1",
+                        "status": "Unverified",
+                        "value": "1"
+                    }
+                }
+            },
+            "CompMethodAdmin": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "CompMethodAdminDesc": {
+                "name": null,
+                "status": "Unverified"
+            },
+            "doseComparison": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "doseComparisonDesc": {
+                "name": null,
+                "status": "Unverified"
+            },
+            "drugComparison": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "comparisonDetail": {
+                "name": null,
+                "status": "Unverified"
+            },
+            "pharmacokinetics": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "pharmacokineticsDescription": {
+                "name": null,
+                "status": "Unverified"
+            },
+            "isERW": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "ph": {
+                "name": null,
+                "status": "Unverified"
+            },
+            "adverseEffects": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "doseDependentEffect": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "safetyProfile": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "safetyofhydrogen": {
+                "name": "False",
+                "status": "Unverified"
+            },
+            "sexDifference": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "responderDifference": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "pregnantBreastfeeding": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "mechanisticInsights": {
+                "name": "True",
+                "status": "Unverified"
+            },
+            "geneExpression": {
+                "name": "True",
+                "status": "Unverified"
+            },
+            "geneExpressionDesc": {
+                "name": "The expression levels of atrial natriuretic peptide type A (Nppa), natriuretic peptide type B (Nppb), myosin heavy chain 7 (MYH7), Mitochondrial Fission 1 (Fis-1), Mitochondrial dynamin-like GTPase (Opa-1), Dynamin-related protein 1 (Drp-1), Divalent metal transporter 1(+ire) (DMT1(+ire)), Divalent metal transporter 1(\u2212ire) (DMT1(\u2212ire)), FPN1, and hepcidin mRNA were determined using quantitative PCR (Q-PCR).",
+                "status": "Unverified"
+            },
+            "commercialProduct": {
+                "name": "N\/A",
+                "status": "Unverified"
+            },
+            "bodyWeight": {
+                "name": "25",
+                "unit": "g",
+                "status": "Unverified"
+            }
+        },
+        "biomaker": [
+            {
+                "marker": "Inducible Nitric Oxide Synthase (iNOS)",
+                "category": [
+                    "Vascular and Tissue Function"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Nuclear Factor Erythroid 2\u2013Related Factor 2 (Nrf2)",
+                "category": [
+                    "Antioxidant Status and Enzymes"
+                ],
+                "Change": [
+                    "Statistically Increased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Atrial natriuretic peptide type a (nppa)",
+                "category": [
+                    "Markers of tissue damage\/function"
+                ],
+                "Change": [
+                    "Statistically Increased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Hypoxia-InducibleFactor-1Alpha (HIF-1a)",
+                "category": [
+                    "Vascular and Tissue Function",
+                    "Nitric Oxide Synthases and Vascular Markers"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Natriuretic peptide type B (Nppb)",
+                "category": [
+                    "Markers of tissue damage\/function"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Myosin heavy chain 7 (MYH7)",
+                "category": [
+                    "Markers of tissue damage\/function"
+                ],
+                "Change": [
+                    "Decreasing Trend"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Mitochondrial Fission 1 (Fis-1)",
+                "category": [
+                    "Mitochondria"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Dynamin-related protein 1 (Drp-1)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Decreasing Trend"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Mitochondrial dynamin-like GTPase (Opa-1)",
+                "category": [
+                    "Mitochondria"
+                ],
+                "Change": [
+                    "Increasing Trend"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Kelch-like ech-related protein 1 (Keap-1)",
+                "category": [
+                    "Antioxidant Markers"
+                ],
+                "Change": [
+                    "Statistically Increased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Hemeoxygenase-1(HO-1)",
+                "category": [
+                    "Antioxidant Markers"
+                ],
+                "Change": [
+                    "Statistically Increased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "4-Hydroxynonenal (HNE)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Ferroportin 1 (FPN1)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Statistically Increased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Divalent metal transporter 1(+ire) (DMT1(+ire))",
+                "category": [
+                    "Un-categorized"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Divalent metal transporter 1(\u2212ire) (DMT1(\u2212ire))",
+                "category": [
+                    "Un-categorized"
+                ],
+                "Change": [
+                    "No Change"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Iron regulatory protein 1 (IRP1)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Decreasing Trend"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "F-box and leucine-rich repeat protein 5 (FBXL5)",
+                "category": [
+                    "Oxidative Stress Markers",
+                    "Markers of tissue damage\/function",
+                    "Inflammation"
+                ],
+                "Change": [
+                    "Decreasing Trend"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Iron regulatory protein 2 (IRP2)",
+                "category": [
+                    "Inflammation"
+                ],
+                "Change": [
+                    "Increasing Trend"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Hepcidin",
+                "category": [
+                    "Immunity\/Inflammation"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "mRNA Levels",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Mitochondrial Ferritin (MtFt)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Ferritin heavy chain (FTH)",
+                "category": [
+                    "Markers of tissue damage\/function"
+                ],
+                "Change": [
+                    "Increasing Trend"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Ferritin light chain (FTL)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            },
+            {
+                "marker": "Transferrin receptor 1 (TfR1)",
+                "category": [
+                    "Oxidative Stress Markers"
+                ],
+                "Change": [
+                    "Statistically Decreased"
+                ],
+                "Protein": "Protein Expression\/Activity Level",
+                "status": "Unverified"
+            }
+        ],
+        "reviewer_id": null,
+        "verified_by": null,
+        "status": "Unverified",
+        "is_trending": 0,
+        "addedBy": 1,
+        "created_at": "2025-02-27T04:10:59.000000Z",
+        "updated_at": "2025-10-08T13:07:09.000000Z",
+        "revisions": [
+            {
+                "id": 269,
+                "article_id": 16,
+                "changed_by": 1,
+                "changes": {
+                    "articleGeneralData": {
+                        "speciesDetails": {
+                            "from": {
+                                "Mice": {
+                                    "name": {
+                                        "name": null,
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "status": {
+                                        "name": "Unverified",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "DescribeSpecies": {
+                                        "name": "C57BL\/6N",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "subjects": {
+                                        "name": "40",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "health": {
+                                        "name": "Diseased",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "gender": {
+                                        "name": "Male",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "averageAge": {
+                                        "name": "6",
+                                        "status": "Unverified",
+                                        "statusConcentration": "provided"
+                                    },
+                                    "ageUnit": {
+                                        "name": "weeks",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    }
+                                }
+                            },
+                            "to": {
+                                "Mice": {
+                                    "name": {
+                                        "name": null,
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "status": {
+                                        "name": "Unverified",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "DescribeSpecies": {
+                                        "name": "C57BL\/6N",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "subjects": {
+                                        "name": "40",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "health": {
+                                        "name": "Diseased",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "gender": {
+                                        "name": "Male",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "averageAge": {
+                                        "name": "6",
+                                        "status": "Unverified",
+                                        "statusConcentration": "provided"
+                                    },
+                                    "ageUnit": {
+                                        "name": "weeks",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated"
+                                    },
+                                    "averageWeight": {
+                                        "name": "25",
+                                        "status": "Unverified",
+                                        "statusConcentration": "estimated",
+                                        "unit": "g"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "researcherData": {
+                        "speciesData": {
+                            "from": {
+                                "Mice": {
+                                    "isOpen": true,
+                                    "HowManyConcentrations": {
+                                        "name": 0,
+                                        "status": "Unverified"
+                                    },
+                                    "volumes": [],
+                                    "concentrations": [],
+                                    "absoluteDoses": [],
+                                    "relativeDoses": [],
+                                    "inhalationConcentrations": [
+                                        {
+                                            "percentPurity": {
+                                                "name": "66",
+                                                "status": "Unverified"
+                                            },
+                                            "frequency": {
+                                                "name": "Once daily, for 35 days",
+                                                "status": "Unverified"
+                                            },
+                                            "duration": {
+                                                "name": "2",
+                                                "status": "Unverified"
+                                            },
+                                            "unitDuration": {
+                                                "name": "hours",
+                                                "status": "Unverified"
+                                            }
+                                        }
+                                    ],
+                                    "wasOxyhydrogenUsed": {
+                                        "name": "Yes",
+                                        "status": "Unverified"
+                                    },
+                                    "isInhalationOpen": true,
+                                    "isCellTissueOpen": false,
+                                    "isIngestionOpen": false,
+                                    "methods": [
+                                        "Inhalation"
+                                    ],
+                                    "weight": 0,
+                                    "numInhalationConcentrations": {
+                                        "name": "1",
+                                        "status": "Unverified",
+                                        "value": "1"
+                                    }
+                                }
+                            },
+                            "to": {
+                                "Mice": {
+                                    "isOpen": true,
+                                    "HowManyConcentrations": {
+                                        "name": 0,
+                                        "status": "Unverified"
+                                    },
+                                    "volumes": [],
+                                    "concentrations": [],
+                                    "absoluteDoses": [],
+                                    "relativeDoses": [],
+                                    "inhalationConcentrations": [
+                                        {
+                                            "percentPurity": {
+                                                "name": "66",
+                                                "status": "Unverified"
+                                            },
+                                            "frequency": {
+                                                "name": "Once daily, for 35 days",
+                                                "status": "Unverified"
+                                            },
+                                            "duration": {
+                                                "name": "2",
+                                                "status": "Unverified"
+                                            },
+                                            "unitDuration": {
+                                                "name": "hours",
+                                                "status": "Unverified"
+                                            }
+                                        }
+                                    ],
+                                    "wasOxyhydrogenUsed": {
+                                        "name": "Yes",
+                                        "status": "Unverified"
+                                    },
+                                    "isInhalationOpen": true,
+                                    "isCellTissueOpen": false,
+                                    "isIngestionOpen": false,
+                                    "methods": [
+                                        "Inhalation"
+                                    ],
+                                    "weight": {
+                                        "name": "25",
+                                        "unit": "g",
+                                        "status": "Unverified"
+                                    },
+                                    "numInhalationConcentrations": {
+                                        "name": "1",
+                                        "status": "Unverified",
+                                        "value": "1"
+                                    }
+                                }
+                            }
+                        },
+                        "bodyWeight": {
+                            "from": null,
+                            "to": {
+                                "name": "25",
+                                "unit": "g",
+                                "status": "Unverified"
+                            }
+                        }
+                    }
+                },
+                "created_at": "2025-10-08 13:07:09"
+            },
+            {
+                "id": 94,
+                "article_id": 16,
+                "changed_by": 1,
+                "changes": {
+                    "researcherData": {
+                        "commercialProduct": {
+                            "from": null,
+                            "to": {
+                                "name": "N\/A",
+                                "status": "Unverified"
+                            }
+                        }
+                    },
+                    "status": {
+                        "from": "In Review",
+                        "to": "Unverified"
+                    }
+                },
+                "created_at": "2025-08-20 15:52:35"
+            }
+        ]
+    },
+    "related_article": [
+        {
+            "id": 549,
+            "mhid": "MHID-1674678",
+            "doi": "10.3390\/ijms26146922",
+            "pmid": "40725167",
+            "status": "Unverified",
+            "publicData": {
+                "HIndex": {
+                    "name": 314,
+                    "status": "unverified"
+                },
+                "abstract": {
+                    "name": "Alzheimer\u2019s disease (AD) is a neurodegenerative condition in which amyloid-beta (A\u03b2) plaques trigger oxidative stress (OS) and neuroinflammation, causing memory loss. OS and neurodegeneration can also be caused by reactive astrocytes, thereby promoting AD via toxic metabolite accumulation in the astrocytic urea cycle. However, the effect of molecular hydrogen (H2) on this cycle remains unknown. Therefore, we investigated whether H2 treatment could reduce OS-induced neurodegeneration and memory loss. 5xFAD (n = 14) and wild-type (n = 15) mice were randomized into four groups and treated with either 3% hydrogen gas (H2) or vehicle for 60 days. Cognitive behaviors were evaluated using the Morris water maze and Y-maze tests. In addition, we used biochemical assays to measure ammonia and hydrogen peroxide (H2O2) levels in the hippocampi of the mice and A\u03b2O-treated primary mouse astrocytes. A\u03b2, \u03b3-aminobutyric acid (GABA), and the expression of inflammatory markers were evaluated using immunohistochemistry (IHC) and quantitative real-time polymerase chain reaction (qRT-PCR). We observed that H2 treatment significantly prevented cognitive deficits, oxidative stress, the accumulation of toxic metabolites, and the increase in inflammatory markers in 5xFAD mice. These results suggest that H2 therapy can mitigate toxic metabolites in the astrocytic urea cycle, thereby reducing neurodegeneration and memory loss in AD.",
+                    "status": "unverified"
+                },
+                "authors": [
+                    {
+                        "affiliation": "Department of Global Medical Science, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Sofian Abdul-Nasir",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Global Medical Science, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Cat Tuong Chau",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Global Medical Science, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Tien Thuy Nguyen",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Laboratory Medicine, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Johny Bajgai",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Convergence Medicine, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Md. Habibur Rahman",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "GOOTZ Co., Ltd., Yuljeongro, 247 beon-gil, Yangju-si 11457, Republic of Korea",
+                        "name": "Kwon Hwang-Un",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "GOOTZ Co., Ltd., Yuljeongro, 247 beon-gil, Yangju-si 11457, Republic of Korea",
+                        "name": "In-Soo You",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Convergence Medicine, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Cheol-Su Kim",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Global Medical Science, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Bo Am Seo",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Global Medical Science, Wonju College of Medicine, Yonsei University, Wonju 26426, Republic of Korea",
+                        "name": "Kyu-Jae Lee",
+                        "status": "unverified"
+                    }
+                ],
+                "country": [
+                    {
+                        "name": "Republic of Korea",
+                        "status": "unverified"
+                    }
+                ],
+                "doi": {
+                    "name": "10.3390\/ijms26146922",
+                    "status": "unverified"
+                },
+                "grantCountry": {
+                    "name": "Republic of Korea",
+                    "status": "unverified"
+                },
+                "impactFactor": {
+                    "name": 5.025999999999999801048033987171947956085205078125,
+                    "status": "unverified"
+                },
+                "issue": {
+                    "name": "14",
+                    "status": "unverified"
+                },
+                "journal": {
+                    "name": "International Journal of Molecular Sciences",
+                    "status": "unverified"
+                },
+                "keywords": {
+                    "name": "Alzheimer\u2019s disease, oxidative stress, neuroinflammation, neurodegeneration, apoptosis, molecular hydrogen, astrocytes and urea cycle",
+                    "status": "unverified"
+                },
+                "pages": {
+                    "name": "6922",
+                    "status": "unverified"
+                },
+                "pmid": {
+                    "name": "40725167",
+                    "status": "unverified"
+                },
+                "publisher": {
+                    "name": "MDPI",
+                    "status": "unverified"
+                },
+                "researchCountry": [
+                    {
+                        "name": "Republic of Korea",
+                        "status": "unverified"
+                    }
+                ],
+                "sciMAGO": {
+                    "name": "Q1",
+                    "status": "unverified"
+                },
+                "status": "unverified",
+                "title": {
+                    "name": "Hydrogen Gas Attenuates Toxic Metabolites and Oxidative Stress-Mediated Signaling to Inhibit Neurodegeneration and Enhance Memory in Alzheimer\u2019s Disease Models",
+                    "status": "unverified"
+                },
+                "volume": {
+                    "name": "26",
+                    "status": "unverified"
+                },
+                "year": {
+                    "name": "2025",
+                    "status": "unverified"
+                },
+                "pdf_url": [
+                    {
+                        "name": "https:\/\/h2research.org\/backend\/public\/assets\/pdf\/1_1759764801_ijms-26-06922.pdf",
+                        "status": "Unverified",
+                        "isPaywall": false
+                    }
+                ]
+            },
+            "articleGeneralData": {
+                "HighlightArticle": {
+                    "name": true,
+                    "status": "unverified"
+                },
+                "Hypothesis": null,
+                "NonExperimentalSelect": [],
+                "OpinionPiece": null,
+                "Other": null,
+                "ReviewStudyType": null,
+                "TherapeuticDeliverySystems": null,
+                "UnitOfStudyExVivo": null,
+                "UnitOfStudyInVitro": "hours",
+                "WhatCellTissueUsed": null,
+                "clinicalTrialDesign": [],
+                "descHighArt": {
+                    "name": "This article is notable for being the first to demonstrate that hydrogen gas therapy can target toxic metabolite accumulation in the astrocytic urea cycle, resulting in significant neuroprotection and memory enhancement in an Alzheimer\u2019s disease mouse model.",
+                    "status": "unverified"
+                },
+                "diseaseModel": {
+                    "name": "Alzheimer\u2019s disease (5xFAD mouse model, A\u03b2O-induced astrocytes)",
+                    "status": "unverified"
+                },
+                "durationOfStudy": {
+                    "name": 60,
+                    "status": "unverified"
+                },
+                "durationOfStudyExVivo": null,
+                "durationOfStudyinVitro": {
+                    "name": "60",
+                    "status": "Unverified"
+                },
+                "inVivo": [
+                    {
+                        "name": "Animal Study",
+                        "status": "Unverified"
+                    }
+                ],
+                "observationalStudyObj": [],
+                "organ": [
+                    {
+                        "name": "Brain",
+                        "status": "unverified"
+                    }
+                ],
+                "outcome": {
+                    "name": "Hydrogen gas (3% H2) inhalation for 60 days in 5xFAD mice significantly improved memory and learning, reduced oxidative stress, decreased accumulation of toxic metabolites (H2O2, ammonia, GABA), and lowered inflammatory markers (TNF-\u03b1, IL-6), suggesting neuroprotection and mitigation of neurodegeneration in Alzheimer\u2019s disease models.",
+                    "status": "unverified"
+                },
+                "outcomeType": [
+                    "positive"
+                ],
+                "rankThisArticle": {
+                    "name": "60",
+                    "status": "Unverified"
+                },
+                "researchtopic": [
+                    {
+                        "name": "Neurological Disorders",
+                        "status": "unverified"
+                    },
+                    {
+                        "name": "Oxidative Stress",
+                        "status": "unverified"
+                    },
+                    {
+                        "name": "Hydrogen Therapy",
+                        "status": "unverified"
+                    },
+                    {
+                        "name": "Neurological Disorders",
+                        "status": "unverified"
+                    },
+                    {
+                        "name": "Inflammatory Disorders",
+                        "status": "unverified"
+                    },
+                    {
+                        "name": "Gene Expression Regulation",
+                        "status": "unverified"
+                    }
+                ],
+                "selectedStudyTypes": [],
+                "specieDetails": {
+                    "Mice": {
+                        "DescribeSpecies": {
+                            "name": "5xFAD transgenic mice (Alzheimer\u2019s model) and C57BL\/6 wild-type mice",
+                            "status": "unverified"
+                        },
+                        "ageUnit": {
+                            "name": "weeks",
+                            "status": "unverified"
+                        },
+                        "averageAge": {
+                            "name": "5.0",
+                            "status": "unverified"
+                        },
+                        "averageWeight": null,
+                        "gender": {
+                            "name": "Male and Female",
+                            "status": "unverified"
+                        },
+                        "health": null,
+                        "name": {
+                            "name": "Mice",
+                            "status": "unverified"
+                        },
+                        "status": "unverified",
+                        "subjects": {
+                            "name": "29",
+                            "status": "unverified"
+                        },
+                        "weightUnit": null
+                    }
+                },
+                "species": [
+                    {
+                        "name": "Mice",
+                        "status": "unverified"
+                    }
+                ],
+                "status": "unverified",
+                "studyDurationUnit": "days",
+                "studyType": [
+                    {
+                        "name": "In Vivo",
+                        "status": "Unverified"
+                    },
+                    {
+                        "name": "In Vitro",
+                        "status": "Unverified"
+                    }
+                ],
+                "system": [
+                    {
+                        "name": "Neurological",
+                        "status": "Unverified"
+                    }
+                ],
+                "timingTreatmentExVivo": [],
+                "timingTreatmentInVitro": [
+                    {
+                        "name": "Simultaneous",
+                        "status": "unverified"
+                    }
+                ],
+                "timingTreatmentInVivo": [
+                    {
+                        "name": "Simultaneous",
+                        "status": "unverified"
+                    }
+                ],
+                "speciesDetails": {
+                    "Mice": {
+                        "DescribeSpecies": {
+                            "name": "5xFAD transgenic mice (Alzheimer\u2019s model) and C57BL\/6 wild-type mice",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "ageUnit": {
+                            "name": "weeks",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "averageAge": {
+                            "name": "5.0",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "averageWeight": {
+                            "name": "25",
+                            "status": "Unverified",
+                            "statusConcentration": "estimated",
+                            "unit": "g"
+                        },
+                        "gender": {
+                            "name": "Male and Female",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "health": {
+                            "name": null,
+                            "status": "Unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "name": {
+                            "name": "Mice",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "status": {
+                            "name": "unverified",
+                            "status": "Unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "subjects": {
+                            "name": "29",
+                            "status": "unverified",
+                            "statusConcentration": "estimated"
+                        },
+                        "weightUnit": {
+                            "name": null,
+                            "status": "Unverified",
+                            "statusConcentration": "estimated"
+                        }
+                    }
+                },
+                "WhatKindCell": {
+                    "name": "primary cortical astrocyte (mouse)",
+                    "status": "Unverified"
+                }
+            },
+            "researcherData": {
+                "CompMethodAdmin": {
+                    "name": false,
+                    "status": "unverified"
+                },
+                "CompMethodAdminDesc": null,
+                "PasteUrl": null,
+                "Video_WebpageLink": null,
+                "adverseEffects": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "adverseEffectsDescription": {
+                    "name": "No adverse effects reported.",
+                    "status": "unverified"
+                },
+                "brandName": {
+                    "name": "GOOTZ Co., Ltd. hydrogen device",
+                    "status": "unverified"
+                },
+                "commercialProduct": {
+                    "name": "Yes",
+                    "status": "unverified"
+                },
+                "comparisonDetail": null,
+                "doseComparison": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "doseComparisonDesc": null,
+                "doseDependentEffect": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "drugComparison": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "erwCompared": null,
+                "geneExpression": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "geneExpressionDesc": {
+                    "name": "qRT-PCR showed H2 reduced TNF-\u03b1 and IL-6 gene expression in hippocampal tissue and astrocytes.",
+                    "status": "unverified"
+                },
+                "isERW": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "mechanisticInsights": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "ph": null,
+                "pharmacokinetics": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "pharmacokineticsDescription": null,
+                "pregnantBreastfeeding": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "responderDifference": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "safetyProfile": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "safetyofhydrogen": {
+                    "name": false,
+                    "status": "unverified"
+                },
+                "sexDifference": {
+                    "name": "Not Applicable (N\/A)",
+                    "status": "unverified"
+                },
+                "speciesData": {
+                    "Mice": {
+                        "DurationFrequencyCellCultureTissues": {
+                            "status": "unverified",
+                            "unit": "hours",
+                            "value": "3"
+                        },
+                        "Frequency": null,
+                        "FrequencyCellCultureTissues": null,
+                        "HowManyConcentrations": {
+                            "name": 1,
+                            "status": "unverified"
+                        },
+                        "IngestionDurationfrequency": null,
+                        "Peakbreathhydrogen": null,
+                        "absoluteDoses": null,
+                        "concentrationOfHydrogenForMedium": null,
+                        "concentrations": [
+                            {
+                                "status": "unverified",
+                                "unit": "%",
+                                "value": "3"
+                            }
+                        ],
+                        "inhalationConcentrations": [
+                            {
+                                "duration_per_frequency": "60 days",
+                                "flow_rate": {
+                                    "status": "unverified",
+                                    "unit": "mL\/min",
+                                    "value": 1000
+                                },
+                                "frequency": "Daily",
+                                "percent_purity": "3%",
+                                "status": "unverified",
+                                "percentPurity": {
+                                    "name": "3",
+                                    "status": "Unverified"
+                                }
+                            }
+                        ],
+                        "isCellTissueOpen": true,
+                        "isIngestionOpen": false,
+                        "isInhalationOpen": true,
+                        "isOpen": true,
+                        "methods": [
+                            "Inhalation"
+                        ],
+                        "numInhalationConcentrations": {
+                            "name": "1",
+                            "status": "unverified"
+                        },
+                        "relativeDoses": null,
+                        "topicalMethod": null,
+                        "volumes": null,
+                        "wasOxyhydrogenUsed": {
+                            "name": "No",
+                            "status": "unverified"
+                        },
+                        "weight": {
+                            "name": "25",
+                            "unit": "g",
+                            "status": "Unverified"
+                        }
+                    }
+                },
+                "status": "unverified",
+                "bodyWeight": {
+                    "name": "25",
+                    "unit": "g",
+                    "status": "Unverified"
+                }
+            },
+            "biomaker": [
+                {
+                    "category": [
+                        "Protein aggregation",
+                        "Pathology marker"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "Amyloid-beta (A\u03b2)",
+                    "protein": "Amyloid-beta",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Oxidative stress"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "Hydrogen peroxide (H2O2)",
+                    "protein": "H2O2",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Neurotransmitter",
+                        "Toxic metabolite"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "GABA (\u03b3-aminobutyric acid)",
+                    "protein": "GABA",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Toxic metabolite"
+                    ],
+                    "change": [
+                        "Decreasing Trend"
+                    ],
+                    "is_measured": true,
+                    "marker": "Ammonia",
+                    "protein": "Ammonia",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Inflammatory cytokine"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "TNF-\u03b1",
+                    "protein": "TNF-\u03b1",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Inflammatory cytokine"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "IL-6",
+                    "protein": "IL-6",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Antioxidant enzyme"
+                    ],
+                    "change": [
+                        "Statistically Increased"
+                    ],
+                    "is_measured": true,
+                    "marker": "Catalase activity",
+                    "protein": "Catalase",
+                    "status": "unverified"
+                },
+                {
+                    "category": [
+                        "Astrocyte activation marker"
+                    ],
+                    "change": [
+                        "Statistically Decreased"
+                    ],
+                    "is_measured": true,
+                    "marker": "GFAP (Glial fibrillary acidic protein)",
+                    "protein": "GFAP",
+                    "status": "unverified"
+                }
+            ],
+            "created_at": "2025-10-06T15:34:26.000000Z",
+            "updated_at": "2025-10-07T12:54:34.000000Z"
+        },
+        {
+            "id": 548,
+            "mhid": "MHID-1114191",
+            "doi": null,
+            "pmid": null,
+            "status": "Draft",
+            "publicData": [],
+            "articleGeneralData": {
+                "studyType": [
+                    {
+                        "name": "In Vitro",
+                        "status": "Unverified"
+                    },
+                    {
+                        "name": "In Vivo",
+                        "status": "Unverified"
+                    }
+                ],
+                "inVivo": [
+                    {
+                        "name": "Animal Study",
+                        "status": "Unverified"
+                    }
+                ],
+                "durationOfStudy": {
+                    "name": "60",
+                    "status": "Unverified"
+                },
+                "studyDurationUnit": "day",
+                "timingTreatmentInVivo": [
+                    {
+                        "name": "Simultaneous",
+                        "status": "Unverified"
+                    }
+                ],
+                "WhatKindCell": {
+                    "name": "primary cortical astrocyte",
+                    "status": "Unverified"
+                },
+                "durationOfStudyinVitro": {
+                    "name": "3",
+                    "status": "Unverified"
+                },
+                "timingTreatmentInVitro": [
+                    {
+                        "name": "Simultaneous",
+                        "status": "Unverified"
+                    }
+                ],
+                "species": [
+                    {
+                        "name": "Mice",
+                        "status": "Unverified"
+                    }
+                ],
+                "speciesDetails": {
+                    "Mice": {
+                        "name": null,
+                        "status": "Unverified"
+                    }
+                }
+            },
+            "researcherData": {
+                "speciesData": {
+                    "Mice": {
+                        "isOpen": true,
+                        "HowManyConcentrations": {
+                            "name": 0,
+                            "status": "Unverified"
+                        },
+                        "volumes": [],
+                        "concentrations": [],
+                        "absoluteDoses": [],
+                        "relativeDoses": [],
+                        "inhalationConcentrations": [
+                            {
+                                "percentPurity": {
+                                    "name": "3",
+                                    "status": "Unverified"
+                                }
+                            }
+                        ],
+                        "wasOxyhydrogenUsed": {
+                            "name": "No",
+                            "status": "Unverified"
+                        },
+                        "isInhalationOpen": true,
+                        "isCellTissueOpen": true,
+                        "isIngestionOpen": false,
+                        "methods": [
+                            "Cell Culture \/ Tissues",
+                            "Inhalation"
+                        ],
+                        "weight": 0,
+                        "numInhalationConcentrations": {
+                            "name": "1",
+                            "status": "Unverified",
+                            "value": "1"
+                        },
+                        "DurationFrequencyCellCultureTissues": {
+                            "value": 3,
+                            "unit": "Hr",
+                            "status": "Unverified"
+                        },
+                        "concentrationOfHydrogenForMedium": {
+                            "name": "3%",
+                            "status": "Unverified",
+                            "value": "3%"
+                        }
+                    }
+                }
+            },
+            "biomaker": [],
+            "created_at": "2025-10-06T15:27:12.000000Z",
+            "updated_at": "2025-10-06T15:30:48.000000Z"
+        },
+        {
+            "id": 547,
+            "mhid": "MHID-2223850",
+            "doi": "10.3390\/antiox14091054",
+            "pmid": "41008961",
+            "status": "In Review",
+            "publicData": {
+                "HIndex": {
+                    "name": 133,
+                    "status": "unverified"
+                },
+                "abstract": {
+                    "name": "<p>(1) Background: Water, comprising about 70\u201380% of cellular mass, is the most abundant constituent of living cells. Upon exposure to ionizing radiation, water undergoes radiolysis, generating a variety of reactive species, including free radicals and molecular products. Among these, hydroxyl radicals (\u2022OH) are particularly damaging due to their very high reactivity and their capacity to induce oxidative injury to vital biomolecules such as DNA, membrane lipids, and proteins. From a radiation-chemical perspective, this study investigates the selective scavenging ability of molecular hydrogen (H2) toward \u2022OH radicals, with the aim of evaluating its potential as an antioxidant and radioprotective agent; (2) Methods: We employed our Monte Carlo track chemistry simulation code, IONLYS-IRT, to model the time-dependent yields of ROS in a neutral, aerated aqueous environment. The simulations included varying concentrations of dissolved H2 and, for comparison, cystamine\u2014a well-known sulfur-containing radioprotector and antioxidant. Irradiation was simulated using 300 MeV protons, chosen to mimic the radiolytic effects of low linear energy transfer (LET) radiation, such as that of 60Co \u03b3-rays or fast (&gt;1 MeV) electrons; (3) Results: Our simulations quantitatively demonstrated that H2 selectively scavenges \u2022OH radicals. Nevertheless, its scavenging efficiency was consistently lower than that of cystamine, which produced a faster and more pronounced suppression of \u2022OH due to its higher reactivity and superior radical-quenching capacity; (4) Conclusions: Molecular hydrogen offers several unique advantages, including low toxicity, high diffusivity, selective scavenging of \u2022OH radicals, and well-documented anti-inflammatory effects. Although it is less potent than cystamine in terms of radical-scavenging efficiency, its excellent safety profile and biological compatibility position H2 as a promising radioprotector and antioxidant for therapeutic applications targeting radiation-induced oxidative stress and inflammation.<\/p>",
+                    "status": "Unverified"
+                },
+                "authors": [
+                    {
+                        "affiliation": "Department of Medical Imaging and Radiation Sciences, Faculty of Medicine and Health Sciences, Universit\u00e9 de Sherbrooke, Sherbrooke, QC, Canada",
+                        "name": "Sumaiya Akhter Ria",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Medical Imaging and Radiation Sciences, Faculty of Medicine and Health Sciences, Universit\u00e9 de Sherbrooke, Sherbrooke, QC, Canada",
+                        "name": "Jintana Meesungnoen",
+                        "status": "unverified"
+                    },
+                    {
+                        "affiliation": "Department of Medical Imaging and Radiation Sciences, Faculty of Medicine and Health Sciences, Universit\u00e9 de Sherbrooke, Sherbrooke, QC, Canada",
+                        "name": "Jean-Paul Jay-Gerin",
+                        "status": "unverified"
+                    }
+                ],
+                "country": [
+                    {
+                        "name": "Canada",
+                        "status": "unverified"
+                    }
+                ],
+                "doi": {
+                    "name": "10.3390\/antiox14091054",
+                    "status": "unverified"
+                },
+                "grantCountry": {
+                    "name": "Canada",
+                    "status": "unverified"
+                },
+                "impactFactor": {
+                    "name": 6.92999999999999971578290569595992565155029296875,
+                    "status": "unverified"
+                },
+                "issue": {
+                    "name": "9",
+                    "status": "unverified"
+                },
+                "journal": {
+                    "name": "Antioxidants",
+                    "status": "unverified"
+                },
+                "keywords": {
+                    "name": "water radiolysis, free radicals and reactive oxygen species (ROS), cellular oxidative damage, selective scavenging capacity, radioprotector, antioxidant, Monte Carlo track chemistry simulations, dose-rate effects",
+                    "status": "unverified"
+                },
+                "pages": {
+                    "name": "1054",
+                    "status": "unverified"
+                },
+                "pmid": {
+                    "name": "41008961",
+                    "status": "unverified"
+                },
+                "publisher": {
+                    "name": "MDPI",
+                    "status": "unverified"
+                },
+                "researchCountry": [
+                    {
+                        "name": "Canada",
+                        "status": "unverified"
+                    }
+                ],
+                "sciMAGO": {
+                    "name": "Q1",
+                    "status": "unverified"
+                },
+                "status": "unverified",
+                "title": {
+                    "name": "Molecular Hydrogen as an Antioxidant and Radioprotector: Mechanistic Insights from Monte Carlo Radiation-Chemical Simulations",
+                    "status": "unverified"
+                },
+                "volume": {
+                    "name": "14",
+                    "status": "unverified"
+                },
+                "year": {
+                    "name": "2025",
+                    "status": "unverified"
+                },
+                "pdf_url": [
+                    {
+                        "name": "https:\/\/h2research.org\/backend\/public\/assets\/pdf\/1_1759751971_antioxidants-14-01054.pdf",
+                        "status": "Unverified",
+                        "isPaywall": false
+                    }
+                ]
+            },
+            "articleGeneralData": {
+                "HighlightArticle": {
+                    "name": true,
+                    "status": "unverified"
+                },
+                "Hypothesis": null,
+                "NonExperimentalSelect": [],
+                "OpinionPiece": null,
+                "Other": {
+                    "name": "Monte Carlo radiation-chemical simulations (IONLYS-IRT code) modeling the radiolysis of water and the effects of molecular hydrogen and cystamine on reactive oxygen species yields.",
+                    "status": "unverified"
+                },
+                "ReviewStudyType": null,
+                "TherapeuticDeliverySystems": null,
+                "UnitOfStudyExVivo": null,
+                "UnitOfStudyInVitro": null,
+                "WhatCellTissueUsed": null,
+                "clinicalTrialDesign": [],
+                "descHighArt": {
+                    "name": "This article provides mechanistic, quantitative evidence for the selective antioxidant and radioprotective effects of molecular hydrogen, using advanced Monte Carlo simulations, and directly compares its efficacy to a standard radioprotector (cystamine).",
+                    "status": "unverified"
+                },
+                "diseaseModel": {
+                    "name": "Radiation-induced oxidative stress (general model, not disease-specific)",
+                    "status": "unverified"
+                },
+                "durationOfStudy": null,
+                "durationOfStudyExVivo": null,
+                "durationOfStudyinVitro": null,
+                "inVivo": [],
+                "observationalStudyObj": [],
+                "organ": [
+                    {
+                        "name": "General",
+                        "status": "unverified"
+                    }
+                ],
+                "outcome": {
+                    "name": "Monte Carlo simulations show that molecular hydrogen (H2) selectively scavenges hydroxyl radicals (\u2022OH) generated by water radiolysis, reducing their yield and thus acting as an antioxidant and radioprotector. However, H2 is less efficient than cystamine, a conventional radioprotector, in scavenging \u2022OH radicals. H2's advantages include low toxicity, high diffusivity, and selective action, making it a promising candidate for therapeutic applications against radiation-induced oxidative stress and inflammation.",
+                    "status": "unverified"
+                },
+                "outcomeType": [
+                    "positive"
+                ],
+                "rankThisArticle": {
+                    "name": "65",
+                    "status": "Unverified"
+                },
+                "researchtopic": [
+                    {
+                        "name": "Free Radicals scavenging",
+                        "status": "Unverified"
+                    },
+                    {
+                        "name": "Hydrogen therapy",
+                        "status": "Unverified"
+                    },
+                    {
+                        "name": "Oxidative stress",
+                        "status": "Unverified"
+                    }
+                ],
+                "selectedStudyTypes": [],
+                "specieDetails": {
+                    "General": {
+                        "DescribeSpecies": {
+                            "name": "Simulations model aqueous environments mimicking cellular conditions; not specific to a particular species but relevant to general biological systems.",
+                            "status": "unverified"
+                        },
+                        "ageUnit": null,
+                        "averageAge": null,
+                        "averageWeight": null,
+                        "gender": null,
+                        "health": null,
+                        "name": {
+                            "name": "General",
+                            "status": "unverified"
+                        },
+                        "status": "unverified",
+                        "subjects": null,
+                        "weightUnit": null
+                    }
+                },
+                "species": [
+                    {
+                        "name": "N\/A",
+                        "status": "Unverified"
+                    }
+                ],
+                "status": "unverified",
+                "studyDurationUnit": null,
+                "studyType": [
+                    {
+                        "name": "Chemical\/Physicochemical Study",
+                        "status": "Unverified"
+                    }
+                ],
+                "system": [
+                    {
+                        "name": "General",
+                        "status": "unverified"
+                    }
+                ],
+                "timingTreatmentExVivo": [],
+                "timingTreatmentInVitro": [],
+                "timingTreatmentInVivo": [],
+                "speciesDetails": {
+                    "N\/A": {
+                        "name": null,
+                        "status": "Unverified"
+                    }
+                }
+            },
+            "researcherData": {
+                "CompMethodAdmin": {
+                    "name": true,
+                    "status": "unverified"
+                },
+                "CompMethodAdminDesc": {
+                    "name": "The study directly compares the antioxidant and radioprotective efficiency of molecular hydrogen (H2) and cystamine in scavenging hydroxyl radicals (\u2022OH) generated by water radiolysis using Monte Carlo simulations.",
+                    "status": "unverified"
+                },
+                "PasteUrl": null,
+                "Video_WebpageLink": null,
+                "adverseEffects": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "adverseEffectsDescription": {
+                    "name": "No adverse effects; H2 is highlighted for its excellent safety profile compared to cystamine.",
+                    "status": "unverified"
+                },
+                "brandName": null,
+                "commercialProduct": {
+                    "name": "No",
+                    "status": "unverified"
+                },
+                "comparisonDetail": {
+                    "name": "Comparison between molecular hydrogen (H2) and cystamine as radioprotectors\/antioxidants.",
+                    "status": "unverified"
+                },
+                "doseComparison": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "doseComparisonDesc": {
+                    "name": "The study examines the effect of varying concentrations of H2 (0.01\u201310 mM) and cystamine (0.01\u201310 mM) on the scavenging of \u2022OH radicals.",
+                    "status": "unverified"
+                },
+                "doseDependentEffect": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "drugComparison": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "erwCompared": null,
+                "geneExpression": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "geneExpressionDesc": null,
+                "isERW": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "mechanisticInsights": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "ph": null,
+                "pharmacokinetics": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "pharmacokineticsDescription": null,
+                "pregnantBreastfeeding": {
+                    "name": "Not Applicable (N\/A)",
+                    "status": "unverified"
+                },
+                "responderDifference": {
+                    "name": "False",
+                    "status": "unverified"
+                },
+                "safetyProfile": {
+                    "name": "True",
+                    "status": "unverified"
+                },
+                "safetyofhydrogen": {
+                    "name": false,
+                    "status": "unverified"
+                },
+                "sexDifference": {
+                    "name": "Not Applicable (N\/A)",
+                    "status": "unverified"
+                },
+                "speciesData": {
+                    "N\/A": {
+                        "isOpen": false,
+                        "HowManyConcentrations": {
+                            "name": 0,
+                            "status": "Unverified"
+                        },
+                        "volumes": [],
+                        "concentrations": [],
+                        "absoluteDoses": [],
+                        "relativeDoses": [],
+                        "inhalationConcentrations": [],
+                        "wasOxyhydrogenUsed": {
+                            "name": null,
+                            "status": "Unverified"
+                        },
+                        "isInhalationOpen": false,
+                        "isCellTissueOpen": false,
+                        "isIngestionOpen": false,
+                        "methods": [],
+                        "weight": 0
+                    }
+                },
+                "status": "unverified",
+                "bodyWeight": {
+                    "name": null,
+                    "unit": "kg",
+                    "status": "Unverified"
+                }
+            },
+            "biomaker": [],
+            "created_at": "2025-10-06T12:02:05.000000Z",
+            "updated_at": "2025-10-06T13:11:20.000000Z"
+        }
+    ]
+}

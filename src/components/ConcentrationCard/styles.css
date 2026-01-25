@@ -1,0 +1,35 @@
+/* .details-section {
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 0;
+    opacity: 0;
+  }
+  
+  .details-section.expanded {
+    max-height: 500px;
+    opacity: 1;
+  }
+  
+  .details-section.collapsed {
+    max-height: 0;
+    opacity: 0;
+  }
+   */
+
+   .details-section {
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    max-height: 0; /* Collapsed height */
+    opacity: 0;
+  }
+  
+  .details-section.expanded {
+    max-height: 500px; /* Set max height for expanded content */
+    opacity: 1;
+  }
+  
+  .details-section.collapsed {
+    max-height: 0; /* Collapse height */
+    opacity: 0;
+  }
+  
