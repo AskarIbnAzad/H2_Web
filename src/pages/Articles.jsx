@@ -1030,7 +1030,7 @@ const Articles = () => {
     const fetchFilters = async () => {
       try {
         const response = await fetch(
-          "https://api.h2research.org/api/get-fiters"
+          `${import.meta.env.VITE_API_BASE_URL}/get-fiters`
         );
         const result = await response.json();
 
