@@ -41,14 +41,14 @@ import inReviewImage from "../../assets/images/inReview.png"
 import VerifyImage from "../../assets/images/verify.png"
 import VerifiedIcon from "../VerifiedIcon/VerifiedIcon";
 import MhidImage from "../../assets/images/mhid.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const StudyCard = ({ study, onClick }) => {
     const navigate = useNavigate()
     const abstractText = study?.publicData?.abstract?.name || "";
     const truncatedAbstract = abstractText.length > 300 ? `${abstractText.slice(0, 300)}...` : abstractText;
     // const inReview = study?.status === "Unverified" ? inReviewImage : study?.status === "Draft" ? inReviewImage : study?.status === "'In Review" ? inReviewImage : VerifyImage
 
-    console.log("study", study?.publicData?.journal?.name);
+    console.log("study", study);
 
     // Function to handle author click
     const handleAuthorClick = (author, event) => {
@@ -63,8 +63,14 @@ const StudyCard = ({ study, onClick }) => {
     return (
         <div className="bg-white mb-6  p-6 " >
             {/* Title */}
-            <h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer" onClick={onClick}>
-                {study?.publicData?.title?.name || "Untitled Study"}
+            {/*<h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer" onClick={onClick}>*/}
+            {/*    {study?.publicData?.title?.name || "Untitled Study"}*/}
+            {/*</h2>*/}
+
+            <h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer">
+                <Link to={`/ArticleDetails/${study?.mhid}`} className="block">
+                    {study?.publicData?.title?.name || "Untitled Study"}
+                </Link>
             </h2>
 
             {/* Authors */}

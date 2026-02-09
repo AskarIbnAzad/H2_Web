@@ -628,9 +628,16 @@ const Professional3LayerNavbar = () => {
               <FaTwitter className="w-4 h-4 hover:text-[#004c78] cursor-pointer transition-colors" />
             </a>
           </div>
-          <button onClick={() => location.href='https://stagging.h2research.org/admin/login'} className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
-            Login
-          </button>
+          {/*<button onClick={() => location.href='https://stagging.h2research.org/admin/login'} className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">*/}
+          {/*  Login*/}
+          {/*</button>*/}
+
+              <Link to={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/admin/login`}>
+                <button className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
+                  Login
+                </button>
+              </Link>
+
             </div>
           </div>
         </div>
