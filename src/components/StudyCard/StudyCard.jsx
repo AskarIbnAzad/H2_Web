@@ -48,7 +48,11 @@ const StudyCard = ({ study, onClick }) => {
     const truncatedAbstract = abstractText.length > 300 ? `${abstractText.slice(0, 300)}...` : abstractText;
     // const inReview = study?.status === "Unverified" ? inReviewImage : study?.status === "Draft" ? inReviewImage : study?.status === "'In Review" ? inReviewImage : VerifyImage
 
-    console.log("study", study);
+
+    console.log('truncatedAbstract', truncatedAbstract)
+    console.log('study?.publicData?.abstract?.name', study?.publicData?.abstract?.name)
+
+
 
     // Function to handle author click
     const handleAuthorClick = (author, event) => {
@@ -167,21 +171,21 @@ const StudyCard = ({ study, onClick }) => {
             {/* <p  className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                 {truncatedAbstract}
             </p> */}
-            {truncatedAbstract?.includes("<") &&
-                truncatedAbstract?.includes(">") ? (
+
+            {truncatedAbstract ? (
                 <div
-                    className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                    //   style={{ lineHeight: "170%" }}
-                    dangerouslySetInnerHTML={{ __html: truncatedAbstract }}
+                    className="text-[#767676] text-base mb-4 line-clamp-4"
+                    style={{
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                    }}
+                    dangerouslySetInnerHTML={{
+                        __html: truncatedAbstract.replace(/H2/gi, "H<sub>2</sub>"),  // Fixed the replace method
+                    }}
                 />
-            ) : (
-                <p
-                    className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                //   style={{ lineHeight: "170%" }}
-                >
-                    {truncatedAbstract}
-                </p>
-            )}
+            ) : null}
+
 
             <hr className="mt-4" />
         </div>
