@@ -21,7 +21,7 @@ const ArticleDetails = () => {
         const fetchArticle = async () => {
             try {
                 setLoading(true); // Start loading
-                const response = await fetch(`https://api.h2research.org/api/get-article/${id}`);
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/get-article/${id}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch article data');
                 }

@@ -41,14 +41,18 @@ import inReviewImage from "../../assets/images/inReview.png"
 import VerifyImage from "../../assets/images/verify.png"
 import VerifiedIcon from "../VerifiedIcon/VerifiedIcon";
 import MhidImage from "../../assets/images/mhid.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 const StudyCard = ({ study, onClick }) => {
     const navigate = useNavigate()
     const abstractText = study?.publicData?.abstract?.name || "";
     const truncatedAbstract = abstractText.length > 300 ? `${abstractText.slice(0, 300)}...` : abstractText;
     // const inReview = study?.status === "Unverified" ? inReviewImage : study?.status === "Draft" ? inReviewImage : study?.status === "'In Review" ? inReviewImage : VerifyImage
 
-    console.log("study", study?.publicData?.journal?.name);
+
+    console.log('truncatedAbstract', truncatedAbstract)
+    console.log('study?.publicData?.abstract?.name', study?.publicData?.abstract?.name)
+
+
 
     // Function to handle author click
     const handleAuthorClick = (author, event) => {
@@ -63,8 +67,14 @@ const StudyCard = ({ study, onClick }) => {
     return (
         <div className="bg-white mb-6  p-6 " >
             {/* Title */}
-            <h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer" onClick={onClick}>
-                {study?.publicData?.title?.name || "Untitled Study"}
+            {/*<h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer" onClick={onClick}>*/}
+            {/*    {study?.publicData?.title?.name || "Untitled Study"}*/}
+            {/*</h2>*/}
+
+            <h2 className="text-[#004C78] font-bold text-2xl mb-2 cursor-pointer">
+                <Link to={`/ArticleDetails/${study?.mhid}`} className="block">
+                    {study?.publicData?.title?.name || "Untitled Study"}
+                </Link>
             </h2>
 
             {/* Authors */}
@@ -161,21 +171,21 @@ const StudyCard = ({ study, onClick }) => {
             {/* <p  className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}>
                 {truncatedAbstract}
             </p> */}
-            {truncatedAbstract?.includes("<") &&
-                truncatedAbstract?.includes(">") ? (
+
+            {truncatedAbstract ? (
                 <div
-                    className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                    //   style={{ lineHeight: "170%" }}
-                    dangerouslySetInnerHTML={{ __html: truncatedAbstract }}
+                    className="text-[#767676] text-base mb-4 line-clamp-4"
+                    style={{
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                    }}
+                    dangerouslySetInnerHTML={{
+                        __html: truncatedAbstract.replace(/H2/gi, "H<sub>2</sub>"),  // Fixed the replace method
+                    }}
                 />
-            ) : (
-                <p
-                    className="text-[#767676] text-base mb-4 line-clamp-4" style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden" }}
-                //   style={{ lineHeight: "170%" }}
-                >
-                    {truncatedAbstract}
-                </p>
-            )}
+            ) : null}
+
 
             <hr className="mt-4" />
         </div>

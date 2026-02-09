@@ -10,7 +10,7 @@ export const exit_session = () => {
 };
 
 // export const baseURL = `https://api.h2research.org/api/`;
-export const baseURL = `http://127.0.0.1:8000/api/`;
+export const baseURL = `${import.meta.env.VITE_API_BASE_URL}/`;
 // export const baseURL = `https://stagging-server786.com/mol-hyd-backend/public/api/`;
 
 

@@ -675,7 +675,7 @@ const DashboardCharts = ({ data }) => {
                 }
               >
                 <FiBook className="h-4 w-4" />
-               Publish Your Article
+               Add Your Article
               </button>
 
             </div>

@@ -24,7 +24,7 @@ import {
   TrophyOutlined,
 } from "@ant-design/icons";
 import { apiHandle } from "../../config/apiHandle/apiHandle";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import FeedbackButton from "../../components/FeedbackButton/FeedbackButton";
 import ContributeStudyCTA from "../../components/ContributeStudyCTA/ContributeStudyCTA";
@@ -32,18 +32,28 @@ import ExploreDataButton from "../../components/ExploreDataButton/ExploreDataBut
 import mhidSheild from "../../assets/images/mhid.png";
 const { Title, Text } = Typography;
 
+const ProfileIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+         className="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd"
+              d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5"/>
+        <path fill-rule="evenodd"
+              d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0z"/>
+    </svg>
+);
+
 const AuthorsLibrary = () => {
-  const [activeTab, setActiveTab] = useState("all");
-  // Helper for title case
-  const navigate = useNavigate();
-  const [authors, setAuthors] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortDirection, setSortDirection] = useState("asc");
-  const [topAuthor, setTopAuthor] = useState(null);
-  const [featuredAuthors, setFeaturedAuthors] = useState([]);
- const [paginationAll, setPaginationAll] = useState({
+    const [activeTab, setActiveTab] = useState("all");
+    // Helper for title case
+    const navigate = useNavigate();
+    const [authors, setAuthors] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortDirection, setSortDirection] = useState("asc");
+    const [topAuthor, setTopAuthor] = useState(null);
+    const [featuredAuthors, setFeaturedAuthors] = useState([]);
+    const [paginationAll, setPaginationAll] = useState({
   current: 1,
   pageSize: 10,
   total: 0,
@@ -53,6 +63,14 @@ const [paginationFeatured, setPaginationFeatured] = useState({
   pageSize: 10,
   total: 0,
 });
+
+    useEffect(() => {
+        console.log("Featured authors updated:", featuredAuthors);
+    }, [featuredAuthors]);
+
+    useEffect(() => {
+        console.log("all authors updated:", authors);
+    }, [authors]);
 
   const themeColor = "#214a78";
 
@@ -91,12 +109,17 @@ const [paginationFeatured, setPaginationFeatured] = useState({
         // Find the most researched author (first one after sorting)
         if (allAuthors.length > 0) {
           setFeaturedAuthors(
-            allAuthors.filter((author) => author.is_featured > 0)
+            allAuthors.filter((author) => author.is_featured)
           );
 
           console.log(
             "Featured authors:",
-            allAuthors.filter((author) => author.is_featured > 0)
+            allAuthors.filter((author) => author.is_featured)
+          );
+
+          console.log(
+            "All authors:",
+            allAuthors
           );
           setTopAuthor(allAuthors[0]);
         }
@@ -196,7 +219,7 @@ const handleTableChangeFeatured = (pg) => {
       ),
     },
     {
-      title: "Total # of Studies",
+      title: "Total Studies Count",
       dataIndex: "article_count",
       key: "article_count",
       sorter: (a, b) => a.article_count - b.article_count,
@@ -213,6 +236,71 @@ const handleTableChangeFeatured = (pg) => {
     },
   ];
 
+    const columnsFeatured = [
+        {
+            title: (
+                <Space>
+                    <Text strong>Author Name</Text>
+                    <Button
+                        type="text"
+                        icon={
+                            sortDirection === "asc" ? (
+                                <SortAscendingOutlined />
+                            ) : (
+                                <SortDescendingOutlined />
+                            )
+                        }
+                        onClick={toggleSortDirection}
+                    />
+                </Space>
+            ),
+            dataIndex: "name",
+            key: "name",
+            render: (name) => (
+                <Text
+                    strong
+                    style={{
+                        color: themeColor,
+                        cursor: "pointer",
+                    }}
+                    onClick={() => navigateToAuthor(name)}
+                >
+                    {toTitleCase(name)}
+                </Text>
+            ),
+        },
+        {
+            title: "Total Studies Count",
+            dataIndex: "article_count",
+            key: "article_count",
+            sorter: (a, b) => a.article_count - b.article_count,
+            render: (count) =>
+                count > 0 ? (
+                    <Text strong style={{ color: themeColor }}>
+                        {count}
+                    </Text>
+                ) : (
+                    <Text type="secondary" style={{ fontStyle: "italic" }}>
+                        No articles yet
+                    </Text>
+                ),
+        },
+        // New "Profile" column
+        {
+            title: "Profile",
+            key: "profile",
+            render: (text, record) => (
+                <a
+                    type="link"
+                    href={`https://molecularhydrogeninstitute.org/${record.orcid}/`}
+                    style={{ color: themeColor }}
+                >
+                    <ProfileIcon />
+                </a>
+            ),
+        },
+    ];
+
   return (
     <div className="max-w-[1200px] mx-auto p-2 sm:p-4 md:p-8">
       {/* Top Stats & Title */}
@@ -224,7 +312,7 @@ const handleTableChangeFeatured = (pg) => {
         <Col xs={24} md={12}>
           <Row gutter={[8, 16]} align="middle" justify="end">
             <Col xs={12} sm={8} md={12}>
-              <Card bordered={false} 
+              <Card bordered={false}
               hoverable
               onClick={() => setActiveTab("all")}
                  style={{
@@ -236,7 +324,7 @@ const handleTableChangeFeatured = (pg) => {
               >
                 <Statistic
                   title="Total Authors"
-                 
+
                   value={authors?.length}
                   prefix={<TeamOutlined />}
                   valueStyle={{ color: themeColor, fontSize: "14px" }}
@@ -309,9 +397,9 @@ const handleTableChangeFeatured = (pg) => {
                 <div className="mb-4 lg:hidden">
                   <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
                     <div className="flex-1">
-                      <Button 
-                        icon={<ReloadOutlined />} 
-                        onClick={fetchAuthors} 
+                      <Button
+                        icon={<ReloadOutlined />}
+                        onClick={fetchAuthors}
                         className="w-full"
                         style={{ width: '100%' }}
                       >
@@ -347,7 +435,7 @@ const handleTableChangeFeatured = (pg) => {
                 <Spin spinning={loading} tip="Loading authors...">
                   <Table
                   ex
-                 
+
                     columns={columns}
                     dataSource={filtered}
                     pagination={{
@@ -376,105 +464,105 @@ const handleTableChangeFeatured = (pg) => {
               </Card>
             ),
           },
-          {
-            key: "featured",
-            label: "Featured Authors",
-            children: (
-              <Card
-                bordered={false}
-                className="shadow-md rounded-lg"
-                title={
-                  <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
-                    <Title level={4} style={{ color: themeColor, margin: 0 }} className="text-base lg:text-lg">
-                      <TrophyOutlined /> Featured Authors
-                    </Title>
-                    <Text type="secondary" className="text-sm pr-2">
-                      Showing {featuredList?.length} of {featuredAuthors?.length}
-                    </Text>
-                  </div>
-                }
-                extra={
-                  <div className="hidden lg:flex items-center gap-3">
-                    <Button icon={<ReloadOutlined />} onClick={fetchAuthors}>
-                      Refresh
-                    </Button>
-                    <FeedbackButton />
-                  </div>
-                }
-              >
-                {/* Mobile Action Buttons */}
-                <div className="mb-4 lg:hidden">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
-                    <div className="flex-1">
-                      <Button 
-                        icon={<ReloadOutlined />} 
-                        onClick={fetchAuthors} 
-                        className="w-full"
-                        style={{ width: '100%' }}
-                      >
-                        Refresh
-                      </Button>
-                    </div>
-                    <div className="flex-1">
-                      <div className="w-full">
-                        <FeedbackButton />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Search */}
-                <div className="mb-6">
-                  <Input
-                    className="w-full"
-                    placeholder="Search featured authors..."
-                    prefix={<SearchOutlined style={{ color: themeColor }} />}
-                    allowClear
-                    onChange={handleSearch}
-                    size="large"
-                  />
-                </div>
-
-                {error && (
-                  <div className="mb-4 text-center">
-                    <Text type="danger">{error}</Text>
-                  </div>
-                )}
-
-                <Spin spinning={loading} tip="Loading authors...">
-                  <Table
-                    columns={columns}
-                    dataSource={featuredList}
-                    pagination={{
-                      ...paginationFeatured,
-                      showSizeChanger: true,
-                      pageSizeOptions: ["10", "20", "50", "100"],
-                      showTotal: (total, range) =>
-                        `${range[0]}-${range[1]} of ${total} authors`,
-                      position: ["bottomCenter"],
-                    }}
-                    onChange={handleTableChangeFeatured}
-                    bordered
-                    scroll={{ x: "max-content" }}
-                    className="mobile-responsive-table"
-                    locale={{
-                      emptyText: (
-                        <Empty
-                          image={Empty.PRESENTED_IMAGE_SIMPLE}
-                          description="No featured authors match your search"
-                        />
-                      ),
-                    }}
-                    rowClassName={(_, i) => (i % 2 === 0 ? "bg-gray-50" : "")}
-                  />
-                </Spin>
-                 {/* Contribute CTA */}
-                            <div className="text-center mt-6">
-                              <ContributeStudyCTA className="mt-6" />
+            {
+                key: "featured",
+                label: "Featured Authors",
+                children: (
+                    <Card
+                        bordered={false}
+                        className="shadow-md rounded-lg"
+                        title={
+                            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
+                                <Title level={4} style={{ color: themeColor, margin: 0 }} className="text-base lg:text-lg">
+                                    <TrophyOutlined /> Featured Authors
+                                </Title>
+                                <Text type="secondary" className="text-sm pr-2">
+                                    Showing {featuredList?.length} of {featuredAuthors?.length}
+                                </Text>
                             </div>
-              </Card>
-            ),
-          },
+                        }
+                        extra={
+                            <div className="hidden lg:flex items-center gap-3">
+                                <Button icon={<ReloadOutlined />} onClick={fetchAuthors}>
+                                    Refresh
+                                </Button>
+                                <FeedbackButton />
+                            </div>
+                        }
+                    >
+                        {/* Mobile Action Buttons */}
+                        <div className="mb-4 lg:hidden">
+                            <div className="flex flex-col gap-3 sm:flex-row sm:gap-2">
+                                <div className="flex-1">
+                                    <Button
+                                        icon={<ReloadOutlined />}
+                                        onClick={fetchAuthors}
+                                        className="w-full"
+                                        style={{ width: '100%' }}
+                                    >
+                                        Refresh
+                                    </Button>
+                                </div>
+                                <div className="flex-1">
+                                    <div className="w-full">
+                                        <FeedbackButton />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Search */}
+                        <div className="mb-6">
+                            <Input
+                                className="w-full"
+                                placeholder="Search featured authors..."
+                                prefix={<SearchOutlined style={{ color: themeColor }} />}
+                                allowClear
+                                onChange={handleSearch}
+                                size="large"
+                            />
+                        </div>
+
+                        {error && (
+                            <div className="mb-4 text-center">
+                                <Text type="danger">{error}</Text>
+                            </div>
+                        )}
+
+                        <Spin spinning={loading} tip="Loading authors...">
+                            <Table
+                                columns={columnsFeatured}
+                                dataSource={featuredList}
+                                pagination={{
+                                    ...paginationFeatured,
+                                    showSizeChanger: true,
+                                    pageSizeOptions: ["10", "20", "50", "100"],
+                                    showTotal: (total, range) =>
+                                        `${range[0]}-${range[1]} of ${total} authors`,
+                                    position: ["bottomCenter"],
+                                }}
+                                onChange={handleTableChangeFeatured}
+                                bordered
+                                scroll={{ x: "max-content" }}
+                                className="mobile-responsive-table"
+                                locale={{
+                                    emptyText: (
+                                        <Empty
+                                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                            description="No featured authors match your search"
+                                        />
+                                    ),
+                                }}
+                                rowClassName={(_, i) => (i % 2 === 0 ? "bg-gray-50" : "")}
+                            />
+                        </Spin>
+                        {/* Contribute CTA */}
+                        <div className="text-center mt-6">
+                            <ContributeStudyCTA className="mt-6" />
+                        </div>
+                    </Card>
+                ),
+            },
         ]}
       />
 
