@@ -566,11 +566,11 @@ const Articles = () => {
   const requestIdRef = useRef(0);
   
   // Clear saved state after restoring (so fresh navigation works correctly)
-  useEffect(() => {
-    if (wasRestoredFromStorageRef.current) {
-      sessionStorage.removeItem(ARTICLES_STATE_KEY);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (wasRestoredFromStorageRef.current) {
+  //     sessionStorage.removeItem(ARTICLES_STATE_KEY);
+  //   }
+  // }, []);
 
   // Helper function to find filter object by name or id
   const findFilterByValue = useCallback((filterType, value) => {
@@ -1078,9 +1078,52 @@ const Articles = () => {
 
   const handleArticleDetails = (items) => {
     // Save state to sessionStorage before navigating
-    saveStateToStorage();
+    // saveStateToStorage();
     navigate(`/ArticleDetails/${items.mhid}`);
   };
+
+  // const ARTICLES_STATE_KEY = "articlesListState";
+
+  useEffect(() => {
+    // Only save after initial restore is done (avoid overwriting restored state)
+    if (!isInitialized) return;
+
+    const stateToSave = {
+      searchTerms,
+      searchTerm,
+      searchLogic,
+      selectedFilters,
+      page,
+      sortOrder,
+      totalArticles,
+      studies,
+      hasMore,
+      selectedYear,
+    };
+
+    const t = setTimeout(() => {
+      try {
+        sessionStorage.setItem(ARTICLES_STATE_KEY, JSON.stringify(stateToSave));
+      } catch (e) {
+        console.error("Failed to save session state:", e);
+      }
+    }, 200); // debounce
+
+    return () => clearTimeout(t);
+  }, [
+    isInitialized,
+    searchTerms,
+    searchTerm,
+    searchLogic,
+    selectedFilters,
+    page,
+    sortOrder,
+    totalArticles,
+    studies,
+    hasMore,
+    selectedYear,
+  ]);
+
 
   const handleLoadMore = () => {
     setIsLoadingMore(true);

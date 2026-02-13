@@ -190,7 +190,7 @@ const HeroArticlesSearch = () => {
             
             // For HeroSection search, we only send the search term
             // No need to transform filter IDs here since this is just text search
-            const response = await fetch("https://api.h2research.org/api/final-article-list-main", {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/final-article-list-main", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
