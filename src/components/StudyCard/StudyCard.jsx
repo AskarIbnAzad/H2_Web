@@ -48,12 +48,6 @@ const StudyCard = ({ study, onClick }) => {
     const truncatedAbstract = abstractText.length > 300 ? `${abstractText.slice(0, 300)}...` : abstractText;
     // const inReview = study?.status === "Unverified" ? inReviewImage : study?.status === "Draft" ? inReviewImage : study?.status === "'In Review" ? inReviewImage : VerifyImage
 
-
-    console.log('truncatedAbstract', truncatedAbstract)
-    console.log('study?.publicData?.abstract?.name', study?.publicData?.abstract?.name)
-
-
-
     // Function to handle author click
     const handleAuthorClick = (author, event) => {
         // Prevent the card click event from firing

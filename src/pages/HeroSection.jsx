@@ -181,6 +181,8 @@ const HeroArticlesSearch = () => {
     const [dropdownStyle, setDropdownStyle] = useState({});
     const navigate = useNavigate();
 
+    const ARTICLES_STATE_KEY = 'articlesListState';
+
     // Fetch articles for a given page
     const fetchArticles = async (search, pageNum, append = false) => {
         try {
@@ -190,7 +192,7 @@ const HeroArticlesSearch = () => {
             
             // For HeroSection search, we only send the search term
             // No need to transform filter IDs here since this is just text search
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/final-article-list-main", {
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/final-article-list-main`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -284,11 +286,42 @@ const HeroArticlesSearch = () => {
         navigate(`/ArticleDetails/${mhid}`);
     };
 
+    // const handleKeyDown = (e) => {
+    //     if (e.key === "Enter" && searchTerm.length >= 3 && searchResults.length > 0) {
+    //         handleResultClick(searchResults[0].mhid);
+    //     }
+    // };
+
     const handleKeyDown = (e) => {
-        if (e.key === "Enter" && searchTerm.length >= 3 && searchResults.length > 0) {
-            handleResultClick(searchResults[0].mhid);
+        if (e.key !== "Enter") return;
+
+        const q = (searchTerm || "").trim();
+        if (q.length < 3) return;
+
+        // build the state you want to persist
+        const stateToSave = {
+            searchTerms: [q],       // ✅ this is your requirement
+            searchTerm: '',          // optional but useful
+            searchLogic: "AND",      // keep your default (or whatever you use)
+            selectedFilters: {},    // keep default if needed
+            page: 1,
+            sortOrder: "DESC",
+            // totalArticles: 0,
+            // studies: [],
+            hasMore: true,
+            selectedYear: "",
+        };
+
+        try {
+            sessionStorage.setItem(ARTICLES_STATE_KEY, JSON.stringify(stateToSave));
+        } catch (err) {
+            console.error("Failed to save session state:", err);
         }
+
+        // ✅ redirect to baseurl/articles (react-router)
+        navigate("/articles");
     };
+
 
     return (
         <div className="relative max-w-4xl mx-auto">

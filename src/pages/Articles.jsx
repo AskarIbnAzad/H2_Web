@@ -1103,6 +1103,7 @@ const Articles = () => {
 
     const t = setTimeout(() => {
       try {
+        console.log('stateToSave', stateToSave);
         sessionStorage.setItem(ARTICLES_STATE_KEY, JSON.stringify(stateToSave));
       } catch (e) {
         console.error("Failed to save session state:", e);
