@@ -539,6 +539,7 @@ const Articles = () => {
   })();
   
   // Initialize state - prefer saved state, then URL params, then defaults
+  const [isHighlightArticle, setIsHighlightArticle] = useState(savedState?.isHighlightArticle ?? false);
   const [searchTerm, setSearchTerm] = useState(savedState?.searchTerm || initialSearchTerm);
   const [searchTerms, setSearchTerms] = useState(savedState?.searchTerms || (initialSearchTerm ? [initialSearchTerm] : []));
   const [searchLogic, setSearchLogic] = useState(savedState?.searchLogic || "AND");
@@ -595,11 +596,17 @@ const Articles = () => {
     return findFilterByValue(filterType, value);
   }, [findFilterByValue]);
 
+  const toggleClinicalResearch = () => {
+    setIsHighlightArticle(prev => !prev);
+    setPage(1);
+  };
+
+
   // Enhanced URL parameter parsing - only for initial page load
   useEffect(() => {
     // Skip if we've already initialized (either from storage or from previous URL parse)
     if (hasInitializedRef.current) {
-      console.log('Skipping URL parsing - already initialized');
+      // console.log('Skipping URL parsing - already initialized');
       return;
     }
     
@@ -608,15 +615,15 @@ const Articles = () => {
     
     // Skip URL parsing if we restored from sessionStorage
     if (wasRestoredFromStorageRef.current) {
-      console.log('Skipping URL parsing - restored from sessionStorage');
+      // console.log('Skipping URL parsing - restored from sessionStorage');
       setIsInitialized(true);
       return;
     }
     
-    console.log('Articles useEffect triggered', { 
-      search: location.search, 
-      state: location.state 
-    });
+    // console.log('Articles useEffect triggered', {
+    //   search: location.search,
+    //   state: location.state
+    // });
     
     const searchParams = new URLSearchParams(location.search);
     const params = {};
@@ -624,7 +631,7 @@ const Articles = () => {
     // Check if we have search data from navigation state (from ArticleDetails)
     const navigationState = location.state;
     if (navigationState && navigationState.fromArticleList) {
-      console.log('Navigation state detected:', navigationState);
+      // console.log('Navigation state detected:', navigationState);
       
       // Restore all state from navigation
       const { 
@@ -638,13 +645,13 @@ const Articles = () => {
         studies: navStudies = []
       } = navigationState;
       
-      console.log('Restoring state:', { 
-        navSearchTerms, 
-        navSearchLogic, 
-        navSelectedFilters,
-        navPage,
-        navSortOrder
-      });
+      // console.log('Restoring state:', {
+      //   navSearchTerms,
+      //   navSearchLogic,
+      //   navSelectedFilters,
+      //   navPage,
+      //   navSortOrder
+      // });
       
       // Restore all search and filter state
       setSearchTerms(navSearchTerms);
@@ -818,27 +825,31 @@ const Articles = () => {
           if (Array.isArray(value) && value.length > 0) {
             // For all filters including clinicalTrialDesign, send IDs
             const transformedValue = value.map(v => {
-              console.log(`Transforming ${key}:`, v);
+              // console.log(`Transforming ${key}:`, v);
               return v.id ?? v;
             });
-            console.log(`Final ${key} value:`, transformedValue);
+            // console.log(`Final ${key} value:`, transformedValue);
             requestBody[key] = transformedValue;
           } else if (value && typeof value === "object") {
             // If value is a single object, send ID for all filters including clinicalTrialDesign
             if (value.id) {
-              console.log(`Transforming single ${key}:`, value);
+              // console.log(`Transforming single ${key}:`, value);
               requestBody[key] = value.id;
             }
           } else if (key === "year") {
             requestBody[key] = Number(value);
           } else if (value) {
-            console.log(`Raw value for ${key}:`, value);
+            // console.log(`Raw value for ${key}:`, value);
             requestBody[key] = value;
           }
         });
 
-        console.log('Final requestBody:', requestBody);
-        console.log('selectedFilters for debugging:', selectedFilters);
+        if (isHighlightArticle) {
+          requestBody.isHighlightArticle = true;
+        }
+
+        // console.log('Final requestBody:', requestBody);
+        // console.log('selectedFilters for debugging:', selectedFilters);
 
         // Handle Other Filters parameters - collect them into an otherFilters array
         const otherFilterMappings = {
@@ -857,15 +868,17 @@ const Articles = () => {
           // Check if this key is an otherFilter field name and it's selected
           if (otherFilterMappings[key] && value === "True") {
             selectedOtherFilters.push(otherFilterMappings[key]);
-            console.log(`Found other filter: ${key} = ${otherFilterMappings[key]} (selected)`);
+            // console.log(`Found other filter: ${key} = ${otherFilterMappings[key]} (selected)`);
           }
         });
         
         // Send otherFilters as an array if any are selected
         if (selectedOtherFilters.length > 0) {
           requestBody.otherFilters = selectedOtherFilters;
-          console.log(`Added otherFilters array:`, selectedOtherFilters);
+          // console.log(`Added otherFilters array:`, selectedOtherFilters);
         }
+
+        console.log('requestBody', requestBody)
 
         const response = await apiHandle.post(
           "final-article-list-main",
@@ -921,7 +934,7 @@ const Articles = () => {
         abortControllerRef.current = null;
       }
     },
-    [selectedFilters, debouncedSearchTerm, sortOrder, searchLogic]
+    [selectedFilters, debouncedSearchTerm, sortOrder, searchLogic, isHighlightArticle]
   );
 
   // Re-transform filter values when filters data becomes available
@@ -1041,6 +1054,8 @@ const Articles = () => {
           };
 
           const transformedFilters = transformFilters(combinedData);
+
+          // console.log('Fetched and transformed filters:', transformedFilters);
           setFilters(transformedFilters);
         }
       } catch (error) {
@@ -1089,6 +1104,7 @@ const Articles = () => {
     if (!isInitialized) return;
 
     const stateToSave = {
+      isHighlightArticle,
       searchTerms,
       searchTerm,
       searchLogic,
@@ -1113,6 +1129,7 @@ const Articles = () => {
     return () => clearTimeout(t);
   }, [
     isInitialized,
+    isHighlightArticle,
     searchTerms,
     searchTerm,
     searchLogic,
@@ -1142,6 +1159,7 @@ const Articles = () => {
     setSortOrder("newest");
     setSearchLogic("AND");
     setPage(1);
+    setIsHighlightArticle(false);
     
     // Use replaceState to immediately clear URL without navigation
     window.history.replaceState({}, '', location.pathname);
@@ -1265,7 +1283,7 @@ const Articles = () => {
     // Mapping for otherFilter field names to display names
     const otherFilterDisplayNames = {
       "HighlightArticle": "Highlighted Articles",
-      "CompMethodAdmin": "Methods of Administration Compared", 
+      "CompMethodAdmin": "Methods of Administration Compared",
       "doseComparison": "Dose/Concentration Compared",
       "drugComparison": "Drug/Therapy/Supplement Compared",
       "pharmacokinetics": "Pharmacokinetics Discussed",
@@ -1508,22 +1526,36 @@ const Articles = () => {
             <ActiveFiltersDisplay />
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-              <p className="text-sm font-medium">Studies Found: <span className="text-primary font-bold">{totalArticles}</span></p>
-              <div className="w-full sm:w-auto">
-                <label htmlFor="sort-order" className="mr-2 text-xs sm:text-sm">
-                  Sort by publication year:
-                </label>
+              <p className="text-sm font-medium">
+                Studies Found: <span className="text-primary font-bold">{totalArticles}</span>
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto items-stretch sm:items-center">
+
+                <button
+                    type="button"
+                    onClick={toggleClinicalResearch}
+                    className={`px-4 py-2 text-sm rounded border transition w-full sm:w-auto
+        ${isHighlightArticle
+                        ? "bg-primary text-white border-primary"
+                        : "bg-white text-primary border-blue-200 hover:bg-blue-50"
+                    }`}
+                >
+                  Highlighted Article
+                </button>
+
                 <select
-                  id="sort-order"
-                  value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="px-3 py-2 text-sm border rounded w-full sm:w-auto"
+                    id="sort-order"
+                    value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                    className="px-3 py-2 text-sm border rounded w-full sm:w-auto"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>
                 </select>
               </div>
             </div>
+
 
             {loading && (
               <div className="flex justify-center my-6">
