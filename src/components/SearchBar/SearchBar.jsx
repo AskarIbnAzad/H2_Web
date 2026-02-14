@@ -1,20 +1,42 @@
 import React, { useState, useRef } from "react";
 import { IoIosSearch, IoMdClose } from "react-icons/io";
 import { MdSwapHoriz } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ searchTerm, setSearchTerm, onSearch, placeholder, searchTerms = [], setSearchTerms, searchLogic = "OR", setSearchLogic, showToggle = true, onSearchWithTerms }) => {
   const [currentInput, setCurrentInput] = useState("");
   const inputRef = useRef(null);
+  const navigate = useNavigate();
+
+  const ARTICLES_STATE_KEY = 'articlesListState';
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (currentInput.trim()) {
-        addSearchTerm();
-      } else if (searchTerms.length > 0) {
-        onSearch();
-      }
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+
+    const q = currentInput.trim();
+    if (q.length < 3) return;
+
+    const stateToSave = {
+      searchTerms: [q],
+      searchTerm: "",
+      searchLogic: searchLogic, // keep current logic instead of forcing AND
+      selectedFilters: {},
+      page: 1,
+      sortOrder: "DESC",
+      hasMore: true,
+      selectedYear: "",
+    };
+
+    try {
+      sessionStorage.setItem(ARTICLES_STATE_KEY, JSON.stringify(stateToSave));
+    } catch (err) {
+      console.error("Failed to save session state:", err);
     }
+
+    setCurrentInput(""); // optional cleanup
+
+    navigate("/articles");
   };
 
   const addSearchTerm = () => {
@@ -147,7 +169,7 @@ const SearchBar = ({ searchTerm, setSearchTerm, onSearch, placeholder, searchTer
           placeholder={searchTerms.length > 0 ? "Add another search term..." : (placeholder || "Search articles...")}
           value={currentInput}
           onChange={(e) => setCurrentInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyPress}
           className="flex-1 p-2 border-none outline-none min-w-0"
         />
         
