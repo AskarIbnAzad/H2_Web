@@ -878,7 +878,7 @@ const Articles = () => {
           // console.log(`Added otherFilters array:`, selectedOtherFilters);
         }
 
-        console.log('requestBody', requestBody)
+        console.log('requestBody', requestBody);
 
         const response = await apiHandle.post(
           "final-article-list-main",
