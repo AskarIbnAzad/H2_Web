@@ -558,7 +558,34 @@ const Articles = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(savedState?.searchTerms || []);
   const [isInitialized, setIsInitialized] = useState(!!savedState); // Already initialized if we have saved state
-  
+  const [authorSearch, setAuthorSearch] = useState("");
+
+  // Build only the `suboption` payload from selectedFilters.studyTypes
+  const buildSuboptionFromStudyTypes = (studyTypesFilter = []) => {
+    const suboption = {};
+
+    studyTypesFilter.forEach((item) => {
+      // we only care about suboptions: they have parentKey added in FilterSidebar
+      if (!item || !item.parentKey) return;
+
+      const parent = item.parentKey;                   // e.g. "in vivo", "ex vivo"
+      const subLabel = item.rawValue || item.label;    // e.g. "Animal Study", "Post-treatment"
+
+      if (!parent || !subLabel) return;
+
+      if (!suboption[parent]) {
+        suboption[parent] = [];
+      }
+
+      if (!suboption[parent].includes(subLabel)) {
+        suboption[parent].push(subLabel);
+      }
+    });
+
+    return suboption;
+  };
+
+
   // Use ref to track if we've already done initial setup
   const hasInitializedRef = useRef(!!savedState);
   const wasRestoredFromStorageRef = useRef(!!savedState);
@@ -588,6 +615,10 @@ const Articles = () => {
     return filterOption || value;
   }, [filters]);
 
+  useEffect(() => {
+    setAuthorSearch("");
+  }, [filters]);
+
   // Transform string filter values to objects when applying filters
   const transformFilterValue = useCallback((filterType, value) => {
     if (Array.isArray(value)) {
@@ -606,7 +637,6 @@ const Articles = () => {
   useEffect(() => {
     // Skip if we've already initialized (either from storage or from previous URL parse)
     if (hasInitializedRef.current) {
-      // console.log('Skipping URL parsing - already initialized');
       return;
     }
     
@@ -615,15 +645,9 @@ const Articles = () => {
     
     // Skip URL parsing if we restored from sessionStorage
     if (wasRestoredFromStorageRef.current) {
-      // console.log('Skipping URL parsing - restored from sessionStorage');
       setIsInitialized(true);
       return;
     }
-    
-    // console.log('Articles useEffect triggered', {
-    //   search: location.search,
-    //   state: location.state
-    // });
     
     const searchParams = new URLSearchParams(location.search);
     const params = {};
@@ -631,7 +655,6 @@ const Articles = () => {
     // Check if we have search data from navigation state (from ArticleDetails)
     const navigationState = location.state;
     if (navigationState && navigationState.fromArticleList) {
-      // console.log('Navigation state detected:', navigationState);
       
       // Restore all state from navigation
       const { 
@@ -644,14 +667,6 @@ const Articles = () => {
         totalArticles: navTotalArticles = 0,
         studies: navStudies = []
       } = navigationState;
-      
-      // console.log('Restoring state:', {
-      //   navSearchTerms,
-      //   navSearchLogic,
-      //   navSelectedFilters,
-      //   navPage,
-      //   navSortOrder
-      // });
       
       // Restore all search and filter state
       setSearchTerms(navSearchTerms);
@@ -807,49 +822,70 @@ const Articles = () => {
         requestBody.isAnd = searchLogic === "AND";
 
         // Apply other filters - send IDs instead of names (except for special cases)
+        // Apply other filters - send IDs instead of names (except for special cases)
         Object.entries(selectedFilters).forEach(([key, value]) => {
           // Skip otherFilters and boolean fields - they're handled separately
           // Also skip any keys that might be objects (from improper otherFilter handling)
-          if (key === "otherFilters" || 
-              typeof key === 'object' ||
+          if (
+              key === "otherFilters" ||
+              typeof key === "object" ||
               [
                 "HighlightArticle",
-                "CompMethodAdmin", 
+                "CompMethodAdmin",
                 "doseComparison",
                 "drugComparison",
                 "pharmacokinetics",
                 "isERW",
                 "safetyofhydrogen",
-              ].includes(key)) return;
-          
+              ].includes(key)
+          )
+            return;
+
           if (Array.isArray(value) && value.length > 0) {
-            // For all filters including clinicalTrialDesign, send IDs
-            const transformedValue = value.map(v => {
-              // console.log(`Transforming ${key}:`, v);
-              return v.id ?? v;
-            });
-            // console.log(`Final ${key} value:`, transformedValue);
-            requestBody[key] = transformedValue;
+            // 🔹 SPECIAL CASE: studyTypes
+            if (key === "studyTypes") {
+              // keep ONLY parent items (no parentKey => it's not a suboption)
+              const parentIds = value
+                  .filter((v) => !(typeof v === "object" && v.parentKey)) // drop suboptions
+                  .map((v) => v.id ?? v) // send id or raw value
+                  .filter((v) => v != null);
+
+              if (parentIds.length > 0) {
+                requestBody[key] = parentIds;
+              }
+            } else {
+              // default behavior for other filters
+              const transformedValue = value.map((v) => v.id ?? v);
+              if (transformedValue.length > 0) {
+                requestBody[key] = transformedValue;
+              }
+            }
           } else if (value && typeof value === "object") {
             // If value is a single object, send ID for all filters including clinicalTrialDesign
             if (value.id) {
-              // console.log(`Transforming single ${key}:`, value);
               requestBody[key] = value.id;
             }
           } else if (key === "year") {
             requestBody[key] = Number(value);
           } else if (value) {
-            // console.log(`Raw value for ${key}:`, value);
             requestBody[key] = value;
           }
         });
 
+
+
+        // ✅ Build only `suboption` from studyTypes (don't change existing studyTypes handling)
+        if (selectedFilters.studyTypes && Array.isArray(selectedFilters.studyTypes)) {
+          const suboption = buildSuboptionFromStudyTypes(selectedFilters.studyTypes);
+
+          if (Object.keys(suboption).length > 0) {
+            requestBody.suboption = suboption;
+          }
+        }
+
         if (isHighlightArticle) {
           requestBody.isHighlightArticle = true;
         }
-
-        // console.log('Final requestBody:', requestBody);
-        // console.log('selectedFilters for debugging:', selectedFilters);
 
         // Handle Other Filters parameters - collect them into an otherFilters array
         const otherFilterMappings = {
@@ -868,17 +904,13 @@ const Articles = () => {
           // Check if this key is an otherFilter field name and it's selected
           if (otherFilterMappings[key] && value === "True") {
             selectedOtherFilters.push(otherFilterMappings[key]);
-            // console.log(`Found other filter: ${key} = ${otherFilterMappings[key]} (selected)`);
           }
         });
         
         // Send otherFilters as an array if any are selected
         if (selectedOtherFilters.length > 0) {
           requestBody.otherFilters = selectedOtherFilters;
-          // console.log(`Added otherFilters array:`, selectedOtherFilters);
         }
-
-        console.log('requestBody', requestBody);
 
         const response = await apiHandle.post(
           "final-article-list-main",
@@ -887,8 +919,6 @@ const Articles = () => {
             signal: abortControllerRef.current.signal,
           }
         );
-
-        console.log('API response:', response.data);
 
         // Check if this request was superseded by a newer request
         if (currentRequestId !== requestIdRef.current) {
@@ -987,50 +1017,70 @@ const Articles = () => {
   };
 
   const handleFilterChange = useCallback(
-    (filterName, value, checked, type = "checkbox") => {
-      setSelectedFilters((prev) => {
-        const newFilters = { ...prev };
+      (filterName, value, checked, type = "checkbox") => {
+        setSelectedFilters((prev) => {
+          const newFilters = { ...prev };
 
-        // Special handling for Other Filters (boolean filters)
-        if (filterName === "otherFilters") {
-          // value is the option object, we need option.value which is the mapped field name
-          const fieldName = typeof value === 'object' ? value.value : value;
-          if (checked) {
-            newFilters[fieldName] = "True"; // Always store as string "True"
-          } else {
-            delete newFilters[fieldName]; // Remove when unchecked
+          // Special handling for Other Filters (boolean filters)
+          if (filterName === "otherFilters") {
+            // value is the option object, we need option.value which is the mapped field name
+            const fieldName = typeof value === "object" ? value.value : value;
+            if (checked) {
+              newFilters[fieldName] = "True"; // Always store as string "True"
+            } else {
+              delete newFilters[fieldName]; // Remove when unchecked
+            }
+            return shallowCompare(prev, newFilters) ? prev : newFilters;
           }
-          return newFilters;
-        }
 
-        if (type === "radio") {
-          newFilters[filterName] = value;
-        } else {
-          if (checked) {
-            // Store the full value object (which should contain id and name)
-            newFilters[filterName] = [...(newFilters[filterName] || []), value];
+          if (type === "radio") {
+            newFilters[filterName] = value;
           } else {
-            newFilters[filterName] = (newFilters[filterName] || []).filter(
-              (item) => {
-                // Compare by id if both are objects, otherwise compare directly
-                if (typeof item === 'object' && typeof value === 'object') {
-                  return item.id !== value.id;
+            const current = newFilters[filterName] || [];
+
+            if (checked) {
+              // ✅ Prevent duplicates
+              const exists = current.some((item) => {
+                if (typeof item === "object" && typeof value === "object") {
+                  if (item.id != null && value.id != null) {
+                    return item.id === value.id;
+                  }
+                  // For items without id (like suboptions), compare by value
+                  return item.value === value.value;
+                }
+                return item === value;
+              });
+
+              newFilters[filterName] = exists ? current : [...current, value];
+            } else {
+              // ✅ Correct removal logic for both id-based and value-based objects
+              const updated = current.filter((item) => {
+                if (typeof item === "object" && typeof value === "object") {
+                  if (item.id != null && value.id != null) {
+                    return item.id !== value.id;
+                  }
+                  // For suboptions objects (no id), compare by value
+                  return item.value !== value.value;
                 }
                 return item !== value;
+              });
+
+              if (updated.length > 0) {
+                newFilters[filterName] = updated;
+              } else {
+                delete newFilters[filterName];
               }
-            );
-            if (newFilters[filterName].length === 0) {
-              delete newFilters[filterName];
             }
           }
-        }
 
-        return shallowCompare(prev, newFilters) ? prev : newFilters;
-      });
-      setPage(1);
-    },
-    []
+          return shallowCompare(prev, newFilters) ? prev : newFilters;
+        });
+
+        setPage(1);
+      },
+      []
   );
+
 
   // Optimized search handler
   const handleSearch = useCallback(() => {
@@ -1054,8 +1104,6 @@ const Articles = () => {
           };
 
           const transformedFilters = transformFilters(combinedData);
-
-          // console.log('Fetched and transformed filters:', transformedFilters);
           setFilters(transformedFilters);
         }
       } catch (error) {
@@ -1119,7 +1167,6 @@ const Articles = () => {
 
     const t = setTimeout(() => {
       try {
-        console.log('stateToSave', stateToSave);
         sessionStorage.setItem(ARTICLES_STATE_KEY, JSON.stringify(stateToSave));
       } catch (e) {
         console.error("Failed to save session state:", e);

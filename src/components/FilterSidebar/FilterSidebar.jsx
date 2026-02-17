@@ -55,116 +55,154 @@ const FilterSidebar = ({
   };
 
   const isInVivoSelected = () => {
-    return selectedFilters.studyType?.includes("in Vivo") || false;
+    return selectedFilters.studyTypes?.includes("in Vivo") || false;
   };
 
   const renderStudyTypeOptions = (filter) => {
-    if (!filter || filter.name !== "studyType") return null;
 
-    const inVivoSubOptions = [
-      { label: "Animal Study", value: "Animal Study" },
-      { label: "Human Study", value: "Human Study" },
-    ];
+    // key = parent label (lowercase)
+    const studyTypeSubOptionConfig = {
+      "in vivo": [
+        { label: "Animal Study", value: "Animal Study" },
+        { label: "Human Study", value: "Human Study" },
+        { label: "Plant Study", value: "Plant Study" },
+      ],
+      "ex vivo": [
+        { label: "Post-treatment", value: "Post-treatment" },
+        { label: "Pre-treatment", value: "Pre-treatment" },
+        { label: "Simultaneous", value: "Simultaneous" },
+      ],
+      "in vitro": [
+        { label: "Post-treatment", value: "Post-treatment" },
+        { label: "Pre-treatment", value: "Pre-treatment" },
+        { label: "Simultaneous", value: "Simultaneous" },
+      ],
+      "non-experimental (review)": [
+        { label: "Hypothesis", value: "Hypothesis" },
+        { label: "Literature", value: "Literature" },
+        { label: "Meta analysis", value: "Meta analysis" },
+        { label: "Opinion Piece", value: "Opinion Piece" },
+        { label: "Systematic", value: "Systematic" },
+      ],
+    };
+
+
+    // backend sends `name: "studyTypes"`
+    if (!filter || filter.name !== "studyTypes") return null;
 
     const filteredOptions = filter.options.filter((option) =>
-      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+        option.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const groupedOptions = [];
 
     filteredOptions.forEach((option) => {
-      if (option.value !== "Animal Study" && option.value !== "Human Study") {
-        groupedOptions.push({
-          ...option,
-          isSubOption: false,
-        });
-      }
+      groupedOptions.push({
+        ...option,
+        isSubOption: false,
+      });
     });
 
     return (
-      <ul
-         className={`mt-4 flex flex-wrap gap-4 transition-all duration-300 ease-in-out overflow-hidden ${
-          expandedFilter === filter.name
-            ? "max-h-full opacity-100"
-            : "max-h-0 opacity-0"
-        }`}
-      >
-        {groupedOptions.map((option, idx) => {
-          const isInVivo = option.value === "in Vivo";
-          return (
-            <React.Fragment key={idx}>
-              <li  className="flex items-center mb-2 w-full">
-                <input
-                  type="checkbox"
-                  id={`${filter.name}-${idx}`}
-                   className="mr-1"
-                  checked={
-                    selectedFilters[filter.name]?.some(item => 
-                      typeof item === 'object' ? item.id === option.id : item === option.value
-                    ) || false
-                  }
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    if (isInVivo) {
-                      // Toggle in Vivo and its sub-options together
-                      onFilterChange(filter.name, option, isChecked);
-                      inVivoSubOptions.forEach((subOption) => {
-                        onFilterChange(
-                          filter.name,
-                          subOption,
-                          isChecked
-                        );
-                      });
-                    } else {
-                      onFilterChange(filter.name, option, isChecked);
-                    }
-                  }}
-                />
-                <label htmlFor={`${filter.name}-${idx}`}  className="text-xs capitalize">
-                  {option.label}
-                </label>
-              </li>
+        <ul
+            className={`mt-4 flex flex-wrap gap-4 transition-all duration-300 ease-in-out overflow-hidden ${
+                expandedFilter === filter.name ? "max-h-full opacity-100" : "max-h-0 opacity-0"
+            }`}
+        >
+          {groupedOptions.map((option, idx) => {
+            const parentKey = option.label.toLowerCase();
+            // Read suboptions from config
+            const subOptions = studyTypeSubOptionConfig[parentKey] || [];
+            const hasSubOptions = subOptions.length > 0;
 
-              {isInVivo && (
-                <>
-                  {inVivoSubOptions.map((subOption, subIdx) => (
-                    <li
-                      key={`sub-${subIdx}`}
-                       className="flex items-center mb-2 w-full"
-                    >
-                      <input
+            return (
+                <React.Fragment key={idx}>
+                  {/* Parent option (In Vivo, Ex Vivo, etc.) */}
+                  <li className="flex items-center mb-2 w-full">
+                    <input
                         type="checkbox"
-                        id={`${filter.name}-sub-${subIdx}`}
-                         className="mr-1"
+                        id={`${filter.name}-${idx}`}
+                        className="mr-1"
                         checked={
-                          selectedFilters[filter.name]?.some(item => 
-                            typeof item === 'object' ? item.id === subOption.id : item === subOption.value
-                          ) || false
+                            selectedFilters[filter.name]?.some((item) =>
+                                typeof item === "object"
+                                    ? item.id === option.id
+                                    : item === option.value
+                            ) || false
                         }
                         onChange={(e) => {
-                          onFilterChange(
-                            filter.name,
-                            subOption,
-                            e.target.checked
-                          );
+                          const isChecked = e.target.checked;
+
+                          // Toggle parent
+                          onFilterChange(filter.name, option, isChecked);
+
+                          // If this parent has suboptions, toggle them all together
+                          if (hasSubOptions) {
+                            subOptions.forEach((subOption) => {
+                              const uniqueSubValue = `${parentKey}::${subOption.value}`;
+                              onFilterChange(filter.name, { ...subOption, value: uniqueSubValue, parentKey }, isChecked);
+                            });
+                          }
                         }}
-                      />
-                      <label
-                        htmlFor={`${filter.name}-sub-${subIdx}`}
-                         className="text-xs capitalize"
-                      >
-                        {subOption.label}
-                      </label>
-                    </li>
-                  ))}
-                </>
-              )}
-            </React.Fragment>
-          );
-        })}
-      </ul>
+                    />
+                    <label
+                        htmlFor={`${filter.name}-${idx}`}
+                        className="text-xs capitalize"
+                    >
+                      {option.label}
+                    </label>
+                  </li>
+
+                  {/* Suboptions under this parent, if any (In Vivo, Ex Vivo, etc.) */}
+                  {hasSubOptions &&
+                      subOptions.map((subOption, subIdx) => {
+                        // ✅ make it unique using parentKey
+                        const uniqueSubValue = `${parentKey}::${subOption.value}`;
+                        const subOptionWithParent = {
+                          ...subOption,
+                          value: uniqueSubValue,      // stored value (unique)
+                          rawValue: subOption.value,  // optional (display/logic if needed)
+                          parentKey,
+                        };
+
+                        return (
+                            <li
+                                key={`sub-${parentKey}-${subIdx}`}
+                                className="flex items-center mb-2 w-full ml-6"
+                            >
+                              <input
+                                  type="checkbox"
+                                  id={`${filter.name}-sub-${parentKey}-${subIdx}`}
+                                  className="mr-1"
+                                  checked={
+                                      selectedFilters[filter.name]?.some((item) =>
+                                          typeof item === "object"
+                                              ? item.value === uniqueSubValue
+                                              : item === uniqueSubValue
+                                      ) || false
+                                  }
+                                  onChange={(e) => {
+                                    onFilterChange(filter.name, subOptionWithParent, e.target.checked);
+                                  }}
+                              />
+                              <label
+                                  htmlFor={`${filter.name}-sub-${parentKey}-${subIdx}`}
+                                  className="text-xs capitalize"
+                              >
+                                {subOption.label}
+                              </label>
+                            </li>
+                        );
+                      })}
+
+                </React.Fragment>
+            );
+          })}
+        </ul>
     );
   };
+
+
 
   // Expanded state for each species node (by unique key)
   const [expandedSpecies, setExpandedSpecies] = useState({});
@@ -306,85 +344,109 @@ const FilterSidebar = ({
   };
 
   const renderFilterOptions = (filter) => {
-    if (filter.name === "studyType") {
+    // FIX: studyTypes (plural) from backend
+    if (filter.name === "studyTypes") {
       return renderStudyTypeOptions(filter);
     }
+
     if (filter.name === "species") {
       return (
-        <div className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${
-          expandedFilter === filter.name ? "max-h-full opacity-100" : "max-h-0 opacity-0"
-        }`}>
-          {renderSpeciesOptions(filter.options)}
-        </div>
+          <div
+              className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${
+                  expandedFilter === filter.name
+                      ? "max-h-full opacity-100"
+                      : "max-h-0 opacity-0"
+              }`}
+          >
+            {renderSpeciesOptions(filter.options)}
+          </div>
       );
     }
-    if (filter.name === "disease") {
+
+    // FIX: diseases (plural) from backend
+    if (filter.name === "diseases") {
       return (
-        <div className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${
-          expandedFilter === filter.name ? "max-h-full opacity-100" : "max-h-0 opacity-0"
-        }`}>
-          {renderDiseaseOptions(filter.options)}
-        </div>
+          <div
+              className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${
+                  expandedFilter === filter.name
+                      ? "max-h-full opacity-100"
+                      : "max-h-0 opacity-0"
+              }`}
+          >
+            {renderDiseaseOptions(filter.options)}
+          </div>
       );
     }
 
     const optionsToRender = filter?.options?.filter((option) =>
-      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+        option.label.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
-      <ul
-         className={`mt-4 flex flex-wrap gap-4 transition-all duration-300 ease-in-out overflow-hidden ${
-          expandedFilter === filter.name
-            ? "max-h-full opacity-100"
-            : "max-h-0 opacity-0"
-        }`}
-      >
-        {optionsToRender?.map((option, idx) => (
-          <li key={idx}  className="flex items-center mb-2 w-full">
-            {filter.type === "radio" ? (
-              <>
-                <input
-                  type="radio"
-                  id={`${filter.name}-${idx}`}
-                  name={filter.name}
-                   className="mr-1"
-                  checked={
-                    typeof selectedFilters[filter.name] === 'object' && selectedFilters[filter.name]?.id 
-                      ? selectedFilters[filter.name].id === option.id
-                      : selectedFilters[filter.name] === option.value
-                  }
-                  onChange={() => onFilterChange(filter.name, option, true, "radio")}
-                />
-                <label htmlFor={`${filter.name}-${idx}`}  className="text-xs capitalize">
-                  {option.label}
-                </label>
-              </>
-            ) : (
-              <>
-                <input
-                  type="checkbox"
-                  id={`${filter.name}-${idx}`}
-                   className="mr-1"
-                  checked={
-                    filter.name === "otherFilters"
-                      ? selectedFilters[option.value] === "True"
-                      : selectedFilters[filter.name]?.some(item => 
-                          typeof item === 'object' ? item.id === option.id : item === option.value
-                        ) || false
-                  }
-                  onChange={(e) => onFilterChange(filter.name, option, e.target.checked)}
-                />
-                <label htmlFor={`${filter.name}-${idx}`}  className="text-xs capitalize">
-                  {option.label}
-                </label>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
+        <ul
+            className={`mt-4 flex flex-wrap gap-4 transition-all duration-300 ease-in-out overflow-hidden ${
+                expandedFilter === filter.name ? "max-h-full opacity-100" : "max-h-0 opacity-0"
+            }`}
+        >
+          {optionsToRender?.map((option, idx) => (
+              <li key={idx} className="flex items-center mb-2 w-full">
+                {filter.type === "radio" ? (
+                    <>
+                      <input
+                          type="radio"
+                          id={`${filter.name}-${idx}`}
+                          name={filter.name}
+                          className="mr-1"
+                          checked={
+                            typeof selectedFilters[filter.name] === "object" &&
+                            selectedFilters[filter.name]?.id
+                                ? selectedFilters[filter.name].id === option.id
+                                : selectedFilters[filter.name] === option.value
+                          }
+                          onChange={() =>
+                              onFilterChange(filter.name, option, true, "radio")
+                          }
+                      />
+                      <label
+                          htmlFor={`${filter.name}-${idx}`}
+                          className="text-xs capitalize"
+                      >
+                        {option.label}
+                      </label>
+                    </>
+                ) : (
+                    <>
+                      <input
+                          type="checkbox"
+                          id={`${filter.name}-${idx}`}
+                          className="mr-1"
+                          checked={
+                            filter.name === "otherFilters"
+                                ? selectedFilters[option.value] === "True"
+                                : selectedFilters[filter.name]?.some((item) =>
+                                typeof item === "object"
+                                    ? item.id === option.id
+                                    : item === option.value
+                            ) || false
+                          }
+                          onChange={(e) =>
+                              onFilterChange(filter.name, option, e.target.checked)
+                          }
+                      />
+                      <label
+                          htmlFor={`${filter.name}-${idx}`}
+                          className="text-xs capitalize"
+                      >
+                        {option.label}
+                      </label>
+                    </>
+                )}
+              </li>
+          ))}
+        </ul>
     );
   };
+
 
   return (
     <>
