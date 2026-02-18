@@ -3496,56 +3496,62 @@ const SectionOneNew = ({ articleData, relatedArticleData }) => {
   const [searchLogic, setSearchLogic] = useState("AND");
 
   const handleSearch = () => {
-    // Navigate to Articles page with search state passed through navigation state
-    // This avoids adding search parameters to the URL
-
     console.log("ArticleDetails handleSearch called with:", {
       searchTerms,
       searchQuery,
     });
 
-    // Get all possible search terms from different sources
+    const trimmed = searchQuery.trim();
+    if (!trimmed) {
+      navigate("/articles");
+      return;
+    }
+
+    // If you want to ALSO pass state (optional)
     const allSearchTerms = [
-      ...searchTerms, // Existing search terms array
-      searchQuery.trim() ? searchQuery.trim() : null, // Main search term
+      ...searchTerms,
+      trimmed,
     ]
-      .filter(Boolean)
-      .filter((term, index, arr) => arr.indexOf(term) === index); // Remove duplicates
+        .filter(Boolean)
+        .filter((term, index, arr) => arr.indexOf(term) === index);
 
     const searchData = {
       searchTerms: allSearchTerms,
-      searchLogic: searchLogic,
+      searchLogic,
       fromArticleDetails: true,
     };
 
-    console.log("ArticleDetails navigation data:", searchData);
-
-    if (searchData.searchTerms.length > 0) {
-      navigate("/articles", {
-        state: searchData,
-      });
-    } else {
-      // If no search terms, just navigate to articles without any state
-      navigate("/articles");
-    }
+    // 👇 Now URL gets ?search=...&logic=...
+    navigate(
+        `/articles?search=${encodeURIComponent(trimmed)}&logic=${searchLogic}`,
+        { state: searchData }
+    );
   };
 
-  // Handler for when search is triggered with specific terms (from SearchBar callback)
   const handleSearchWithTerms = (terms) => {
     console.log("ArticleDetails handleSearchWithTerms called with:", terms);
 
+    if (!terms || terms.length === 0) {
+      navigate("/articles");
+      return;
+    }
+
+    // You can decide what goes into the URL.
+    // Easiest: use the first term or join them into one phrase.
+    const phrase = terms.join(" ").trim();
+
     const searchData = {
       searchTerms: terms,
-      searchLogic: searchLogic,
+      searchLogic,
       fromArticleDetails: true,
     };
 
-    console.log("ArticleDetails navigation data (with terms):", searchData);
-
-    navigate("/articles", {
-      state: searchData,
-    });
+    navigate(
+        `/articles?search=${encodeURIComponent(phrase)}&logic=${searchLogic}`,
+        { state: searchData }
+    );
   };
+
 
   function formatAbstractH2(abstract) {
     if (!abstract) return "";

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { IoIosSearch, IoMdClose } from "react-icons/io";
 import { MdSwapHoriz } from "react-icons/md";
 
@@ -16,6 +16,14 @@ const SearchBar = ({ searchTerm, setSearchTerm, onSearch, placeholder, searchTer
       }
     }
   };
+
+  useEffect(() => {
+    if (!searchTerms.length) {
+      setCurrentInput(searchTerm || "");
+    } else {
+      setCurrentInput("");
+    }
+  }, [searchTerm, searchTerms.length]);
 
   const addSearchTerm = () => {
     const trimmedInput = currentInput.trim();
@@ -144,12 +152,17 @@ const SearchBar = ({ searchTerm, setSearchTerm, onSearch, placeholder, searchTer
           <input
               ref={inputRef}
               type="text"
-              placeholder={searchTerms.length > 0 ? "Add another search term..." : (placeholder || "Search articles...")}
+              placeholder={
+                searchTerms.length > 0
+                    ? "Add another search term..."
+                    : (placeholder || "Search articles...")
+              }
               value={currentInput}
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyPress={handleKeyPress}
               className="flex-1 p-2 border-none outline-none min-w-0"
           />
+
 
           <button
               onClick={handleSearchClick}

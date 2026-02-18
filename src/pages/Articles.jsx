@@ -560,6 +560,22 @@ const Articles = () => {
   const [isInitialized, setIsInitialized] = useState(!!savedState); // Already initialized if we have saved state
   const [authorSearch, setAuthorSearch] = useState("");
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const searchParam = params.get("search");
+
+    if (searchParam && searchParam.trim()) {
+      const phrase = searchParam.trim();
+
+      setSearchTerm(phrase);
+      setSearchTerms([phrase]);
+      setDebouncedSearchTerm([phrase]);
+      setPage(1);
+    }
+  }, [location.search]);
+
+
+
   // Build only the `suboption` payload from selectedFilters.studyTypes
   const buildSuboptionFromStudyTypes = (studyTypesFilter = []) => {
     const suboption = {};
@@ -692,7 +708,6 @@ const Articles = () => {
       // Split search param by spaces to handle multiple terms passed as single param
       const terms = searchParam.split(' ').filter(term => term.trim());
       if (terms.length > 0) {
-        setSearchTerm(terms[0]); // Set first term as main search term
         setSearchTerms(terms); // Set all terms
         setDebouncedSearchTerm(terms);
         params.admin_search = searchParam;
