@@ -21,8 +21,10 @@ const FilterSidebar = ({
 
   const navigate = useNavigate();
   const [expandedFilter, setExpandedFilter] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // if you still use this elsewhere
+  const [authorSearchTerm, setAuthorSearchTerm] = useState(""); // ✅ new state
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
   const handleFilterToggle = (filterName) => {
     setExpandedFilter((prev) => (prev === filterName ? null : filterName));
@@ -368,9 +370,96 @@ const FilterSidebar = ({
       );
     }
 
-    const optionsToRender = filter?.options?.filter((option) =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+// ✅ NEW: AUTHOR-ONLY SEARCH BLOCK (ADD THIS)
+    if (filter.name === "authors" || filter.name === "author") {
+      const optionsToRender =
+          filter?.options?.filter((option) =>
+              option.label.toLowerCase().includes(authorSearchTerm.toLowerCase())
+          ) || [];
+
+      return (
+          <div
+              className={`mt-4 transition-all duration-300 ease-in-out overflow-hidden ${
+                  expandedFilter === filter.name
+                      ? "max-h-full opacity-100"
+                      : "max-h-0 opacity-0"
+              }`}
+          >
+            {/* Search box only for author filter */}
+            <div className="mb-4 flex items-center border border-gray-300 rounded px-2 py-1">
+              <FaSearch size={10} className="mr-1 text-gray-500" />
+              <input
+                  type="text"
+                  value={authorSearchTerm}
+                  onChange={(e) => setAuthorSearchTerm(e.target.value)}
+                  placeholder="Search author"
+                  className="w-full text-xs outline-none"
+              />
+            </div>
+
+            <ul className="flex flex-wrap gap-4">
+              {optionsToRender.map((option, idx) => (
+                  <li key={idx} className="flex items-center mb-2 w-full">
+                    {filter.type === "radio" ? (
+                        <>
+                          <input
+                              type="radio"
+                              id={`${filter.name}-${idx}`}
+                              name={filter.name}
+                              className="mr-1"
+                              checked={
+                                typeof selectedFilters[filter.name] === "object" &&
+                                selectedFilters[filter.name]?.id
+                                    ? selectedFilters[filter.name].id === option.id
+                                    : selectedFilters[filter.name] === option.value
+                              }
+                              onChange={() =>
+                                  onFilterChange(filter.name, option, true, "radio")
+                              }
+                          />
+                          <label
+                              htmlFor={`${filter.name}-${idx}`}
+                              className="text-xs capitalize"
+                          >
+                            {option.label}
+                          </label>
+                        </>
+                    ) : (
+                        <>
+                          <input
+                              type="checkbox"
+                              id={`${filter.name}-${idx}`}
+                              className="mr-1"
+                              checked={
+                                filter.name === "otherFilters"
+                                    ? selectedFilters[option.value] === "True"
+                                    : selectedFilters[filter.name]?.some((item) =>
+                                    typeof item === "object"
+                                        ? item.id === option.id
+                                        : item === option.value
+                                ) || false
+                              }
+                              onChange={(e) =>
+                                  onFilterChange(filter.name, option, e.target.checked)
+                              }
+                          />
+                          <label
+                              htmlFor={`${filter.name}-${idx}`}
+                              className="text-xs capitalize"
+                          >
+                            {option.label}
+                          </label>
+                        </>
+                    )}
+                  </li>
+              ))}
+            </ul>
+          </div>
+      );
+    }
+
+// ❌ For all other filters: no search, show all options
+    const optionsToRender = filter?.options || [];
 
     return (
         <ul
@@ -435,6 +524,7 @@ const FilterSidebar = ({
           ))}
         </ul>
     );
+
   };
 
 
