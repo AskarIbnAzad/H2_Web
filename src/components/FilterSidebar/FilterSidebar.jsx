@@ -67,16 +67,6 @@ const FilterSidebar = ({
         { label: "Human Study", value: "Human Study" },
         { label: "Plant Study", value: "Plant Study" },
       ],
-      "ex vivo": [
-        { label: "Post-treatment", value: "Post-treatment" },
-        { label: "Pre-treatment", value: "Pre-treatment" },
-        { label: "Simultaneous", value: "Simultaneous" },
-      ],
-      "in vitro": [
-        { label: "Post-treatment", value: "Post-treatment" },
-        { label: "Pre-treatment", value: "Pre-treatment" },
-        { label: "Simultaneous", value: "Simultaneous" },
-      ],
       "non-experimental (review)": [
         { label: "Hypothesis", value: "Hypothesis" },
         { label: "Literature", value: "Literature" },
