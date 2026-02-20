@@ -314,7 +314,7 @@ function StudyDetails({ articleGeneralData, setIsModalFeedBackOpen }) {
           vivoDetails.push({
             label: "Duration of Study",
             value: `${articleGeneralData?.durationOfStudy?.name} ${
-              articleGeneralData?.studyDurationUnit ?? "hours"
+              articleGeneralData?.studyDurationUnit?.name ?? "hours"
             }`,
           });
         }
@@ -340,7 +340,7 @@ function StudyDetails({ articleGeneralData, setIsModalFeedBackOpen }) {
           vitroDetails.push({
             label: "Duration",
             value: `${articleGeneralData?.durationOfStudyinVitro?.name} ${
-              articleGeneralData?.UnitOfStudyInVitro ?? "hour"
+              articleGeneralData?.UnitOfStudyInVitro?.name ?? "hour"
             }`,
           });
         }
@@ -366,7 +366,7 @@ function StudyDetails({ articleGeneralData, setIsModalFeedBackOpen }) {
           exVivoDetails.push({
             label: "Duration",
             value: `${articleGeneralData?.durationOfStudyExVivo?.name} ${
-              articleGeneralData?.UnitOfStudyExVivo ?? ""
+              articleGeneralData?.UnitOfStudyExVivo?.name ?? ""
             }`,
           });
         }
