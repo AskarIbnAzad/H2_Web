@@ -349,7 +349,7 @@ const menuItems = [
         {
           title: "Research & Articles",
           items: [
-            { name: "Scientific Articles", path: "https://h2research.org/articles", description: "Peer-reviewed research" },
+            { name: "Scientific Articles", path: `${import.meta.env.VITE_WEB_BASE_URL}/articles`, description: "Peer-reviewed research" },
             { name: "List of Categories", path: "https://molecularhydrogeninstitute.org/articles/", description: "Browse all categories" }
           ]
         }
@@ -358,7 +358,7 @@ const menuItems = [
   },
   {
     name: "Research",
-    path: "https://h2research.org/",
+    path: `${import.meta.env.VITE_WEB_BASE_URL}/`,
     hasMegaMenu: true,
     megaMenuContent: {
       featured: {
@@ -370,25 +370,25 @@ const menuItems = [
         {
           title: "Database Access",
           items: [
-            { name: "H₂ Research Database", path: "https://h2research.org/", description: "Main research database" },
-            { name: "Scientific Articles", path: "https://h2research.org/articles", description: "Browse articles" },
-            { name: "Search H₂ Research", path: "https://h2research.org/articles", description: "Advanced search tools" },
-            { name: "Explore the Data", path: "https://h2research.org/explore-data", description: "Data visualization tools" }
+            { name: "H₂ Research Database", path: `${import.meta.env.VITE_WEB_BASE_URL}/`, description: "Main research database" },
+            { name: "Scientific Articles", path: `${import.meta.env.VITE_WEB_BASE_URL}/articles`, description: "Browse articles" },
+            { name: "Search H₂ Research", path: `${import.meta.env.VITE_WEB_BASE_URL}/articles`, description: "Advanced search tools" },
+            { name: "Explore the Data", path: `${import.meta.env.VITE_WEB_BASE_URL}/explore-data`, description: "Data visualization tools" }
           ]
         },
         {
           title: "Research Tools",
           items: [
             { name: "Submit Research", path: "https://stagging.h2research.org/admin", description: "Submit your research" },
-            { name: "Help Page", path: "https://h2research.org/FAQsGuide", description: "Research guidelines" },
-            { name: "About MHI H₂ Research", path: "https://h2research.org/about ", description: "Database information" }
+            { name: "Help Page", path: `${import.meta.env.VITE_WEB_BASE_URL}/FAQsGuide`, description: "Research guidelines" },
+            { name: "About MHI H₂ Research", path: `${import.meta.env.VITE_WEB_BASE_URL}/about`, description: "Database information" }
           ]
         },
         {
           title: "H₂ Research Access",
           items: [
-            { name: "H₂ Research Sign In", path: "https://h2research.org/signin", description: "Sign in to H₂ Research" },
-            { name: "H₂ Research Sign Up", path: "https://h2research.org/signup", description: "Sign up for H₂ Research" },
+            { name: "H₂ Research Sign In", path: `${import.meta.env.VITE_WEB_BASE_URL}/signin`, description: "Sign in to H₂ Research" },
+            { name: "H₂ Research Sign Up", path: `${import.meta.env.VITE_WEB_BASE_URL}/signup`, description: "Sign up for H₂ Research" },
             { name: "Join the MHI Community", path: "https://molecularhydrogeninstitute.org/mhi-community/", description: "Become a member of the MHI Community" },
             { name: "Support MHI", path: "https://www.paypal.com/donate/?hosted_button_id=25E4KWZ7QPH6J", description: "Support the Molecular Hydrogen Institute" }
           ]
@@ -466,7 +466,7 @@ const menuItems = [
             { name: "A Note from Founder", path: "https://molecularhydrogeninstitute.org/a-note-from-the-founder/", description: "Founder's message" },
             { name: "Advisory Panel", path: "https://molecularhydrogeninstitute.org/advisory-panel/", description: "Scientific advisors" },
             {
-              name: "Contact Us", path: "https://h2research.org/contact-us", description: "Get in touch with us" 
+              name: "Contact Us", path: `${import.meta.env.VITE_WEB_BASE_URL}/contact-us`, description: "Get in touch with us"
             }
           ]
         }
@@ -510,8 +510,8 @@ const menuItems = [
           title: "Login Portals",
           items: [
             { name: "Community Login", path: "https://molecularhydrogeninstitute.org/", description: "Community platform access" },
-            { name: "H₂ Research Premium Sign In", path: "https://h2research.org/signin", description: "Premium research access" },
-            { name: "Public Researcher Sign Up", path: "https://h2research.org/signup", description: "Sign up for public research access" },
+            { name: "H₂ Research Premium Sign In", path: `${import.meta.env.VITE_WEB_BASE_URL}/signin`, description: "Premium research access" },
+            { name: "Public Researcher Sign Up", path: `${import.meta.env.VITE_WEB_BASE_URL}/signup`, description: "Sign up for public research access" },
             { name: "Course Portal Login / Dashboard", path: "https://courses.molecularhydrogeninstitute.org/enrollments", description: "Educational courses" }
           ]
         }
@@ -586,7 +586,7 @@ const Professional3LayerNavbar = () => {
             <span className="hidden sm:inline">Help Us Advance H₂ Research, Education, and Awareness</span>
             <span className="sm:hidden">Help Us Advance H₂ Research, Education, and Awareness</span>
           </div>
-          <a target="_blank" href="https://h2research.org/signup"   className="bg-yellow-500 hover:bg-yellow-400 text-[#004c78] font-semibold px-4 py-1.5 sm:px-3 sm:py-1 rounded-full text-[12px] transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <a target="_blank" href={`${import.meta.env.VITE_WEB_BASE_URL}/signup`}   className="bg-yellow-500 hover:bg-yellow-400 text-[#004c78] font-semibold px-4 py-1.5 sm:px-3 sm:py-1 rounded-full text-[12px] transition-all duration-300 transform hover:scale-105 shadow-lg">
             Sign Up
           </a>
         </div>
@@ -606,7 +606,7 @@ const Professional3LayerNavbar = () => {
           </div>
           <div className="flex items-center space-x-2">
             <FiMapPin className="w-4 h-4" />
-            <a href="https://h2research.org" target="_blank" rel="noopener noreferrer" className="">Research Center</a>
+            <a href={`${import.meta.env.VITE_WEB_BASE_URL}/`} target="_blank" rel="noopener noreferrer" className="">Research Center</a>
           </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -736,7 +736,7 @@ const Professional3LayerNavbar = () => {
                           {megaContent.featured.description}
                         </p>
                         <a
-                          href="https://h2research.org/about"
+                          href={`${import.meta.env.VITE_WEB_BASE_URL}/about`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[#004c78] hover:text-[#004c78] font-medium text-sm"
