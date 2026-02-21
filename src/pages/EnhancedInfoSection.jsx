@@ -196,7 +196,7 @@ const EnhancedInfoSection = () => {
                 // },
                 {
                     text: "Submit Research",
-                    to: "https://h2research.org/signup"
+                    to: `${import.meta.env.VITE_WEB_BASE_URL}/signup`,
                 },
                 {
                     text: "Become Certified",
@@ -214,7 +214,7 @@ const EnhancedInfoSection = () => {
                 },
                 {
                     text: "Subscribe for Updates",
-                    to: "https://h2research.org/",
+                    to: `${import.meta.env.VITE_WEB_BASE_URL}/`,
                     isComponent: true,
                     component: <SubscribeModal />
                 },

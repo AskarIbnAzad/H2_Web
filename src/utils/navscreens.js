@@ -14,17 +14,17 @@ export const menuItems = [
       { name: "How to Get Molecular Hydrogen", path: "https://molecularhydrogeninstitute.org/category/how-to-get-molecular-hydrogen-step-by-step-guide/" },
       { name: "MHI Certifications", path: "https://molecularhydrogeninstitute.org/category/certification-molecular-hydrogen-applications/" },
       { name: "Water Chemistry", path: "https://molecularhydrogeninstitute.org/category/water/" },
-      { "name": "Scientific Articles", "path": "https://h2research.org/articles" },
+      { "name": "Scientific Articles", "path": `${import.meta.env.VITE_WEB_BASE_URL}/articles` },
       { "name": "List of Categories", "path": "https://molecularhydrogeninstitute.org/articles/" }
     ]
   },
   {
     "name": "Research",
-    "path": "https://h2research.org/",
+    "path": `${import.meta.env.VITE_WEB_BASE_URL}/`,
     "subItems": [
-      { "name": "H₂ Research Database", "path": "https://h2research.org/" },
-      { "name": "Scientific Articles", "path": "https://h2research.org/articles" },
-      { "name": "Search H₂ Research", "path": "https://h2research.org/articles" },
+      { "name": "H₂ Research Database", "path": `${import.meta.env.VITE_WEB_BASE_URL}/` },
+      { "name": "Scientific Articles", "path": `${import.meta.env.VITE_WEB_BASE_URL}/articles` },
+      { "name": "Search H₂ Research", "path": `${import.meta.env.VITE_WEB_BASE_URL}/articles` },
       { "name": "Submit Research", "path": "#" },
       { "name": "Help Page", "path": "#" },
       { "name": "Explore the Data", "path": "#" },

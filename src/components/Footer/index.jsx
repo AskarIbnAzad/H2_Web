@@ -98,7 +98,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://h2research.org/explore-data" className="hover:underline font-light">
+                <a href={`${import.meta.env.VITE_WEB_BASE_URL}/explore-data`} className="hover:underline font-light">
                   H2 Data
                 </a>
               </li>
@@ -138,7 +138,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://h2research.org/contact-us" target="_blank" className="hover:underline font-light">
+                <a href={`${import.meta.env.VITE_API_BASE_URL}/contact-us`} target="_blank" className="hover:underline font-light">
                   Contact Us
                 </a>
               </li>
