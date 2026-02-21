@@ -301,7 +301,7 @@ const ResearchTopics = () => {
     setError(null);
     try {
       const { data } = await apiHandle.post(
-        "https://api.h2research.org/api/get-public-data-explorer/researchTopics"
+          `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/researchTopics`
       );
       if (data?.status) {
         const loaded = data?.data?.items?.map((t) => ({ ...t, key: t.id }));

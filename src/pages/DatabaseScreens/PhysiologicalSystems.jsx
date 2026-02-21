@@ -55,7 +55,7 @@ const PhysiologicalSystems = () => {
     setError(null);
     try {
       const { data } = await apiHandle.post(
-        "https://api.h2research.org/api/get-public-data-explorer/systems"
+          `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/systems`
       );
       if (data?.status) {
         const loaded = data?.data?.items?.map((s) => ({ ...s, key: s.id }));

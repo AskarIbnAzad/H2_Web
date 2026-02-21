@@ -57,7 +57,7 @@ const MethodsofAdministration = () => {
     setError(null);
     try {
       const { data } = await apiHandle.post(
-        "https://api.h2research.org/api/get-public-data-explorer/administrationMethods"
+          `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/administrationMethods`
       );
       if (data?.status) {
         const loaded = data?.data?.items?.map((m) => ({ ...m, key: m.id }));

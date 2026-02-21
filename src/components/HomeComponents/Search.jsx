@@ -186,7 +186,7 @@ const Search = () => {
 
       try {
         const response = await fetch(
-          `https://api.h2research.org/api/get-title?title=${searchQuery}`
+            `${import.meta.env.VITE_API_BASE_URL}/get-title?title=${searchQuery}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch articles");

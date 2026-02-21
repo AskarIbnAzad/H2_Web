@@ -54,7 +54,7 @@ const Biomarker = () => {
     setLoading(true);
     try {
       const { data: resp } = await apiHandle.post(
-        "https://api.h2research.org/api/get-public-data-explorer/biomarkers"
+          `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/biomarkers`
       );
 
       console.log("API Response:", resp);

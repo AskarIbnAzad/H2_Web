@@ -62,7 +62,7 @@ const Country = () => {
     setError(null);
     try {
       const response = await apiHandle.post(
-        "https://api.h2research.org/api/get-public-data-explorer/countries"
+          `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/countries`
       );
 
       if (response.data?.status) {
