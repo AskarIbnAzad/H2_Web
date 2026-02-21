@@ -62,7 +62,6 @@ const Species = () => {
     if (data.status) {
       // Filter only parent species (where parent_id is null)
       const parentSpeciesOnly = data?.data?.items?.filter(s => s.parent === null);
-      console.log("Parent species:", parentSpeciesOnly);
 
       const loaded = parentSpeciesOnly.map((s) => ({ ...s, key: s.id }));
       setSpecies(loaded);
@@ -74,9 +73,6 @@ const Species = () => {
         a.count > b.count ? a : b
       );
       setTopSpecies(top);
-      
-      console.log("Parent species loaded:", loaded.length);
-      console.log("Total species in API:", data.species.length);
     } else {
       setError("No species available");
     }

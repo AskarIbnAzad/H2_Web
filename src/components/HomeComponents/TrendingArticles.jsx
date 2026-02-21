@@ -6,10 +6,6 @@ import { useNavigate } from "react-router-dom";
 const TrendingArticles = ({ articles, loading }) => {
   const navigate = useNavigate();
 
-  console.log(articles);
-  //articles length
-  console.log(articles?.length);
-
   return (
     <div className="py-5">
       <h2 className="text-[#132B38] text-3xl my-5 font-extrabold">

@@ -93,7 +93,6 @@
 
 //     // Continue with regular application submission
 //     const formValues = form.getFieldsValue();
-//     console.log("handleResearchSubmissionChoice 2 Form Values:", formValues);
 
 //     onSubmit?.(formValues);
 //     message.success(
@@ -649,7 +648,6 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
   };
 
   const handleSubmit = async (values) => {
-    console.log("Form Values Received:", values); // Debug log
     setFormData(values);
     setLoading(true);
 
@@ -658,7 +656,6 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
       const hasPublishedResearch = values.experience?.includes("Published research");
 
       if (hasPublishedResearch) {
-        console.log("Has published research, showing research submission modal");
         setShowResearchSubmission(true);
         setLoading(false);
         return;
@@ -679,11 +676,8 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
         hasPublishedResearch: false
       };
 
-      console.log("Sending to API:", bodyData);
-
       // Call API
       const response = await apiHandle.post("add-contributor", bodyData);
-      console.log("API Response:", response);
 
       // Success message
       message.success("Application submitted successfully! We'll be in touch soon.");
@@ -705,8 +699,6 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
   };
 
   const handleResearchSubmissionChoice = async (submitResearch) => {
-    console.log("Research submission choice:", submitResearch);
-    console.log("Stored form data:", formData);
     setLoading(true);
 
     try {
@@ -739,11 +731,8 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
         wantsToSubmitResearch: submitResearch
       };
 
-      console.log("Sending research submission to API:", bodyData);
-
       // Call API
       const response = await apiHandle.post("add-contributor", bodyData);
-      console.log("Research submission API Response:", response);
 
       message.success("Application submitted successfully! We'll be in touch soon.");
 
@@ -928,7 +917,6 @@ const VolunteerContributorModal = ({ visible, onClose, onSubmit }) => {
             onFinish={handleSubmit}
             requiredMark={false}
             onValuesChange={(changedValues, allValues) => {
-              console.log("Form values changed:", allValues);
             }}
           >
             {/* Basic Info Section */}

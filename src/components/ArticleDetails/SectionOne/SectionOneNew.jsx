@@ -438,9 +438,6 @@ function StudyDetails({ articleGeneralData, setIsModalFeedBackOpen }) {
 
   const currentStudy = getCurrentDetails();
 
-  console.log("Valid Study Types:", validStudyTypes);
-  console.log("Current Study Details:", currentStudy);
-
   // Don't render anything if there are no valid study types
   if (validStudyTypes.length === 0) {
     return null;
@@ -886,8 +883,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
   );
   const [selectedMethod, setSelectedMethod] = useState("");
 
-  console.log("researcherData", researcherData);
-
   const speciesData = normalizedData?.speciesData?.[activeTab] || {};
 
   // Enhanced method extraction for both species and non-species cases
@@ -897,11 +892,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
     // For non-species data, also check direct methodOfAdmin in researcherData
     ...(hasSpeciesData ? [] : (researcherData?.methodOfAdmin?.map((m) => m.name) || [])),
   ].filter((v, i, a) => a.indexOf(v) === i);
-
-  console.log("methods", methods);
-  console.log("hasSpeciesData", hasSpeciesData);
-  console.log("speciesData?.methods", speciesData?.methods);
-  console.log("researcherData?.methodOfAdmin", researcherData?.methodOfAdmin);
 
   useEffect(() => {
     if (methods.length > 0 && !methods.includes(selectedMethod)) {
@@ -982,8 +972,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
   // Enhanced concentration data extraction for both species and non-species cases
    // Enhanced concentration data extraction with dose calculations
   const getConcentrationData = () => {
-
-    console.log("speciesData in getConcentrationData", speciesData);
     const volumes = speciesData?.volumes || (hasSpeciesData ? [] : researcherData?.volumes || []);
     const concentrations = speciesData?.concentrations || (hasSpeciesData ? [] : researcherData?.concentrations || []);
     const absoluteDoses = speciesData?.absoluteDoses || (hasSpeciesData ? [] : researcherData?.absoluteDoses || []);
@@ -995,9 +983,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
     const weightUnit = getUnit(weightData?.unit) || 'kg';
     const weightInKg = convertToKg(weightValue, weightUnit);
 
-    
-    
-    console.log("volumes", volumes);
     return volumes?.map((volume, index) => {
       const volumeValue = getValue(volume.value || volume);
       const volumeUnit = getUnit(volume.unit?.name || volume.unit) || 'mL';
@@ -1289,9 +1274,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
                               speciesData.inhalationConcentrations : 
                               researcherData?.inhalationConcentrations || []).map(
                               (inhale, index) => {
-                                // console.log(" inhale?.unitDuration", inhale);
-                                // console.log("speciesData", speciesData);
-
                                 return (
                                   <div
                                     key={index}
@@ -1722,7 +1704,6 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
 }
 
 function MiscellaneousDetails({ researcherData, setIsModalFeedBackOpen }) {
-  console.log("researcherData in MiscellaneousDetails:", researcherData);
   // Helper function to safely get values
   const getValue = (obj) => obj?.name || obj?.value || "-";
 
@@ -1888,13 +1869,10 @@ function BiomarkerDetails({ biomakerData, setIsModalFeedBackOpen }) {
     let color = "text-gray-600";
     let rotation = "rotate-45";
 
-    console.log("change value in getChangeIcon:", change);
     if (change.toLowerCase().includes("decreasing")) {
-      console.log("Detected decreasing change");
       rotation = "rotate-90";
       color = "text-gray-600";
     } else if (change.toLowerCase().includes("increasing")) {
-      console.log("Detected increasing change");
       rotation = "rotate-0";
       color = "text-gray-600";
     } else if (change.toLowerCase().includes("increased")) {
@@ -3496,10 +3474,6 @@ const SectionOneNew = ({ articleData, relatedArticleData }) => {
   const [searchLogic, setSearchLogic] = useState("AND");
 
   const handleSearch = () => {
-    console.log("ArticleDetails handleSearch called with:", {
-      searchTerms,
-      searchQuery,
-    });
 
     const trimmed = searchQuery.trim();
     if (!trimmed) {
@@ -3529,7 +3503,6 @@ const SectionOneNew = ({ articleData, relatedArticleData }) => {
   };
 
   const handleSearchWithTerms = (terms) => {
-    console.log("ArticleDetails handleSearchWithTerms called with:", terms);
 
     if (!terms || terms.length === 0) {
       navigate("/articles");

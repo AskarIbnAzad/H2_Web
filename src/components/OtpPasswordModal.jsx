@@ -132,8 +132,6 @@ const OtpPasswordModal = ({
         }
         return;
       }
-
-      console.log("OTP verified successfully:", data);
       
       setVerifyToken(data?.verify_token ||data?.data?.verify_token || "");
       setSuccess(data?.message || "OTP verified. You can now set a new password.");

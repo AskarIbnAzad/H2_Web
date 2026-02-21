@@ -57,15 +57,12 @@ const Biomarker = () => {
           `${import.meta.env.VITE_API_BASE_URL}/get-public-data-explorer/biomarkers`
       );
 
-      console.log("API Response:", resp);
-
       if (resp.status) {
         // build category filter options
         const allCats = new Set();
         resp?.data?.items?.forEach((item) =>
           (item.categories || [])?.forEach((cat) => allCats.add(cat))
         );
-        console.log("All Categories:", allCats);
         setCategoryFilters(
           Array.from(allCats)?.map((cat) => ({ text: cat, value: cat }))
         );

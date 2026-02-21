@@ -15,10 +15,6 @@ const FilterSidebar = ({
   selectedFilters,
 }) => {
 
-
-  //console filters in json format as a string
-  // console.log(JSON.stringify(filters, null, 2));
-
   const navigate = useNavigate();
   const [expandedFilter, setExpandedFilter] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // if you still use this elsewhere

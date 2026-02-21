@@ -64,14 +64,6 @@ const [paginationFeatured, setPaginationFeatured] = useState({
   total: 0,
 });
 
-    useEffect(() => {
-        console.log("Featured authors updated:", featuredAuthors);
-    }, [featuredAuthors]);
-
-    useEffect(() => {
-        console.log("all authors updated:", authors);
-    }, [authors]);
-
   const themeColor = "#214a78";
 
   useEffect(() => {
@@ -82,10 +74,7 @@ const [paginationFeatured, setPaginationFeatured] = useState({
     setLoading(true);
     setError(null);
     try {
-      console.log("Fetching authors...");
       const { data } = await apiHandle.post("get-public-data-explorer/authors");
-
-      console.log("API Response:", data?.data?.items);
 
       if (data.status) {
         // Exclude authors with no articles and "Anonymous", sort by article_count (descending)
@@ -97,7 +86,6 @@ const [paginationFeatured, setPaginationFeatured] = useState({
           })
           .sort((a, b) => b.article_count - a.article_count); // Sort by count descending
 
-          console.log("Processed Authors:", allAuthors);
         setAuthors(allAuthors);
         setPaginationAll((p) => ({ ...p, total: allAuthors.length, current: 1 }));
         setPaginationFeatured((p) => ({
@@ -111,25 +99,12 @@ const [paginationFeatured, setPaginationFeatured] = useState({
           setFeaturedAuthors(
             allAuthors.filter((author) => author.is_featured)
           );
-
-          console.log(
-            "Featured authors:",
-            allAuthors.filter((author) => author.is_featured)
-          );
-
-          console.log(
-            "All authors:",
-            allAuthors
-          );
           setTopAuthor(allAuthors[0]);
         }
-
-        console.log("All authors loaded:", allAuthors.length);
       } else {
         setError("No authors available");
       }
     } catch (err) {
-      console.error("API Error:", err);
       // setError("Failed to fetch authors");
     } finally {
       setLoading(false);

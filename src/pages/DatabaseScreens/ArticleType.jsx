@@ -127,8 +127,6 @@ const ArticleType = () => {
         "get-public-data-explorer/studyType"
       );
 
-      console.log("Fetched study types data:", data);
-
       if (data?.status) {
         const typesData = data?.data?.items?.map((type) => ({
           ...type,
@@ -137,7 +135,6 @@ const ArticleType = () => {
           study_count: type?.count,
         }));
 
-        console.log("Processed study types data:", typesData);
         setStudyTypes(typesData);
         setPagination((prev) => ({ ...prev, total: typesData?.length }));
       }

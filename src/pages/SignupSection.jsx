@@ -263,7 +263,6 @@ const SignupSection = () => {
         // Handle premium user signup differently
         // You can redirect to a different page or show a message
         // For now, I'll just prevent the API call
-        console.log("Premium user selected - no API call needed");
         // You might want to navigate to a different page or show a message
         // navigate("/premium-signup-success");
       }

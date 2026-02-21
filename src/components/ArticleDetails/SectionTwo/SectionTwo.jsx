@@ -14,9 +14,6 @@ const SectionTwo = (sectionData) => {
     const [selectedStudyType, setSelectedStudyType] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
 
-
-    console.log("SectionTwoData:", SectionTwoData);
-
     const getStudyDetails = () => {
         if (SectionTwoData?.studyType?.length > 0 && selectedStudyType < SectionTwoData.studyType.length) {
             const selectedType = SectionTwoData.studyType[selectedStudyType];
@@ -421,7 +418,6 @@ const SectionTwo = (sectionData) => {
         }
 
         return Object.keys(SectionThreeData?.speciesData || {}).map((species) => {
-            console.log("Species:", species);
             // Safely access speciesDetails and speciesData
             const speciesDetail = SectionTwoData?.speciesDetails[species];
             const speciesDetailInhalation = SectionThreeData.speciesData[species] || {}; // Fix: Correct source

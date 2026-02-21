@@ -64,7 +64,6 @@ const Diseases = () => {
     try {
       const { data } = await apiHandle.post("get-public-data-explorer/diseases");
 
-      console.log("Fetched diseases data:", data?.data?.items);
       if (data.status) {
         const loaded = data?.data?.diseases.map((d) => ({ ...d, key: d.id }));
         setDiseases(loaded);
@@ -80,14 +79,12 @@ const Diseases = () => {
         } else {
           setTopDisease(null);
         }
-        
-        console.log("Diseases loaded:", loaded.length);
       } else {
         // setError("No diseases available");
       }
     } catch (err) {
       // setError("Failed to fetch diseases");
-      console.error("Error fetching diseases:", err);
+      console.error("Error fetching diseases:");
     } finally {
       setLoading(false);
     }

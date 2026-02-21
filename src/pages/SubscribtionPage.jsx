@@ -280,8 +280,6 @@ const SubscriptionPage = () => {
   const [showVolunteerModal, setShowVolunteerModal] = useState(false);
 
   const handleVolunteerSubmit = (formData) => {
-
-    console.log("Form Data Submitted:", formData);
     // Handle the form submission
     // Send to your API
   };
