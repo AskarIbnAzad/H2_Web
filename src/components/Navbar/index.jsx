@@ -632,11 +632,11 @@ const Professional3LayerNavbar = () => {
           {/*  Login*/}
           {/*</button>*/}
 
-              <Link to={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/admin/login`}>
+              <a href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}>
                 <button className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
                   Login
                 </button>
-              </Link>
+              </a>
 
             </div>
           </div>
