@@ -1703,7 +1703,7 @@ function HydrogenAdministration({ researcherData, articleGeneralData, setIsModal
   );
 }
 
-function MiscellaneousDetails({ researcherData, setIsModalFeedBackOpen }) {
+function MiscellaneousDetails({ researcherData, setIsModalFeedBackOpen, articleDoi }) {
   // Helper function to safely get values
   const getValue = (obj) => obj?.name || obj?.value || "-";
 
@@ -1789,20 +1789,37 @@ function MiscellaneousDetails({ researcherData, setIsModalFeedBackOpen }) {
           ))}
 
           {/* External Link */}
-          {researcherData?.PasteUrl?.name && (
+          {/*{researcherData?.PasteUrl?.name && (*/}
+          {/*  <tr>*/}
+          {/*    <td className="text-[#222222] border-l text-[15px] p-4">*/}
+          {/*      <button*/}
+          {/*        onClick={() =>*/}
+          {/*          window.open(getValue(researcherData.PasteUrl), "_blank")*/}
+          {/*        }*/}
+          {/*        className="bg-[#346896] text-white px-4 py-2 rounded-full text-sm hover:bg-[#2a5075] transition-colors"*/}
+          {/*      >*/}
+          {/*        Read more about this here*/}
+          {/*      </button>*/}
+
+
+          {/*    </td>*/}
+          {/*  </tr>*/}
+          {/*)}*/}
+
+        {articleDoi && (
             <tr>
-              <td className="text-[#222222] border-l text-[15px] p-4">
-                <button
-                  onClick={() =>
-                    window.open(getValue(researcherData.PasteUrl), "_blank")
-                  }
-                  className="bg-[#346896] text-white px-4 py-2 rounded-full text-sm hover:bg-[#2a5075] transition-colors"
+              <td  className="text-[#222222] border-l text-[15px] p-4">
+                <a
+                    href={`https://doi.org/${articleDoi}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#346896] text-white px-4 py-2 rounded-full text-sm hover:bg-[#2a5075] transition-colors"
                 >
                   Read more about this here
-                </button>
+                </a>
               </td>
             </tr>
-          )}
+        )}
         </tbody>
       </table>
     </div>
@@ -3930,6 +3947,7 @@ const SectionOneNew = ({ articleData, relatedArticleData }) => {
 
       <MiscellaneousDetails
         researcherData={researcherData}
+        articleDoi={articleData?.doi}
         setIsModalFeedBackOpen={setIsModalFeedBackOpen}
       />
 
