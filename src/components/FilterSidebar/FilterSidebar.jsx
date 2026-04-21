@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./filter.css";
+import {useSelector} from "react-redux";
 
 const FilterSidebar = ({
   filters,
@@ -20,6 +21,22 @@ const FilterSidebar = ({
   const [searchTerm, setSearchTerm] = useState(""); // if you still use this elsewhere
   const [authorSearchTerm, setAuthorSearchTerm] = useState(""); // ✅ new state
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const { user, userAuth, check_auth_status } = useSelector((state) => state.userAuth);
+  console.log('userAuth', userAuth);
+  console.log('user', user);
+  console.log('check_auth_status', check_auth_status);
+
+  const roleId = user?.role_id;
+
+  const USER_ALLOWED_FILTERS = ["Disease", "Study Type", "Organs/Tissues"];
+
+  const visibleFilters =
+      check_auth_status === "loading" || check_auth_status === "idle"
+          ? []
+          : roleId === 2
+              ? filters.filter((filter) => USER_ALLOWED_FILTERS.includes(filter.PreviewName))
+              : filters;
 
 
   const handleFilterToggle = (filterName) => {
@@ -548,7 +565,7 @@ const FilterSidebar = ({
         </div>
         <hr  className="mb-4" />
         <div  className="mb-4">
-          {filters.map((filter, index) => (
+          {visibleFilters.map((filter, index) => (
             <div key={index}  className="mb-1">
               <div
                  className="flex items-center justify-between cursor-pointer text-lg font-semibold text-gray-700"
