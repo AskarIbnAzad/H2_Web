@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { IoIosSearch, IoMdClose } from "react-icons/io";
 import { MdSwapHoriz } from "react-icons/md";
+import { FaHeart } from "react-icons/fa";
 
 const SearchBar = ({ searchTerm, setSearchTerm, onSearch, placeholder, searchTerms = [], setSearchTerms, searchLogic = "OR", setSearchLogic, showToggle = true, onSearchWithTerms }) => {
   const [currentInput, setCurrentInput] = useState("");

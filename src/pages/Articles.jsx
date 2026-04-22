@@ -509,6 +509,9 @@ import { apiHandle } from "../config/apiHandle/apiHandle";
 import NoDataFound from "../components/NoDataFound/NoDataFound";
 import { MdClose, MdFilterList } from "react-icons/md";
 import ContributeStudyCTA from "../components/ContributeStudyCTA/ContributeStudyCTA";
+import {FaHeart} from "react-icons/fa";
+
+
 
 // Session storage key for preserving article list state
 const ARTICLES_STATE_KEY = 'articlesListState';
@@ -559,6 +562,169 @@ const Articles = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(savedState?.searchTerms || []);
   const [isInitialized, setIsInitialized] = useState(!!savedState); // Already initialized if we have saved state
   const [authorSearch, setAuthorSearch] = useState("");
+
+
+  const [showSavedSearches, setShowSavedSearches] = useState(false);
+  const [savedSearches, setSavedSearches] = useState([]);
+  const [savedSearchLoading, setSavedSearchLoading] = useState(false);
+  const [savedSearchError, setSavedSearchError] = useState("");
+  const [pendingSavedFilters, setPendingSavedFilters] = useState(null);
+
+  const [showSaveSearchModal, setShowSaveSearchModal] = useState(false);
+  const [saveSearchName, setSaveSearchName] = useState("");
+  const [saveSearchSubmitting, setSaveSearchSubmitting] = useState(false);
+  const [saveSearchNameError, setSaveSearchNameError] = useState("");
+
+  const [deletingId, setDeletingId] = useState(null);
+  const [deleteError, setDeleteError] = useState("");
+
+  const loadSavedSearches = async () => {
+    try {
+      setSavedSearchError("");
+      setSavedSearchLoading(true);
+
+      // ✅ your backend GET: /saved-search
+      const res = await apiHandle.get("saved-search");
+
+      // expected: { status: true, data: [...] } or { status:true, data:{data:[...]}}
+      const payload = res?.data?.data;
+
+      const list = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.data)
+              ? payload.data
+              : [];
+
+      setSavedSearches(list);
+    } catch (e) {
+      setSavedSearchError("Failed to load saved searches");
+    } finally {
+      setSavedSearchLoading(false);
+    }
+  };
+
+  const handleToggleSavedSearches = async () => {
+    setShowSavedSearches((prev) => !prev);
+
+    // lazy load
+    if (!showSavedSearches && savedSearches.length === 0 && !savedSearchLoading) {
+      await loadSavedSearches();
+    }
+  };
+
+  const applySavedSearch = (item) => {
+    let payload = null;
+
+    try {
+      payload = JSON.parse(item.search_data); // backend stored string
+    } catch (e) {
+      console.error("Invalid saved search_data JSON:", e);
+      return;
+    }
+
+    // ---- restore base fields ----
+    const nextSortOrder = payload.orderBy === "ASC" ? "oldest" : "newest";
+    const nextLogic = payload.isAnd ? "AND" : "OR";
+    const nextSearchTerms = Array.isArray(payload.admin_search) ? payload.admin_search : [];
+
+    setSortOrder(nextSortOrder);
+    setSearchLogic(nextLogic);
+    setIsHighlightArticle(!!payload.isHighlightArticle);
+
+    setSearchTerm(nextSearchTerms.join(" "));
+    setSearchTerms(nextSearchTerms);
+    setDebouncedSearchTerm(nextSearchTerms);
+
+    // ---- rebuild selectedFilters from payload ----
+    const baseKeys = new Set([
+      "per_page",
+      "page",
+      "reqType",
+      "orderBy",
+      "isAnd",
+      "admin_search",
+      "isHighlightArticle",
+    ]);
+
+    const otherFilterIdToField = {
+      1: "HighlightArticle",
+      2: "CompMethodAdmin",
+      3: "doseComparison",
+      4: "drugComparison",
+      5: "pharmacokinetics",
+      6: "isERW",
+      7: "safetyofhydrogen",
+    };
+
+    const nextSelectedFilters = {};
+
+    Object.entries(payload).forEach(([k, v]) => {
+      if (baseKeys.has(k)) return;
+
+      // otherFilters array -> set field "True"
+      if (k === "otherFilters" && Array.isArray(v)) {
+        v.forEach((id) => {
+          const field = otherFilterIdToField[id];
+          if (field) nextSelectedFilters[field] = "True";
+        });
+        return;
+      }
+
+      // keep filters as-is (numbers / arrays) - your code later transforms to objects when filters load
+      nextSelectedFilters[k] = v;
+    });
+
+    // ✅ If saved payload contains suboption, keep it alive by adding fake objects into studyTypes
+    // because your request builder creates suboption from selectedFilters.studyTypes items with parentKey
+    if (payload.suboption && typeof payload.suboption === "object") {
+      const subObjects = [];
+      Object.entries(payload.suboption).forEach(([parentKey, arr]) => {
+        (arr || []).forEach((label) => {
+          subObjects.push({
+            parentKey,
+            label,
+            rawValue: label,
+            value: label,
+          });
+        });
+      });
+
+      // ensure studyTypes exists
+      const parents = Array.isArray(payload.studyTypes) ? payload.studyTypes : [];
+      nextSelectedFilters.studyTypes = [...parents, ...subObjects];
+    }
+
+    setPendingSavedFilters(nextSelectedFilters);
+    setPage(1);
+
+    // optional: update URL search + logic (matches your existing URL logic)
+    const params = new URLSearchParams();
+    if (nextSearchTerms.length > 0) params.set("search", nextSearchTerms.join(" "));
+    if (nextLogic) params.set("logic", nextLogic);
+    window.history.replaceState({}, "", params.toString() ? `${location.pathname}?${params.toString()}` : location.pathname);
+
+    // hide panel after apply
+    setShowSavedSearches(false);
+  };
+
+  const handleDeleteSavedSearch = async (id) => {
+    if (!id) return;
+
+    try {
+      setDeleteError("");
+      setDeletingId(id);
+
+      // ✅ backend DELETE: /saved-search/{id}
+      await apiHandle.delete(`saved-search/${id}`);
+
+      // remove from UI instantly
+      setSavedSearches((prev) => prev.filter((x) => x.id !== id));
+    } catch (e) {
+      setDeleteError("Failed to delete saved search.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -642,6 +808,36 @@ const Articles = () => {
     }
     return findFilterByValue(filterType, value);
   }, [findFilterByValue]);
+
+  useEffect(() => {
+    if (!pendingSavedFilters) return;
+    if (!filters.length) return;
+
+    const transformed = {};
+    Object.entries(pendingSavedFilters).forEach(([key, value]) => {
+      // keep boolean otherFilters fields as-is
+      if (
+          [
+            "HighlightArticle",
+            "CompMethodAdmin",
+            "doseComparison",
+            "drugComparison",
+            "pharmacokinetics",
+            "isERW",
+            "safetyofhydrogen",
+          ].includes(key)
+      ) {
+        transformed[key] = value;
+        return;
+      }
+
+      // transform ids -> option objects for chips (countries, species, etc.)
+      transformed[key] = transformFilterValue(key, value);
+    });
+
+    setSelectedFilters(transformed);
+    setPendingSavedFilters(null);
+  }, [pendingSavedFilters, filters.length, transformFilterValue]);
 
   const toggleClinicalResearch = () => {
     setIsHighlightArticle(prev => !prev);
@@ -758,7 +954,7 @@ const Articles = () => {
             "marker",
             "category",
             "authors",
-            "country",
+            "countries",
             "systems",
             "administrationMethods",
             "diseases"
@@ -800,6 +996,135 @@ const Articles = () => {
 
     return () => clearTimeout(timer);
   }, [searchTerm, searchTerms, searchLogic]);
+
+  const handleSaveSearchClick = async (name) => {
+    const trimmedName = (name || "").trim();
+
+    if (!trimmedName) {
+      setSaveSearchNameError("Please enter a name for this saved search.");
+      return;
+    }
+
+    try {
+      setSaveSearchNameError("");
+      setSaveSearchSubmitting(true);
+
+      // build the SAME requestBody you send in fetchStudies
+      const requestBody = {
+        per_page: 20,
+        page,
+        reqType: "user",
+        orderBy: sortOrder === "newest" ? "DESC" : "ASC",
+        isAnd: searchLogic === "AND",
+      };
+
+      // search terms
+      const searchQuery = debouncedSearchTerm;
+      if (Array.isArray(searchQuery) && searchQuery.length > 0) {
+        requestBody.admin_search = searchQuery;
+      } else if (typeof searchQuery === "string" && searchQuery.trim()) {
+        requestBody.admin_search = [searchQuery.trim()];
+      }
+
+      // normal filters
+      Object.entries(selectedFilters).forEach(([key, value]) => {
+        if (
+            key === "otherFilters" ||
+            typeof key === "object" ||
+            [
+              "HighlightArticle",
+              "CompMethodAdmin",
+              "doseComparison",
+              "drugComparison",
+              "pharmacokinetics",
+              "isERW",
+              "safetyofhydrogen",
+            ].includes(key)
+        )
+          return;
+
+        if (Array.isArray(value) && value.length > 0) {
+          if (key === "studyTypes") {
+            const parentIds = value
+                .filter((v) => !(typeof v === "object" && v.parentKey))
+                .map((v) => v.id ?? v)
+                .filter((v) => v != null);
+
+            if (parentIds.length > 0) requestBody[key] = parentIds;
+          } else {
+            const transformedValue = value.map((v) => v.id ?? v).filter((v) => v != null);
+            if (transformedValue.length > 0) requestBody[key] = transformedValue;
+          }
+        } else if (value && typeof value === "object") {
+          if (value.id) requestBody[key] = value.id;
+        } else if (key === "year") {
+          requestBody[key] = Number(value);
+        } else if (value) {
+          requestBody[key] = value;
+        }
+      });
+
+      // suboption from studyTypes
+      if (Array.isArray(selectedFilters.studyTypes)) {
+        const suboption = {};
+        selectedFilters.studyTypes.forEach((item) => {
+          if (!item || !item.parentKey) return;
+          const parent = item.parentKey;
+          const subLabel = item.rawValue || item.label;
+          if (!suboption[parent]) suboption[parent] = [];
+          if (!suboption[parent].includes(subLabel)) suboption[parent].push(subLabel);
+        });
+
+        if (Object.keys(suboption).length > 0) {
+          requestBody.suboption = suboption;
+        }
+      }
+
+      // highlight
+      if (isHighlightArticle) {
+        requestBody.isHighlightArticle = true;
+      }
+
+      // otherFilters -> array
+      const otherFilterMappings = {
+        HighlightArticle: 1,
+        CompMethodAdmin: 2,
+        doseComparison: 3,
+        drugComparison: 4,
+        pharmacokinetics: 5,
+        isERW: 6,
+        safetyofhydrogen: 7,
+      };
+
+      const selectedOtherFilters = [];
+      Object.entries(selectedFilters).forEach(([k, v]) => {
+        if (otherFilterMappings[k] && v === "True") {
+          selectedOtherFilters.push(otherFilterMappings[k]);
+        }
+      });
+
+      if (selectedOtherFilters.length > 0) {
+        requestBody.otherFilters = selectedOtherFilters;
+      }
+
+      // ✅ UPDATED API payload: include name
+      await apiHandle.post("save-search", {
+        name: trimmedName, // <-- NEW
+        data: requestBody,
+      });
+
+      // close modal + refresh list if panel open
+      setShowSaveSearchModal(false);
+      setSaveSearchName("");
+      if (showSavedSearches) {
+        await loadSavedSearches();
+      }
+    } catch (e) {
+      setSaveSearchNameError("Failed to save search. Please try again.");
+    } finally {
+      setSaveSearchSubmitting(false);
+    }
+  };
 
   // Memoized fetch function
   const fetchStudies = useCallback(
@@ -1474,13 +1799,30 @@ const Articles = () => {
               </span>
             )}
           </div>
-          <button
-            onClick={clearAllFilters}
-            className="text-red-600 hover:text-red-700 hover:bg-red-50 text-sm font-medium flex items-center transition-all px-3 py-1.5 rounded-md self-start sm:self-auto"
-          >
-            <MdClose className="w-4 h-4 mr-1" />
-            Clear All
-          </button>
+          <div className={'flex'}>
+            <button
+                onClick={clearAllFilters}
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-sm font-medium flex items-center transition-all px-3 py-1.5 rounded-md self-start sm:self-auto"
+            >
+              <MdClose className="w-4 h-4 mr-1" />
+              Clear All
+            </button>
+
+
+
+            <button
+                onClick={() => {
+                  setSaveSearchNameError("");
+                  setSaveSearchName("");
+                  setShowSaveSearchModal(true);
+                }}
+                className="px-3 sm:px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 ml-2 text-sm sm:text-base flex-shrink-0 transition-colors"
+                title="Save Search"
+                type="button"
+            >
+              <FaHeart />
+            </button>
+          </div>
         </div>
         
         {/* Search Mode Explanation */}
@@ -1587,6 +1929,98 @@ const Articles = () => {
             
             <ActiveFiltersDisplay />
 
+            <div className="mb-4">
+              <div className="flex items-center justify-between">
+                <button
+                    type="button"
+                    onClick={handleToggleSavedSearches}
+                    className="text-sm font-medium px-3 py-2 border rounded-md bg-white hover:bg-gray-50"
+                >
+                  {showSavedSearches ? "Hide Saved Searches" : "Show Saved Searches"}
+                </button>
+
+                {showSavedSearches && (
+                    <button
+                        type="button"
+                        onClick={loadSavedSearches}
+                        className="text-sm px-3 py-2 rounded-md bg-primary text-white hover:opacity-90"
+                    >
+                      Refresh
+                    </button>
+                )}
+              </div>
+
+              {showSavedSearches && (
+                  <div className="mt-3 border rounded-lg bg-white p-3 shadow-sm">
+                    {savedSearchLoading && (
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Oval height={18} width={18} visible />
+                          Loading saved searches...
+                        </div>
+                    )}
+
+                    {!savedSearchLoading && savedSearchError && (
+                        <div className="text-sm text-red-600">{savedSearchError}</div>
+                    )}
+
+                    {!savedSearchLoading && !savedSearchError && savedSearches.length === 0 && (
+                        <div className="text-sm text-gray-600">No saved searches found.</div>
+                    )}
+
+                    {!savedSearchLoading && savedSearches.length > 0 && (
+                        <div className="space-y-2">
+                          {deleteError && (
+                              <div className="text-sm text-red-600 mb-2">{deleteError}</div>
+                          )}
+
+                          <div className="space-y-2">
+                            {savedSearches.map((item) => (
+                                <div
+                                    key={item.id}
+                                    className="w-full flex items-center justify-between gap-2 px-3 py-2 border border-gray-200 rounded-md bg-white hover:bg-blue-50 hover:border-blue-200 transition"
+                                >
+                                  {/* APPLY */}
+                                  <button
+                                      type="button"
+                                      onClick={() => applySavedSearch(item)}
+                                      className="flex-1 text-left min-w-0"
+                                      title="Apply saved search"
+                                  >
+    <span className="text-sm font-semibold text-gray-800 truncate block">
+      {item.name ? item.name : `Saved Search #${item.id}`}
+    </span>
+                                  </button>
+
+                                  {/* DELETE */}
+                                  <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        handleDeleteSavedSearch(item.id);
+                                      }}
+                                      disabled={deletingId === item.id}
+                                      className="px-2 py-1 text-xs font-semibold rounded border border-red-200 text-red-600 hover:bg-red-50 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-1"
+                                      title="Delete saved search"
+                                  >
+                                    {deletingId === item.id ? (
+                                        <>
+                                          <Oval height={12} width={12} visible color="#dc2626" secondaryColor="#dc2626" />
+                                          <span className="hidden sm:inline">...</span>
+                                        </>
+                                    ) : (
+                                        "Delete"
+                                    )}
+                                  </button>
+                                </div>
+                            ))}
+                          </div>
+                        </div>
+                    )}
+                  </div>
+              )}
+            </div>
+
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
               <p className="text-sm font-medium">
                 Studies Found: <span className="text-primary font-bold">{totalArticles}</span>
@@ -1688,6 +2122,116 @@ const Articles = () => {
          
         </div>
       </div>
+      {/* Save Search Modal */}
+      {showSaveSearchModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+            {/* overlay */}
+            <div
+                className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                onClick={() => {
+                  if (saveSearchSubmitting) return;
+                  setShowSaveSearchModal(false);
+                  setSaveSearchNameError("");
+                }}
+            />
+
+            {/* modal */}
+            <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
+              <div className="p-5 bg-gradient-to-r from-red-50 to-white border-b">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-11 h-11 rounded-full bg-red-100 text-red-600 flex items-center justify-center">
+                      <FaHeart className="text-lg" />
+                    </div>
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                        Save this search
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                        Give it a name so you can find it quickly later.
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                      type="button"
+                      disabled={saveSearchSubmitting}
+                      onClick={() => {
+                        setShowSaveSearchModal(false);
+                        setSaveSearchNameError("");
+                      }}
+                      className="p-2 rounded-full hover:bg-gray-100 text-gray-600 disabled:opacity-50"
+                      title="Close"
+                  >
+                    <MdClose className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-5">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Saved Search Name
+                </label>
+
+                <div className="relative">
+                  <input
+                      value={saveSearchName}
+                      onChange={(e) => setSaveSearchName(e.target.value)}
+                      placeholder="e.g. Hydrogen Safety + ERW (Newest)"
+                      className={`w-full px-4 py-3 rounded-xl border outline-none transition shadow-sm
+                    ${saveSearchNameError ? "border-red-400 focus:border-red-500" : "border-gray-200 focus:border-primary"}
+                  `}
+                      disabled={saveSearchSubmitting}
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleSaveSearchClick(saveSearchName);
+                        }
+                      }}
+                  />
+                </div>
+
+                {saveSearchNameError && (
+                    <div className="mt-2 text-sm text-red-600">{saveSearchNameError}</div>
+                )}
+
+                <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:justify-end">
+                  <button
+                      type="button"
+                      disabled={saveSearchSubmitting}
+                      onClick={() => {
+                        setShowSaveSearchModal(false);
+                        setSaveSearchNameError("");
+                      }}
+                      className="px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                      type="button"
+                      disabled={saveSearchSubmitting}
+                      onClick={() => handleSaveSearchClick(saveSearchName)}
+                      className="px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow-sm disabled:opacity-70 flex items-center justify-center gap-2"
+                  >
+                    {saveSearchSubmitting ? (
+                        <>
+                          <Oval height={18} width={18} visible color="#fff" secondaryColor="#fff" />
+                          Saving...
+                        </>
+                    ) : (
+                        <>
+                          <FaHeart />
+                          Save Search
+                        </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+      )}
     </div>
   );
 };
