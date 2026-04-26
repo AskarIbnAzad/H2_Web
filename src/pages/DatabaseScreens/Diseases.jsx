@@ -141,7 +141,7 @@ const Diseases = () => {
         <Card
             bordered={false}
             className="shadow-md rounded-xl overflow-hidden"
-            style={{ borderRadius: 20 }}
+            style={{ borderRadius: 20, paddingTop: 30 }}
             bodyStyle={{ padding: "24px" }}
             title={
               <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 w-full">
@@ -236,6 +236,7 @@ const Diseases = () => {
                               transition: "all 0.3s cubic-bezier(0.2, 0, 0, 1)",
                               background: "#fff",
                               overflow: "hidden",
+                              cursor: "default",
                             }}
                             bodyStyle={{ padding: "20px", textAlign: "center" }}
                         >
@@ -278,21 +279,27 @@ const Diseases = () => {
 
                           {/* Study count as a Tag - centered */}
                           <div className="mb-4">
-                            <Tag
-                                icon={<FileTextOutlined />}
-                                color="blue"
-                                style={{
-                                  backgroundColor: `${themeColor}10`,
-                                  border: `1px solid ${themeColor}30`,
-                                  color: themeColor,
-                                  borderRadius: 30,
-                                  padding: "4px 12px",
-                                  fontSize: 13,
-                                  fontWeight: 500,
-                                }}
+                            <Button
+                                type="link"
+                                onClick={() => goToDisease(disease.name)}
+                                style={{ padding: 0, color: themeColor }}
                             >
-                              {disease.count || 0} Studies
-                            </Tag>
+                              <Tag
+                                  icon={<FileTextOutlined />}
+                                  color="blue"
+                                  style={{
+                                    backgroundColor: `${themeColor}10`,
+                                    border: `1px solid ${themeColor}30`,
+                                    color: themeColor,
+                                    borderRadius: 30,
+                                    padding: "4px 12px",
+                                    fontSize: 13,
+                                    fontWeight: 500,
+                                  }}
+                              >
+                                {disease.count || 0} Studies
+                              </Tag>
+                            </Button>
                           </div>
 
                           {/* Short description - centered */}
