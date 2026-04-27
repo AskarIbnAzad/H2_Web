@@ -41,6 +41,7 @@ import MethodsofAdministration from "./pages/DatabaseScreens/MethodsofAdministra
 import ContactUsPage from "./pages/ContactUsPage";
 import ThankYouPage from "./pages/ThankYouPage";
 import Diseases from "./pages/DatabaseScreens/Diseases";
+import DiseaseDetails from "./pages/DatabaseScreens/DiseaseDetails.jsx";
 
 const routes = [
   { path: "/", element: <Home /> },
@@ -69,6 +70,7 @@ const routes = [
   { path: "/countries", element: <Country /> },
   { path: "/species", element: <Species /> },
   { path: "/diseases", element: <Diseases /> },
+  { path: "/disease/:id", element: <DiseaseDetails /> },
   { path: "/article-type", element: <ArticleType /> },
   { path: "/research-topic", element: <ResearchTopic /> },
   { path: "/physiological-systems", element: <PhysiologicalSystems /> },

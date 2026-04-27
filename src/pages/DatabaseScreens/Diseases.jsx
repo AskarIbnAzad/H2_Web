@@ -23,7 +23,7 @@ import {
   FileTextOutlined,
   MedicineBoxOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { apiHandle } from "../../config/apiHandle/apiHandle";
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import FeedbackButton from "../../components/FeedbackButton/FeedbackButton";
@@ -279,10 +279,9 @@ const Diseases = () => {
 
                           {/* Study count as a Tag - centered */}
                           <div className="mb-4">
-                            <Button
-                                type="link"
-                                onClick={() => goToDisease(disease.name)}
-                                style={{ padding: 0, color: themeColor }}
+                            <a
+                                href={`/articles?diseases=${disease.name}`}
+                                style={{ textDecoration: "none" }}
                             >
                               <Tag
                                   icon={<FileTextOutlined />}
@@ -299,7 +298,7 @@ const Diseases = () => {
                               >
                                 {disease.count || 0} Studies
                               </Tag>
-                            </Button>
+                            </a>
                           </div>
 
                           {/* Short description - centered */}
@@ -319,14 +318,12 @@ const Diseases = () => {
 
                           {/* Centered button */}
                           <div className="mt-2">
-                            <Button
-                                type="link"
-                                icon={<FileTextOutlined />}
-                                onClick={() => goToDisease(disease.name)}
-                                style={{ padding: 0, color: themeColor }}
+                            <Link
+                                to={`/disease/${disease.id}`}
+                                style={{ color: themeColor, textDecoration: "none" }}
                             >
-                              View Articles →
-                            </Button>
+                              <FileTextOutlined /> View Details →
+                            </Link>
                           </div>
                         </Card>
                       </Col>
