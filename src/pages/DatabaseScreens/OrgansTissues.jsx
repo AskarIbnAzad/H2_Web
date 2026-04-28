@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  Table,
   Card,
   Typography,
   Input,
@@ -12,6 +11,8 @@ import {
   Col,
   Statistic,
   Divider,
+  Pagination,
+  Tag,
 } from "antd";
 import {
   SearchOutlined,
@@ -20,15 +21,15 @@ import {
   SortDescendingOutlined,
   ReloadOutlined,
   TrophyOutlined,
+  FileTextOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { apiHandle } from "../../config/apiHandle/apiHandle";
 import GoBackButton from "../../components/GoBackButton/GoBackButton";
 import FeedbackButton from "../../components/FeedbackButton/FeedbackButton";
 import ContributeStudyCTA from "../../components/ContributeStudyCTA/ContributeStudyCTA";
-import ExploreDataButton from "../../components/ExploreDataButton/ExploreDataButton";
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 const OrgansTissues = () => {
   const [organs, setOrgans] = useState([]);
@@ -37,15 +38,14 @@ const OrgansTissues = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortDirection, setSortDirection] = useState("asc");
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-  });
-  const [humanStudiesFilter, setHumanStudiesFilter] = useState(false); // Track the filter state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(12);
+  const [humanStudiesFilter, setHumanStudiesFilter] = useState(false);
   const [mostResearchedOrgan, setMostResearchedOrgan] = useState(null);
+
   const themeColor = "#214a78";
   const navigate = useNavigate();
+  const imageBaseUrl = import.meta.env.VITE_APP_IMAGE_URL || "";
 
   useEffect(() => {
     fetchOrgans();
@@ -61,19 +61,19 @@ const OrgansTissues = () => {
       if (data?.status) {
         const loaded = data?.data?.items?.map((o) => ({ ...o, key: o.id }));
         setOrgans(loaded);
-        setFilteredOrgans(loaded); // Set all organs initially
-        setPagination((p) => ({ ...p, total: loaded?.length }));
-
-        // Find the most researched organ
-        const mostResearched = loaded.reduce((prev, current) =>
-          prev.article_count > current.article_count ? prev : current
-        );
-        setMostResearchedOrgan(mostResearched);
+        setFilteredOrgans(loaded);
+        if (loaded.length > 0) {
+          const mostResearched = loaded.reduce((prev, current) =>
+              prev.article_count > current.article_count ? prev : current
+          );
+          setMostResearchedOrgan(mostResearched);
+        }
       } else {
         setError("No organs/tissues available");
       }
     } catch (err) {
       console.error("Error fetching organs/tissues:", err);
+      setError("Failed to fetch organs/tissues");
     } finally {
       setLoading(false);
     }
@@ -81,287 +81,342 @@ const OrgansTissues = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
-    setPagination((p) => ({ ...p, current: 1 }));
+    setCurrentPage(1);
   };
 
   const toggleSortDirection = () => {
     setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
   };
 
-  const filtered = filteredOrgans
-    ?.filter((o) => o.name.toLowerCase().includes(searchTerm))
-    ?.sort((a, b) =>
-      sortDirection === "asc"
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name)
-    );
-
-  const handleTableChange = (pg) => {
-    setPagination(pg);
-  };
-
-  const handleOrganClick = (name) => {
-    navigate(`/articles?organs=${encodeURIComponent(name)}`);
-  };
-
-  // Toggle between showing all and human studies only
   const toggleHumanStudiesFilter = () => {
     setHumanStudiesFilter(!humanStudiesFilter);
-    if (!humanStudiesFilter) {
-      const filteredData = organs.filter((o) => o.human_study_occurrences > 0);
-      setFilteredOrgans(filteredData);
-    } else {
-      setFilteredOrgans(organs); // Reset to show all
-    }
+    setCurrentPage(1);
   };
 
-  const columns = [
-    {
-      title: (
-        <Space>
-          <Text strong>Organ / Tissue</Text>
-          <Button
-            type="text"
-            icon={
-              sortDirection === "asc" ? (
-                <SortAscendingOutlined />
-              ) : (
-                <SortDescendingOutlined />
-              )
-            }
-            onClick={toggleSortDirection}
-            size="small"
-          />
-        </Space>
-      ),
-      dataIndex: "name",
-      key: "name",
-      render: (name) => (
-        <Text
-          strong
-          style={{ color: themeColor, cursor: "pointer" }}
-          onClick={() => handleOrganClick(name)}
-        >
-          {name}
-        </Text>
-      ),
-    },
-    {
-      title: "Total # of Studies",
-      dataIndex: "article_count",
-      key: "article_count",
-      sorter: (a, b) => a.article_count - b.article_count,
-      render: (count) => (
-        <Text
-          strong
-          style={{
-            color: themeColor,
-          }}
-        >
-          {count}
-        </Text>
-      ),
-    },
-  ];
+  const processedData = React.useMemo(() => {
+    let data = [...organs];
+    if (humanStudiesFilter) {
+      data = data.filter((o) => (o.human_study_occurrences || 0) > 0);
+    }
+    if (searchTerm) {
+      data = data.filter((o) => o.name.toLowerCase().includes(searchTerm));
+    }
+    data.sort((a, b) =>
+        sortDirection === "asc"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name)
+    );
+    return data;
+  }, [organs, humanStudiesFilter, searchTerm, sortDirection]);
+
+  const paginatedData = processedData.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+  );
+
+  const handleOrganClick = (id) => {
+    navigate(`/organ/${id}`);
+  };
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    if (imagePath.startsWith("http")) return imagePath;
+    return `${imageBaseUrl}${imagePath.startsWith("/") ? "" : "/"}${imagePath}`;
+  };
 
   return (
-    <div  className="max-w-[1200px] mx-auto p-4 md:p-8">
-      {/* Stats */}
-      {/* <Row gutter={16}  className="mb-6 items-center justify-between">
-        <Col>
-          <GoBackButton />
-        </Col>
-        <Col xs={24} sm={8}>
-          {mostResearchedOrgan && (
-            <Card bordered={false}>
-              <Statistic
-                title="Most Researched Organ"
-                value={mostResearchedOrgan?.name}
-                suffix={`(${mostResearchedOrgan?.article_count})`}
-                prefix={<TrophyOutlined />}
-                valueStyle={{ color: themeColor, fontSize: "16px" }}
-              />
-            </Card>
-          )}
-        </Col>
-      </Row> */}
-      <Row gutter={16} className="mb-6">
-              <Col xs={24} sm={12} md={8}>
-                <GoBackButton />
-              </Col>
-              <Col xs={24} sm={12} md={16}>
-                <div className="flex flex-col sm:flex-row items-center justify-end gap-2 sm:gap-4 mt-4 sm:mt-0">
-      
-                  <>
-                   {organs?.length > 0  && <Card
-                      style={{
-                        width: '100%',
-                        maxWidth: '200px',
-                        minWidth: '150px'
-                      }}
-                      bordered={false}
-                      size="small"
-                    >
-                      <Statistic
-                        title="Total Organs/Tissues"
-                        value={organs?.length}
-                        valueStyle={{
-                          color: themeColor,
-                          fontSize: "14px",
-                          lineHeight: "1.2"
-                        }}
-                        style={{
-                          textAlign: 'center'
-                        }}
-                      />
-                    </Card>}
-                    {mostResearchedOrgan && (
-                      <Card
-                        style={{
-                          width: '100%',
-                          maxWidth: '200px',
-                          minWidth: '150px'
-                        }}
-                        bordered={false}
-                        size="small"
-                      >
-                        <Statistic
-                          title="Most Researched Organ"
-                          value={mostResearchedOrgan?.name}
-                          suffix={`(${mostResearchedOrgan?.article_count})`}
-                          prefix={<TrophyOutlined />}
-                          valueStyle={{
-                            color: themeColor,
-                            fontSize: "14px",
-                            lineHeight: "1.2"
-                          }}
-                          style={{
-                            textAlign: 'center'
-                          }}
-                        />
-                      </Card>
-                    )}
-                  </>
-                </div>
-              </Col>
-            </Row>
-
-      <Card
-        bordered={false}
-        className="shadow-md rounded-lg pt-4"
-        title={
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 pb-4 w-full">
-            <div className="flex flex-col gap-1 w-full">
-              <Title level={4} style={{ color: themeColor, margin: 0 }}>
-                <SkinOutlined /> Organs &amp; Tissues
-              </Title>
-              <Text type="secondary">
-                Showing {filtered?.length} of {organs?.length}
-              </Text>
-            </div>
-            <div className="flex flex-col sm:flex-row items-center justify-end gap-2 w-full lg:w-auto mt-2 lg:mt-0">
-              <div className="w-full sm:w-1/2 min-w-[120px]">
-                <Button 
-                  icon={<ReloadOutlined />} 
-                  onClick={fetchOrgans}
-                  className="w-full h-[30px]"
-                  style={{ height: "30px" }}
+      <div className="max-w-[1200px] mx-auto p-4 md:p-8">
+        {/* Top stats row */}
+        <Row gutter={[16, 16]} className="mb-6" justify="space-between" align="middle">
+          <Col>
+            <GoBackButton />
+          </Col>
+          <Col xs={24} sm={12} md={8}>
+            {mostResearchedOrgan && (
+                <Card
+                    bordered={false}
+                    style={{
+                      background: `linear-gradient(135deg, ${themeColor}08 0%, ${themeColor}15 100%)`,
+                      borderRadius: 20,
+                    }}
+                    bodyStyle={{ padding: "12px 24px" }}
                 >
-                  Refresh
-                </Button>
+                  <Statistic
+                      title={
+                        <Space>
+                          <TrophyOutlined style={{ color: "#faad14" }} />
+                          <Text strong>Most Researched</Text>
+                        </Space>
+                      }
+                      value={mostResearchedOrgan?.name}
+                      suffix={<Text type="secondary">({mostResearchedOrgan?.article_count})</Text>}
+                      valueStyle={{ color: themeColor, fontSize: "16px", fontWeight: 600 }}
+                  />
+                </Card>
+            )}
+          </Col>
+        </Row>
+
+        <Card
+            bordered={false}
+            className="shadow-md rounded-xl overflow-hidden"
+            style={{ borderRadius: 20, paddingTop: 30, }}
+            bodyStyle={{ padding: "24px" }}
+            title={
+              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 w-full">
+                <div>
+                  <Title level={3} style={{ color: themeColor, margin: 0 }}>
+                    <SkinOutlined /> Organs &amp; Tissues
+                  </Title>
+                  <Text type="secondary">
+                    {processedData.length} of {organs.length} items
+                  </Text>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <Button icon={<ReloadOutlined />} onClick={fetchOrgans} loading={loading}>
+                    Refresh
+                  </Button>
+                  <FeedbackButton />
+                </div>
               </div>
-              <div className="w-full sm:w-1/2 flex items-center whitespace-nowrap overflow-visible min-w-[180px]">
-                <FeedbackButton style={{ width: "100%", height: "30px", minWidth: "140px" }} />
-              </div>
-            </div>
-          </div>
-        }
-        extra={null}
-      >
-        {/* Search */}
-        <div  className="mb-6 flex flex-row gap-20 items-center justify-between">
-          <div  className="flex-1">
+            }
+            extra={null}
+        >
+          {/* Search and Filter bar */}
+          <div className="mb-6 flex flex-col md:flex-row gap-4">
             <Input
-              placeholder="Search organs/tissues..."
-              prefix={<SearchOutlined style={{ color: themeColor }} />}
-              onChange={handleSearch}
-              allowClear
-              size="large"
+                className="flex-1"
+                placeholder="Search organs/tissues..."
+                prefix={<SearchOutlined style={{ color: themeColor }} />}
+                onChange={handleSearch}
+                allowClear
+                size="large"
+                style={{ borderRadius: 40 }}
             />
-          </div>
-          <div>
             <Button
-              type="primary"
-              onClick={toggleHumanStudiesFilter}
-              style={{
-                backgroundColor: themeColor,
-                borderColor: themeColor,
-                width: "100%",
-                height: "40px",
-                fontSize: "16px",
-                fontWeight: "600",
-              }}
+                type="primary"
+                onClick={toggleHumanStudiesFilter}
+                style={{
+                  backgroundColor: humanStudiesFilter ? "#52c41a" : themeColor,
+                  borderColor: humanStudiesFilter ? "#52c41a" : themeColor,
+                  borderRadius: 40,
+                  minWidth: 140,
+                }}
             >
               {humanStudiesFilter ? "Show All" : "Human Studies"}
             </Button>
+            <Button
+                icon={
+                  sortDirection === "asc" ? <SortAscendingOutlined /> : <SortDescendingOutlined />
+                }
+                onClick={toggleSortDirection}
+                size="large"
+                style={{ borderRadius: 40 }}
+            >
+              Sort {sortDirection === "asc" ? "A–Z" : "Z–A"}
+            </Button>
           </div>
-        </div>
 
-        {error && (
-          <Divider>
-            <Text type="danger">{error}</Text>
-          </Divider>
-        )}
+          <Divider style={{ margin: "0 0 24px 0" }} />
 
-        <Spin spinning={loading} tip="Loading organs/tissues...">
-          <Table
-            columns={columns}
-            dataSource={filtered}
-            pagination={{
-              ...pagination,
-              showSizeChanger: true,
-              pageSizeOptions: ["10", "20", "50", "100"],
-              showTotal: (total, range) =>
-                `${range[0]}-${range[1]} of ${total} items`,
-              position: ["bottomCenter"],
-            }}
-            onChange={handleTableChange}
-            bordered
-            scroll={{ x: "max-content" }}
-            locale={{
-              emptyText: (
-                <Empty
+          {loading ? (
+              <div className="text-center py-12">
+                <Spin size="large" />
+                <div className="mt-4">
+                  <Text>Loading organs/tissues...</Text>
+                </div>
+              </div>
+          ) : error ? (
+              <div className="text-center py-12">
+                <Text type="danger">{error}</Text>
+                <div className="mt-4">
+                  <Button onClick={fetchOrgans} type="primary">
+                    Try Again
+                  </Button>
+                </div>
+              </div>
+          ) : paginatedData.length === 0 ? (
+              <Empty
+                  description={
+                    organs.length === 0
+                        ? "No organs/tissues available in the database yet"
+                        : "No items match your criteria"
+                  }
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  description="No items match your search"
-                />
-              ),
-            }}
-            rowClassName={(r, i) => (i % 2 === 0 ? "bg-gray-50" : "")}
-          />
-        </Spin>
-         {/* Contribute CTA */}
-                    <div className="text-center mt-6">
-                      <ContributeStudyCTA className="mt-6" />
-                    </div>
-      </Card>
+              />
+          ) : (
+              <>
+                <Row gutter={[24, 24]}>
+                  {paginatedData.map((organ) => (
+                      <Col xs={24} sm={12} md={8} lg={6} key={organ.id}>
+                        <Card
+                            hoverable
+                            className="organ-card"
+                            style={{
+                              borderRadius: 24,
+                              border: "1px solid #f0f0f0",
+                              transition: "all 0.3s cubic-bezier(0.2, 0, 0, 1)",
+                              background: "#fff",
+                              overflow: "hidden",
+                              cursor: "default",
+                              height: "100%",
+                            }}
+                            bodyStyle={{
+                              padding: "20px",
+                              display: "flex",
+                              flexDirection: "column",
+                              height: "100%",
+                            }}
+                        >
+                          {/* Top accent bar */}
+                          <div
+                              style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                height: 8,
+                                background: `linear-gradient(90deg, ${themeColor}, #40a9ff)`,
+                                borderTopLeftRadius: 24,
+                                borderTopRightRadius: 24,
+                              }}
+                          />
 
-      <div  className="mt-8 text-center">
-        <Button
-          type="primary"
-          size="large"
-          style={{
-            backgroundColor: themeColor,
-            borderColor: themeColor,
-            height: "50px",
-            fontSize: "16px",
-            fontWeight: "600",
-          }}
-          onClick={() => navigate("/physiological-systems")}
-        >
-          Explore the Data by Physiological Systems
-        </Button>
+                          {/* Wrap all upper content in a flex container that expands */}
+                          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+                            {/* Organ Image */}
+                            {organ.image ? (
+                                <div className="mb-3 flex justify-center">
+                                  <img
+                                      src={`${imageBaseUrl}${organ.image}`}
+                                      alt={organ.name}
+                                      style={{
+                                        width: "80px",
+                                        height: "80px",
+                                        objectFit: "cover",
+                                        borderRadius: "50%",
+                                        border: `2px solid ${themeColor}20`,
+                                      }}
+                                      onError={(e) => (e.target.style.display = "none")}
+                                  />
+                                </div>
+                            ) : (
+                                <div className="mb-3">
+                                  <SkinOutlined style={{ fontSize: 48, color: themeColor }} />
+                                </div>
+                            )}
+
+                            {/* Organ Name – no longer clickable, no pointer cursor */}
+                            <div className="mb-2" style={{ textAlign: "center" }}>
+                              <Text
+                                  strong
+                                  style={{
+                                    color: themeColor,
+                                    fontSize: "1rem",
+                                    lineHeight: 1.4,
+                                    cursor: "default",
+                                  }}
+                              >
+                                {organ.name}
+                              </Text>
+                            </div>
+
+                            {/* Study count tag (still links to articles) */}
+                            <div className="mb-3">
+                              <a
+                                  href={`/articles?organs=${encodeURIComponent(organ.name)}`}
+                                  style={{ textDecoration: "none" }}
+                              >
+                                <Tag
+                                    icon={<FileTextOutlined />}
+                                    style={{
+                                      backgroundColor: `${themeColor}10`,
+                                      border: `1px solid ${themeColor}30`,
+                                      color: themeColor,
+                                      borderRadius: 30,
+                                      padding: "4px 12px",
+                                      fontSize: 13,
+                                      fontWeight: 500,
+                                    }}
+                                >
+                                  {organ.article_count || 0} Studies
+                                </Tag>
+                              </a>
+                            </div>
+
+                            {/* Short description – flexible area, grows as needed */}
+                            <Paragraph
+                                ellipsis={{ rows: 2, expandable: false }}
+                                type="secondary"
+                                style={{
+                                  fontSize: "13px",
+                                  lineHeight: 1.5,
+                                  marginBottom: 0,
+                                  textAlign: "center",
+                                  flex: 1,
+                                }}
+                            >
+                              {organ.short_description || "No summary available."}
+                            </Paragraph>
+                          </div>
+
+                          {/* Sticky bottom: View Details button */}
+                          <div style={{ marginTop: "16px", textAlign: "center" }}>
+                            <Link
+                                to={`/organs-tissues/${organ.id}`}
+                                style={{ color: themeColor, textDecoration: "none" }}
+                            >
+                              <FileTextOutlined /> View Details →
+                            </Link>
+                          </div>
+                        </Card>
+                      </Col>
+                  ))}
+                </Row>
+
+                <div className="mt-10 flex justify-center">
+                  <Pagination
+                      current={currentPage}
+                      pageSize={pageSize}
+                      total={processedData.length}
+                      onChange={(page, size) => {
+                        setCurrentPage(page);
+                        if (size !== pageSize) setPageSize(size);
+                      }}
+                      showSizeChanger
+                      pageSizeOptions={["12", "24", "48", "96"]}
+                      showTotal={(total, range) =>
+                          `${range[0]}–${range[1]} of ${total} organs/tissues`
+                      }
+                  />
+                </div>
+              </>
+          )}
+
+          <div className="text-center mt-10">
+            <ContributeStudyCTA />
+          </div>
+        </Card>
+
+        <div className="mt-10 text-center">
+          <Button
+              type="primary"
+              size="large"
+              style={{
+                backgroundColor: themeColor,
+                borderColor: themeColor,
+                borderRadius: 40,
+                height: 48,
+                fontSize: "1rem",
+                fontWeight: 600,
+                padding: "0 32px",
+              }}
+              onClick={() => navigate("/physiological-systems")}
+          >
+            Explore the Data by Physiological Systems
+          </Button>
+        </div>
       </div>
-    </div>
   );
 };
 

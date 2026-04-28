@@ -42,6 +42,7 @@ import ContactUsPage from "./pages/ContactUsPage";
 import ThankYouPage from "./pages/ThankYouPage";
 import Diseases from "./pages/DatabaseScreens/Diseases";
 import DiseaseDetails from "./pages/DatabaseScreens/DiseaseDetails.jsx";
+import OrganDetails from "./pages/DatabaseScreens/OrganDetails.jsx";
 
 const routes = [
   { path: "/", element: <Home /> },
@@ -75,6 +76,7 @@ const routes = [
   { path: "/research-topic", element: <ResearchTopic /> },
   { path: "/physiological-systems", element: <PhysiologicalSystems /> },
   { path: "/organs-tissues", element: <OrgansTissues /> },
+  { path: "/organs-tissues/:id", element: <OrganDetails /> },
   { path: "/methods-of-administration", element: <MethodsofAdministration /> },
   { path: "/contact-us", element: <ContactUsPage /> },
   { path: "/thank-you", element: <ThankYouPage /> },

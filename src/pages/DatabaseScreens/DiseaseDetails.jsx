@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import {
     Card,
     Typography,
@@ -62,12 +62,6 @@ const DiseaseDetails = () => {
         }
     };
 
-    const goToArticles = () => {
-        if (disease?.name) {
-            navigate(`/articles?diseases=${encodeURIComponent(disease.name)}`);
-        }
-    };
-
     if (loading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -94,14 +88,28 @@ const DiseaseDetails = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-4 md:p-8">
-            {/* Back button */}
-            <Button
-                icon={<ArrowLeftOutlined />}
-                onClick={() => navigate(-1)}
-                style={{ marginBottom: 24 }}
+            <Link
+                to="/diseases"
+                style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 8,
+                    marginBottom: 24,
+                    height: 32,
+                    padding: "0 16px",
+                    backgroundColor: "#fff",
+                    border: `1px solid ${themeColor}`,
+                    borderRadius: 6,
+                    color: themeColor,
+                    fontSize: 14,
+                    fontWeight: 500,
+                    textDecoration: "none",
+                    cursor: "pointer",
+                }}
             >
+                <ArrowLeftOutlined />
                 Back to Diseases
-            </Button>
+            </Link>
 
             <Card
                 bordered={false}
@@ -174,22 +182,29 @@ const DiseaseDetails = () => {
                     </>
                 )}
 
+                {/* View Related Studies button as a Link */}
                 <div className="mt-8 text-center">
-                    <Button
-                        type="primary"
-                        size="large"
-                        icon={<FileTextOutlined />}
-                        onClick={goToArticles}
+                    <Link
+                        to={`/articles?diseases=${encodeURIComponent(disease.name)}`}
                         style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                             backgroundColor: themeColor,
                             borderColor: themeColor,
+                            color: "#fff",
                             borderRadius: 40,
                             height: 48,
                             padding: "0 32px",
+                            fontSize: 16,
+                            fontWeight: 500,
+                            textDecoration: "none",
+                            gap: 8,
                         }}
                     >
+                        <FileTextOutlined />
                         View All Related Studies
-                    </Button>
+                    </Link>
                 </div>
             </Card>
         </div>
