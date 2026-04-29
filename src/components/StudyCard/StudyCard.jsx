@@ -1,47 +1,11 @@
-// import React from "react";
-// import Tag from "../Tag/Tag";
-
-// const StudyCard = ({ study, onClick }) => {
-
-
-//     const studyType = study?.articleGeneralData?.studyType || [];
-
-//     const tags = [
-//         ...studyType,
-//     ];
-
-//     return (
-//         <div  className="bg-white mb-6 cursor-pointer" onClick={onClick}>
-//             <div  className="inline-block text-sm text-[#132B38] mb-2 rounded-full bg-[rgba(0,76,120,0.10)] px-5 py-2">
-//                 {study?.articleGeneralData?.ReviewStudyType}
-//             </div>
-
-
-//             <h2  className="text-[#004C78] font-semibold mb-2 text-xl sm:text-1xl md:text-2xl lg:text-2xl xl:text-2xl">
-//                 {study?.publicData?.title}
-//             </h2>
-
-//             <p  className="sm:text-1xl md:text-1xl lg:text-1xl xl:text-1xl text-[#767676] mb-4">{study?.publicData?.abstract}</p>
-
-//             <div  className="flex flex-wrap gap-2 mb-4">
-//                 {tags?.map((tag, index) => (
-//                     <Tag key={index} label={tag} />
-//                 ))}
-//             </div>
-//             <div  className="text-1xl text-[#343434">Year Published: {study.publicData?.year}</div>
-//             <hr  className="mt-4" />
-//         </div>
-//     );
-// };
-
-// export default StudyCard;
-
 import React from "react";
 import inReviewImage from "../../assets/images/inReview.png"
 import VerifyImage from "../../assets/images/verify.png"
 import VerifiedIcon from "../VerifiedIcon/VerifiedIcon";
 import MhidImage from "../../assets/images/mhid.png";
 import { useNavigate, Link } from "react-router-dom";
+
+
 const StudyCard = ({ study, onClick }) => {
     const navigate = useNavigate()
     const abstractText = study?.publicData?.abstract?.name || "";
