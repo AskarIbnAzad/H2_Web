@@ -4,6 +4,7 @@ import VerifyImage from "../../assets/images/verify.png"
 import VerifiedIcon from "../VerifiedIcon/VerifiedIcon";
 import MhidImage from "../../assets/images/mhid.png";
 import { useNavigate, Link } from "react-router-dom";
+import SaveArticleButton from "../SaveArticleButton.jsx";
 
 
 const StudyCard = ({ study, onClick }) => {
@@ -67,6 +68,12 @@ const StudyCard = ({ study, onClick }) => {
 
             {/* Date, DOI, PMID */}
             <div className="flex flex-wrap items-center text-[#767676] text-sm mb-4">
+
+
+                <div className="mr-2 text-2xl">
+                    <SaveArticleButton articleId={study.id} />
+                </div>
+
                 <span className="mr-4">Year: {study?.publicData?.year?.name || "N/A"}</span>
                 {/* {study?.publicData?.doi?.name && (
                     <span className="mr-4">

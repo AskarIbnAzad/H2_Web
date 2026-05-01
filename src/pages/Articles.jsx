@@ -11,8 +11,8 @@ import NoDataFound from "../components/NoDataFound/NoDataFound";
 import { MdClose, MdFilterList } from "react-icons/md";
 import ContributeStudyCTA from "../components/ContributeStudyCTA/ContributeStudyCTA";
 import {FaHeart} from "react-icons/fa";
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { clearFolderArticles } from "../store/slice/folderSlice.js";
 
 // Session storage key for preserving article list state
 const ARTICLES_STATE_KEY = 'articlesListState';
@@ -20,7 +20,7 @@ const ARTICLES_STATE_KEY = 'articlesListState';
 const Articles = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // Try to restore state from sessionStorage first
   const getSavedState = () => {
     try {
@@ -35,13 +35,13 @@ const Articles = () => {
   };
 
   const savedState = getSavedState();
-  
+
   // Get 'search' param from URL on initial load
   const initialSearchTerm = (() => {
     const params = new URLSearchParams(location.search);
     return params.get('search') || "";
   })();
-  
+
   // Initialize state - prefer saved state, then URL params, then defaults
   const [isHighlightArticle, setIsHighlightArticle] = useState(savedState?.isHighlightArticle ?? false);
   const [searchTerm, setSearchTerm] = useState(savedState?.searchTerm || initialSearchTerm);
@@ -78,6 +78,12 @@ const Articles = () => {
 
   const [deletingId, setDeletingId] = useState(null);
   const [deleteError, setDeleteError] = useState("");
+
+  const dispatch = useDispatch();
+  const { activeFolderId } = useSelector(state => state.folders);
+  const { userAuth } = useSelector((state) => state.userAuth);
+
+  const isFolderView = !!activeFolderId;
 
   const loadSavedSearches = async () => {
     try {
@@ -275,7 +281,7 @@ const Articles = () => {
 
   const abortControllerRef = useRef(null);
   const requestIdRef = useRef(0);
-  
+
   // Clear saved state after restoring (so fresh navigation works correctly)
   // useEffect(() => {
   //   if (wasRestoredFromStorageRef.current) {
@@ -286,15 +292,15 @@ const Articles = () => {
   // Helper function to find filter object by name or id
   const findFilterByValue = useCallback((filterType, value) => {
     if (!filters.length || typeof value === 'object') return value;
-    
+
     const filterCategory = filters.find(f => f.name === filterType);
     if (!filterCategory?.options) return value;
-    
+
     // Try to find by name first, then by id
-    const filterOption = filterCategory.options.find(option => 
+    const filterOption = filterCategory.options.find(option =>
       option.name === value || option.id === value
     );
-    
+
     return filterOption || value;
   }, [filters]);
 
@@ -352,26 +358,26 @@ const Articles = () => {
     if (hasInitializedRef.current) {
       return;
     }
-    
+
     // Mark as initialized immediately to prevent re-runs
     hasInitializedRef.current = true;
-    
+
     // Skip URL parsing if we restored from sessionStorage
     if (wasRestoredFromStorageRef.current) {
       setIsInitialized(true);
       return;
     }
-    
+
     const searchParams = new URLSearchParams(location.search);
     const params = {};
-    
+
     // Check if we have search data from navigation state (from ArticleDetails)
     const navigationState = location.state;
     if (navigationState && navigationState.fromArticleList) {
-      
+
       // Restore all state from navigation
-      const { 
-        searchTerms: navSearchTerms = [], 
+      const {
+        searchTerms: navSearchTerms = [],
         searchTerm: navSearchTerm = "",
         searchLogic: navSearchLogic = "AND",
         selectedFilters: navSelectedFilters = {},
@@ -380,7 +386,7 @@ const Articles = () => {
         totalArticles: navTotalArticles = 0,
         studies: navStudies = []
       } = navigationState;
-      
+
       // Restore all search and filter state
       setSearchTerms(navSearchTerms);
       setSearchTerm(navSearchTerm);
@@ -392,13 +398,13 @@ const Articles = () => {
       setTotalArticles(navTotalArticles);
       setStudies(navStudies);
       setLoading(false);
-      
+
       // Clear the navigation state to prevent it from persisting
       window.history.replaceState({}, '', location.pathname);
-      
+
       return; // Exit early to avoid URL parameter processing
     }
-    
+
     // Get search parameter from URL (for initial load only)
     const searchParam = searchParams.get('search');
     if (searchParam && searchParam.trim()) {
@@ -473,7 +479,7 @@ const Articles = () => {
     Object.entries(params).forEach(([key, value]) => {
       transformedParams[key] = transformFilterValue(key, value);
     });
-    
+
     setSelectedFilters((prev) => ({
       ...prev,
       ...transformedParams,
@@ -483,7 +489,7 @@ const Articles = () => {
     if (Object.keys(params).length > 0) {
       setPage(1);
     }
-    
+
     // Mark as initialized after first URL parsing
     setIsInitialized(true);
   }, [location.search, location.state]);
@@ -632,7 +638,7 @@ const Articles = () => {
     async (pageNumber = 1, searchQuery = debouncedSearchTerm) => {
       // Increment request ID for this request before try block
       const currentRequestId = ++requestIdRef.current;
-      
+
       try {
         if (abortControllerRef.current) {
           abortControllerRef.current.abort();
@@ -659,7 +665,7 @@ const Articles = () => {
         } else if (searchQuery && typeof searchQuery === 'string' && searchQuery.trim()) {
           requestBody.admin_search = [searchQuery.trim()];
         }
-        
+
         requestBody.isAnd = searchLogic === "AND";
 
         // Apply other filters - send IDs instead of names (except for special cases)
@@ -713,7 +719,10 @@ const Articles = () => {
           }
         });
 
-
+        // === FOLDER FILTER ===
+        if (activeFolderId) {
+          requestBody.folder_id = activeFolderId;
+        }
 
         // ✅ Build only `suboption` from studyTypes (don't change existing studyTypes handling)
         if (selectedFilters.studyTypes && Array.isArray(selectedFilters.studyTypes)) {
@@ -731,14 +740,14 @@ const Articles = () => {
         // Handle Other Filters parameters - collect them into an otherFilters array
         const otherFilterMappings = {
           "HighlightArticle": 1,
-          "CompMethodAdmin": 2, 
+          "CompMethodAdmin": 2,
           "doseComparison": 3,
           "drugComparison": 4,
           "pharmacokinetics": 5,
           "isERW": 6,
           "safetyofhydrogen": 7,
         };
-        
+
         // Collect selected other filter IDs
         const selectedOtherFilters = [];
         Object.entries(selectedFilters).forEach(([key, value]) => {
@@ -747,7 +756,7 @@ const Articles = () => {
             selectedOtherFilters.push(otherFilterMappings[key]);
           }
         });
-        
+
         // Send otherFilters as an array if any are selected
         if (selectedOtherFilters.length > 0) {
           requestBody.otherFilters = selectedOtherFilters;
@@ -792,7 +801,7 @@ const Articles = () => {
         if (currentRequestId !== requestIdRef.current) {
           return; // Don't update state for superseded requests
         }
-        
+
         if (err.name !== "AbortError") {
           setError("Error fetching data");
         }
@@ -805,8 +814,16 @@ const Articles = () => {
         abortControllerRef.current = null;
       }
     },
-    [selectedFilters, debouncedSearchTerm, sortOrder, searchLogic, isHighlightArticle]
+      [selectedFilters, debouncedSearchTerm, sortOrder, searchLogic, isHighlightArticle, activeFolderId]
   );
+
+
+
+  useEffect(() => {
+    if (!isInitialized || filters.length === 0) return;
+    setPage(1);
+    fetchStudies(1, debouncedSearchTerm);
+  }, [activeFolderId]);
 
   // Re-transform filter values when filters data becomes available
   useEffect(() => {
@@ -1032,8 +1049,9 @@ const Articles = () => {
 
 
   const handleLoadMore = () => {
-    setIsLoadingMore(true);
-    setPage((prev) => prev + 1);
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchStudies(nextPage, debouncedSearchTerm);
   };
 
   // Complete clear all functionality
@@ -1048,10 +1066,12 @@ const Articles = () => {
     setSearchLogic("AND");
     setPage(1);
     setIsHighlightArticle(false);
-    
+
     // Use replaceState to immediately clear URL without navigation
     window.history.replaceState({}, '', location.pathname);
-    
+
+    dispatch(clearFolderArticles());
+
     // Fetch fresh data
     fetchStudies(1, []);
   };
@@ -1075,7 +1095,7 @@ const Articles = () => {
         setDebouncedSearchTerm([]);
         setSearchLogic("AND"); // Reset to default when clearing all search
       }
-      
+
       setSelectedFilters(prev => {
         const newFilters = { ...prev };
         delete newFilters.admin_search;
@@ -1086,17 +1106,17 @@ const Articles = () => {
       searchParams.delete('author');
       searchParams.delete('search');
       searchParams.delete('logic'); // Also remove the logic parameter
-      
+
       // Use replaceState to immediately update URL without triggering navigation
-      const newUrl = searchParams.toString() ? 
-        `${location.pathname}?${searchParams.toString()}` : 
+      const newUrl = searchParams.toString() ?
+        `${location.pathname}?${searchParams.toString()}` :
         location.pathname;
       window.history.replaceState({}, '', newUrl);
-      
-      const combinedSearchTerm = filterValue 
+
+      const combinedSearchTerm = filterValue
         ? searchTerms.filter(term => term !== filterValue)
         : [];
-      
+
       // Only fetch with search terms if there are any, otherwise fetch without search
       if (combinedSearchTerm.length > 0) {
         fetchStudies(1, combinedSearchTerm);
@@ -1107,14 +1127,14 @@ const Articles = () => {
       // Handle otherFilter boolean fields
       const otherFilterFields = [
         "HighlightArticle",
-        "CompMethodAdmin", 
+        "CompMethodAdmin",
         "doseComparison",
         "drugComparison",
         "pharmacokinetics",
         "isERW",
         "safetyofhydrogen",
       ];
-      
+
       if (otherFilterFields.includes(filterType)) {
         // For otherFilter boolean fields, just delete the field
         setSelectedFilters(prev => {
@@ -1126,7 +1146,7 @@ const Articles = () => {
         // Handle regular filters
         setSelectedFilters(prev => {
           const newFilters = { ...prev };
-          
+
           if (filterValue) {
             // Remove specific value from array filter
             if (Array.isArray(newFilters[filterType])) {
@@ -1145,11 +1165,11 @@ const Articles = () => {
             // Remove entire filter
             delete newFilters[filterType];
           }
-          
+
           return newFilters;
         });
       }
-      
+
       setPage(1);
     }
   };
@@ -1157,7 +1177,7 @@ const Articles = () => {
   // Get active filters for display
   const getActiveFilters = () => {
     const activeFilters = [];
-    
+
     // Check for search terms (directly from state, not URL)
     searchTerms.forEach((term, index) => {
       activeFilters.push({
@@ -1182,7 +1202,7 @@ const Articles = () => {
     // Check for other filters
     Object.entries(selectedFilters).forEach(([key, value]) => {
       if (key === 'admin_search') return; // Skip search filters, handled above
-      
+
       // Handle otherFilter boolean fields
       if (otherFilterDisplayNames[key] && value === "True") {
         activeFilters.push({
@@ -1194,7 +1214,7 @@ const Articles = () => {
         });
         return;
       }
-      
+
       if (Array.isArray(value) && value.length > 0) {
         value.forEach(item => {
           // Handle both object and string cases properly
@@ -1218,7 +1238,7 @@ const Articles = () => {
             displayValue = String(item);
             itemId = String(item);
           }
-          
+
           activeFilters.push({
             type: key,
             label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -1249,7 +1269,7 @@ const Articles = () => {
           displayValue = String(value);
           valueId = String(value);
         }
-        
+
         activeFilters.push({
           type: key,
           label: key.charAt(0).toUpperCase() + key.slice(1),
@@ -1271,6 +1291,7 @@ const Articles = () => {
           : true;
         return yearFilter;
       });
+
 
   const resetFilters = () => {
     clearAllFilters();
@@ -1325,20 +1346,20 @@ const Articles = () => {
             </button>
           </div>
         </div>
-        
+
         {/* Search Mode Explanation */}
         {activeFilters.length > 0 && (
           <div className="mb-3 p-2.5 rounded-md text-xs bg-white text-gray-700 border border-blue-200 shadow-sm">
             <span className="font-semibold text-primary">
               {searchLogic === "OR" ? "Any Match Mode:" : "All Match Mode:"}
             </span>{' '}
-            {searchLogic === "OR" 
+            {searchLogic === "OR"
               ? "Showing articles that match any of your search criteria"
               : "Showing only articles that match all of your search criteria"
             }
           </div>
         )}
-        
+
         {/* Search Terms */}
         {searchFilters.length > 0 && (
           <div className="mb-3">
@@ -1368,7 +1389,7 @@ const Articles = () => {
             </div>
           </div>
         )}
-        
+
         {/* Other Filters */}
         {otherFilters.length > 0 && (
           <div>
@@ -1427,8 +1448,19 @@ const Articles = () => {
                 setSearchLogic={setSearchLogic}
               />
             </div>
-            
+
             <ActiveFiltersDisplay />
+
+            {isFolderView && (
+                <div className="mb-4">
+                  <button
+                      onClick={() => dispatch(clearFolderArticles())}
+                      className="text-sm text-blue-600 underline"
+                  >
+                    ← Back to all articles
+                  </button>
+                </div>
+            )}
 
             <div className="mb-4">
               <div className="flex items-center justify-between">
@@ -1570,7 +1602,7 @@ const Articles = () => {
               {!loading && filteredStudies?.length === 0 ? (
                 <NoDataFound resetFilters={resetFilters} />
               ) : (
-                filteredStudies?.map((study, index) => (
+                  filteredStudies?.map((study, index) => (
                   <StudyCard
                     key={index}
                     study={study}
@@ -1580,33 +1612,21 @@ const Articles = () => {
               )}
             </div>
 
-            {!isSearchActive &&
-              !loading &&
-              hasMore &&
-              filteredStudies?.length > 0 && (
+            {!isSearchActive && !loading && hasMore && filteredStudies?.length > 0 && (
                 <div className="flex justify-center mt-6 mb-4">
                   <button
-                    onClick={handleLoadMore}
-                    disabled={isLoadingMore}
-                    className="w-full sm:w-auto px-6 py-3 bg-[#004C78] text-white rounded hover:bg-[#003355] disabled:opacity-75 flex items-center justify-center gap-2 transition-colors"
+                      onClick={handleLoadMore}
+                      disabled={isLoadingMore || loading}
+                      className="w-full sm:w-auto px-6 py-3 bg-[#004C78] text-white rounded hover:bg-[#003355] disabled:opacity-75 flex items-center justify-center gap-2 transition-colors"
                   >
-                    {isLoadingMore ? (
-                      <>
-                        <Oval
-                          height={20}
-                          width={20}
-                          secondaryColor="#fff"
-                          color="#fff"
-                          visible={true}
-                        />
-                        Loading...
-                      </>
+                    {isLoadingMore || loading ? (
+                        <Oval height={20} width={20} secondaryColor="#fff" color="#fff" visible />
                     ) : (
-                      "Load More"
+                        "Load More"
                     )}
                   </button>
                 </div>
-              )}
+            )}
 
             {!hasMore && studies.length > 0 && (
               <div className="text-center mt-6 mb-4 text-gray-500 text-sm">
@@ -1618,9 +1638,9 @@ const Articles = () => {
           <ContributeStudyCTA />
           </div>
           {/* add a button contribute by adding the study */}
-     
-        
-         
+
+
+
         </div>
       </div>
       {/* Save Search Modal */}
@@ -1638,6 +1658,7 @@ const Articles = () => {
 
             {/* modal */}
             <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
+
               <div className="p-5 bg-gradient-to-r from-red-50 to-white border-b">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex items-center gap-3">
@@ -1668,6 +1689,9 @@ const Articles = () => {
                   </button>
                 </div>
               </div>
+
+              {userAuth ? (
+                  <>
 
               <div className="p-5">
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -1730,7 +1754,21 @@ const Articles = () => {
                   </button>
                 </div>
               </div>
-            </div>
+              </>
+              ) : (
+              <>
+                <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-gray-600">
+                  Please login first to save this search.
+                  <a
+                      href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}
+                      className="px-3 py-1.5 rounded-lg bg-[#004C78] hover:bg-[#003A5C] text-white text-xs shadow-sm transition-colors text-center"
+                  >
+                    Login Now
+                  </a>
+                </div>
+              </>
+              )}
+              </div>
           </div>
       )}
     </div>

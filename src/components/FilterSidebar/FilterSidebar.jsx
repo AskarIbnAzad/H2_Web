@@ -7,7 +7,281 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./filter.css";
-import {useSelector} from "react-redux";
+
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  fetchFolders,
+  createFolder,
+  deleteFolder,
+  setActiveFolder,
+} from "../../store/slice/folderSlice.js";
+
+const FoldersSection = () => {
+  const dispatch = useDispatch();
+  const { folders, loading } = useSelector((state) => state.folders);
+  const { userAuth } = useSelector((state) => state.userAuth);
+
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [newFolderName, setNewFolderName] = useState("");
+  const [createError, setCreateError] = useState("");
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedDeleteFolder, setSelectedDeleteFolder] = useState(null);
+
+  useEffect(() => {
+    if (userAuth && folders.length === 0 && !loading) {
+      dispatch(fetchFolders());
+    }
+  }, [userAuth, dispatch, folders.length, loading]);
+
+  const handleFolderClick = (folderId) => {
+    dispatch(setActiveFolder(folderId));
+  };
+
+  const handleCreateFolder = () => {
+    const name = newFolderName.trim();
+
+    if (!name) {
+      setCreateError("Please enter folder name.");
+      return;
+    }
+
+    dispatch(createFolder(name));
+
+    setNewFolderName("");
+    setCreateError("");
+    setShowCreateModal(false);
+  };
+
+  const openDeleteModal = (folder) => {
+    setSelectedDeleteFolder(folder);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteFolder = () => {
+    if (!selectedDeleteFolder?.id) return;
+
+    dispatch(deleteFolder(selectedDeleteFolder.id));
+
+    setSelectedDeleteFolder(null);
+    setShowDeleteModal(false);
+  };
+
+  if (!userAuth) return null;
+
+  return (
+      <div className="mt-6 border-t pt-4">
+        <h3 className="text-md font-semibold text-gray-800 mb-2">My Folders</h3>
+
+        {loading && <p className="text-xs text-gray-500">Loading…</p>}
+
+        {folders.length === 0 && !loading && (
+            <p className="text-xs text-gray-500">No folders yet.</p>
+        )}
+
+        <ul>
+          {folders.map((folder) => (
+              <li
+                  key={folder.id}
+                  className="mb-1 flex items-center justify-between"
+              >
+                <button
+                    onClick={() => handleFolderClick(folder.id)}
+                    className="flex-1 text-left p-2 rounded hover:bg-gray-100 flex items-center justify-between"
+                >
+                  <span className="text-xs truncate">{folder.name}</span>
+                  <span className="text-xs text-gray-400 ml-2">
+                {folder.article_count || 0}
+              </span>
+                </button>
+
+                <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openDeleteModal(folder);
+                    }}
+                    className="text-red-500 hover:text-red-700 p-1 ml-1"
+                    title="Delete folder"
+                    type="button"
+                >
+                  ✕
+                </button>
+              </li>
+          ))}
+        </ul>
+
+        <button
+            className="mt-2 text-xs text-[#004C78] hover:underline font-medium"
+            onClick={() => {
+              setCreateError("");
+              setNewFolderName("");
+              setShowCreateModal(true);
+            }}
+            type="button"
+        >
+          + Create Folder
+        </button>
+
+        {/* Create Folder Modal */}
+        {showCreateModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+              <div
+                  className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                  onClick={() => setShowCreateModal(false)}
+              />
+
+              <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="p-5 bg-gradient-to-r from-blue-50 to-white border-b">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                        Create New Folder
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                        Give your folder a name to organize saved articles.
+                      </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setShowCreateModal(false)}
+                        className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+                        title="Close"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Folder Name
+                  </label>
+
+                  <input
+                      type="text"
+                      value={newFolderName}
+                      onChange={(e) => {
+                        setNewFolderName(e.target.value);
+                        setCreateError("");
+                      }}
+                      placeholder="e.g. Hydrogen Articles"
+                      className={`w-full px-4 py-3 rounded-xl border outline-none transition shadow-sm ${
+                          createError
+                              ? "border-red-400 focus:border-red-500"
+                              : "border-gray-200 focus:border-[#004C78]"
+                      }`}
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          handleCreateFolder();
+                        }
+                      }}
+                  />
+
+                  {createError && (
+                      <div className="mt-2 text-sm text-red-600">
+                        {createError}
+                      </div>
+                  )}
+
+                  <div className="mt-4 flex flex-col sm:flex-row gap-2 sm:justify-end">
+                    <button
+                        type="button"
+                        onClick={() => setShowCreateModal(false)}
+                        className="px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleCreateFolder}
+                        className="px-4 py-2.5 rounded-xl bg-[#004C78] hover:bg-[#003A5C] text-white font-semibold shadow-sm"
+                    >
+                      Create Folder
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        )}
+
+        {/* Delete Folder Modal */}
+        {showDeleteModal && selectedDeleteFolder && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center px-3">
+              <div
+                  className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setSelectedDeleteFolder(null);
+                  }}
+              />
+
+              <div className="relative w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden">
+                <div className="p-5 bg-gradient-to-r from-red-50 to-white border-b">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-800">
+                        Delete Folder
+                      </h3>
+                      <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
+                        This folder will be deleted from your list.
+                      </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => {
+                          setShowDeleteModal(false);
+                          setSelectedDeleteFolder(null);
+                        }}
+                        className="p-2 rounded-full hover:bg-gray-100 text-gray-600"
+                        title="Close"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+
+                <div className="p-5">
+                  <p className="text-sm text-gray-700">
+                    Are you sure you want to delete{" "}
+                    <span className="font-semibold text-gray-900">
+                  “{selectedDeleteFolder.name}”
+                </span>
+                    ? All articles will be removed from this folder.
+                  </p>
+
+                  <div className="mt-5 flex flex-col sm:flex-row gap-2 sm:justify-end">
+                    <button
+                        type="button"
+                        onClick={() => {
+                          setShowDeleteModal(false);
+                          setSelectedDeleteFolder(null);
+                        }}
+                        className="px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 font-medium"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={handleDeleteFolder}
+                        className="px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold shadow-sm"
+                    >
+                      Delete Folder
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        )}
+      </div>
+  );
+};
 
 const FilterSidebar = ({
   filters,
@@ -247,7 +521,7 @@ const FilterSidebar = ({
           }
           if (searchTerm && !matchesSearch && !childMatches) return null;
 
-          const isChecked = selectedFilters.disease?.some(item => 
+          const isChecked = selectedFilters.disease?.some(item =>
             typeof item === 'object' ? item.id === option.id : item === option.value
           ) || false;
 
@@ -309,7 +583,7 @@ const FilterSidebar = ({
           }
           if (searchTerm && !matchesSearch && !childMatches) return null;
 
-          const isChecked = selectedFilters.species?.some(item => 
+          const isChecked = selectedFilters.species?.some(item =>
             typeof item === 'object' ? item.id === option.id : item === option.value
           ) || false;
 
@@ -603,6 +877,12 @@ const FilterSidebar = ({
             </div>
           ))}
         </div>
+
+        {userAuth && (
+            <>
+              <FoldersSection />
+            </>
+        )}
       </div>
 
       {isFilterOpen && (
