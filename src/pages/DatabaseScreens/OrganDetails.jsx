@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useParams, useNavigate, Link} from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
     Card,
     Typography,
@@ -17,6 +17,7 @@ import {
     FileTextOutlined,
     ExperimentOutlined,
     ApartmentOutlined,
+    MedicineBoxOutlined,   // ✅ added for disease tags
 } from "@ant-design/icons";
 import { apiHandle } from "../../config/apiHandle/apiHandle";
 
@@ -39,7 +40,6 @@ const OrganDetails = () => {
         setLoading(true);
         setError(null);
         try {
-            // 🟢 Adjust this URL to match your real API route (e.g., /api/organs/ or /get-organ/)
             const { data } = await apiHandle.get(`/organs/${id}`);
             if (data && data.name) {
                 setOrgan(data);
@@ -82,7 +82,6 @@ const OrganDetails = () => {
         );
     }
 
-    // System relationship tags
     const systemTags =
         organ.system_relationships &&
         Object.keys(organ.system_relationships).length > 0
@@ -98,7 +97,6 @@ const OrganDetails = () => {
 
     return (
         <div className="max-w-4xl mx-auto p-4 md:p-8">
-            {/* Back link (styled as a button) */}
             <Link
                 to="/organs-tissues"
                 style={{
@@ -241,6 +239,40 @@ const OrganDetails = () => {
                     </>
                 )}
 
+                {/* ✅ NEW SECTION: Related Diseases */}
+                {organ.diseases && organ.diseases.length > 0 && (
+                    <>
+                        <Title level={4} style={{ color: themeColor }}>
+                            <MedicineBoxOutlined style={{ marginRight: 8 }} />
+                            Related Diseases
+                        </Title>
+                        <Space wrap>
+                            {organ.diseases.map((disease) => (
+                                <Link
+                                    key={disease.id}
+                                    to={`/disease/${disease.id}`}
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    <Tag
+                                        icon={<MedicineBoxOutlined />}
+                                        color="blue"
+                                        style={{
+                                            padding: "6px 14px",
+                                            fontSize: 14,
+                                            borderRadius: 20,
+                                            cursor: "pointer",
+                                            border: `1px solid ${themeColor}40`,
+                                        }}
+                                    >
+                                        {disease.name} ({disease.articles_count || 0})
+                                    </Tag>
+                                </Link>
+                            ))}
+                        </Space>
+                        <Divider />
+                    </>
+                )}
+
                 {/* Additional metadata */}
                 <Descriptions bordered size="small" column={{ xs: 1, sm: 2 }}>
                     <Descriptions.Item label="Total Studies">
@@ -254,7 +286,7 @@ const OrganDetails = () => {
                     </Descriptions.Item>
                 </Descriptions>
 
-                {/* View Related Studies button as a Link */}
+                {/* View Related Studies button */}
                 <div className="mt-8 text-center">
                     <Link
                         to={`/articles?organs=${encodeURIComponent(organ.name)}`}

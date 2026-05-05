@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {useParams, useNavigate, Link} from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
     Card,
     Typography,
@@ -19,7 +19,7 @@ import {
     FileTextOutlined,
     TrophyOutlined,
 } from "@ant-design/icons";
-import {apiHandle} from "../../config/apiHandle/apiHandle.js";
+import { apiHandle } from "../../config/apiHandle/apiHandle.js";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -31,8 +31,6 @@ const DiseaseDetails = () => {
     const [error, setError] = useState(null);
     const themeColor = "#214a78";
 
-    console.log('id', id);
-
     useEffect(() => {
         fetchDiseaseDetails();
     }, [id]);
@@ -41,19 +39,12 @@ const DiseaseDetails = () => {
         setLoading(true);
         setError(null);
         try {
-            // Option 1: Direct API endpoint (recommended)
             const { data } = await apiHandle.get(`/get-disease/${id}`);
             if (data.status) {
                 setDisease(data.disease);
-                console.log('disease', data.disease);
             } else {
                 setError("Disease not found");
             }
-
-            // Option 2: If no single endpoint, fetch all and filter (fallback)
-            // const { data } = await apiHandle.post("get-public-data-explorer/diseases");
-            // const found = data?.data?.items.find(d => d.id == id);
-            // setDisease(found);
         } catch (err) {
             console.error(err);
             setError("Failed to load disease details");
@@ -117,7 +108,6 @@ const DiseaseDetails = () => {
                 style={{ borderRadius: 24 }}
                 bodyStyle={{ padding: 32 }}
             >
-                {/* Top accent bar */}
                 <div
                     style={{
                         position: "absolute",
@@ -129,7 +119,6 @@ const DiseaseDetails = () => {
                     }}
                 />
 
-                {/* Header with icon and title */}
                 <div className="text-center mb-6">
                     <MedicineBoxOutlined
                         style={{ fontSize: 48, color: themeColor, marginBottom: 16 }}
@@ -159,7 +148,6 @@ const DiseaseDetails = () => {
 
                 <Divider />
 
-                {/* Short description */}
                 {disease.short_description && (
                     <>
                         <Title level={4}>Summary</Title>
@@ -170,7 +158,6 @@ const DiseaseDetails = () => {
                     </>
                 )}
 
-                {/* Full description (HTML allowed) */}
                 {disease.description && (
                     <>
                         <Title level={4}>Detailed Information</Title>
@@ -182,7 +169,39 @@ const DiseaseDetails = () => {
                     </>
                 )}
 
-                {/* View Related Studies button as a Link */}
+                {disease.organs && disease.organs.length > 0 && (
+                    <>
+                        <Title level={4} style={{ color: themeColor }}>
+                            <MedicineBoxOutlined style={{ marginRight: 8 }} />
+                            Related Organs &amp; Tissues
+                        </Title>
+                        <Space wrap>
+                            {disease.organs.map((organ) => (
+                                <Link
+                                    key={organ.id}
+                                    to={`/organs-tissues/${organ.id}`}
+                                    style={{ textDecoration: "none" }}
+                                >
+                                    <Tag
+                                        icon={<MedicineBoxOutlined />}
+                                        color="blue"
+                                        style={{
+                                            padding: "6px 14px",
+                                            fontSize: 14,
+                                            borderRadius: 20,
+                                            cursor: "pointer",
+                                            border: `1px solid ${themeColor}40`,
+                                        }}
+                                    >
+                                        {organ.name} ({organ.articles_count || 0})
+                                    </Tag>
+                                </Link>
+                            ))}
+                        </Space>
+                        <Divider />
+                    </>
+                )}
+
                 <div className="mt-8 text-center">
                     <Link
                         to={`/articles?diseases=${encodeURIComponent(disease.name)}`}
