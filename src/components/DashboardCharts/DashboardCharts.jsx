@@ -1,688 +1,616 @@
-import React, { useState, useEffect } from "react";
-import { Bar, Pie, PolarArea, Doughnut } from "react-chartjs-2";
+import React, { useMemo, useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
-  ArcElement,
-  RadialLinearScale,
+  PointElement,
+  LineElement,
+  Filler,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import generateColors from "../../utils/generateColors";
 import {
-  FiArrowRight,
   FiInfo,
   FiSearch,
-  FiChevronLeft,
-  FiChevronRight,
   FiBook,
+  FiTrendingUp,
+  FiBarChart2,
+  FiLayers,
+  FiUsers,
+  FiGrid,
+  FiArrowRight,
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import FeedbackButton from "../FeedbackButton/FeedbackButton";
 
 ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  RadialLinearScale,
-  Title,
-  Tooltip,
-  Legend
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    PointElement,
+    LineElement,
+    Filler,
+    Title,
+    Tooltip,
+    Legend
 );
 
 const DashboardCharts = ({ data }) => {
   const navigate = useNavigate();
+  const [showAllOrgans, setShowAllOrgans] = useState(false);
 
-  // Safely handle undefined or null data
+  const primaryColor = "#004c78";
+  const primaryHoverColor = "#003556";
+
   const generateContrastColors = (count) => {
+    if (!count) return [];
+
     const colors = [];
     const hueStep = 360 / count;
-    const saturation = 80;
-    const lightness = 60;
+    const saturation = 75;
+    const lightness = 55;
 
     for (let i = 0; i < count; i++) {
       colors.push(`hsl(${i * hueStep}, ${saturation}%, ${lightness}%)`);
     }
+
     return colors;
   };
 
-  const generateYearColors = (years) => {
-    const baseColor = "#004c78"; // Base color
-    return years.map(
-      (_, index) =>
-        `${baseColor}${Math.floor(80 + index * (150 / years.length))
-          .toString(16)
-          .padStart(2, "0")}`
+  const getObjectTotal = (items = []) => {
+    return items.reduce(
+        (sum, item) => sum + Number(item.value || item.count || 0),
+        0
     );
   };
 
-  // Transform ArticlesByYearData
-  const articlesByYearData = {
-    labels:
-      data?.ArticlesByYearData?.sort((a, b) => a.year - b.year) // Sort years chronologically
-        ?.map((item) => item.year) || [],
-    datasets: [
-      {
-        label: "Articles Count",
-        data:
-          data?.ArticlesByYearData?.sort((a, b) => a.year - b.year) // Match sorted years
-            ?.map((item) => item.count) || [],
-        backgroundColor: generateYearColors(data?.ArticlesByYearData || []),
-        hoverBackgroundColor: "#003556",
-        categoryPercentage: 0.8,
-        barPercentage: 0.9,
-      },
-    ],
+  const sortObjectData = (rawData = {}) => {
+    return Object.entries(rawData)
+        .filter(([, value]) => Number(value) > 0)
+        .map(([name, value]) => ({
+          name,
+          value: Number(value),
+        }))
+        .sort((a, b) => b.value - a.value);
   };
 
-  const researchByTopicData = (() => {
-    const topicData = data?.ResearchByTopicData || {};
-    const sortedEntries = Object.entries(topicData).sort(([a], [b]) => a.localeCompare(b));
-    const sortedLabels = sortedEntries.map(([label]) => label);
-    const sortedValues = sortedEntries.map(([, value]) => value);
-    
-    return {
-      labels: sortedLabels,
-      datasets: [
-        {
-          label: "Research by Topic",
-          data: sortedValues,
-          backgroundColor: generateContrastColors(sortedLabels.length),
-          borderWidth: 1,
-          borderColor: "#fff",
-        },
-      ],
-    };
-  })();
+  const articlesByYear = useMemo(() => {
+    return [...(data?.ArticlesByYearData || [])]
+        .filter((item) => item?.year !== undefined && item?.year !== null)
+        .map((item) => ({
+          year: item.year,
+          count: Number(item.count || 0),
+        }))
+        .sort((a, b) => Number(a.year) - Number(b.year));
+  }, [data]);
 
-  const studyByTypeData = (() => {
-    const typeData = data?.StudyByTypeData || {};
-    const sortedEntries = Object.entries(typeData).sort(([a], [b]) => a.localeCompare(b));
-    const sortedLabels = sortedEntries.map(([label]) => label);
-    const sortedValues = sortedEntries.map(([, value]) => value);
-    
-    return {
-      labels: sortedLabels,
-      datasets: [
-        {
-          label: "Study by Type",
-          data: sortedValues,
-          backgroundColor: generateContrastColors(sortedLabels.length),
-          borderWidth: 1,
-          borderColor: "#fff",
-        },
-      ],
-    };
-  })();
+  const researchTopics = useMemo(() => {
+    return sortObjectData(data?.ResearchByTopicData || {});
+  }, [data]);
 
-  const studyBySpeciesData = (() => {
-    const speciesData = data?.StudyBySpeciesData || {};
-    const sortedEntries = Object.entries(speciesData).sort(([a], [b]) => a.localeCompare(b));
-    const sortedLabels = sortedEntries.map(([label]) => label);
-    const sortedValues = sortedEntries.map(([, value]) => value);
-    
-    return {
-      labels: sortedLabels,
-      datasets: [
-        {
-          label: "Study by Species",
-          data: sortedValues,
-          backgroundColor: generateContrastColors(sortedLabels.length),
-          borderWidth: 1,
-          borderColor: "#fff",
-        },
-      ],
-    };
-  })();
+  const topResearchTopics = useMemo(() => {
+    return researchTopics.slice(0, 10);
+  }, [researchTopics]);
 
-  const studyByOrganData = {
-    labels: data?.StudyByOrganData?.map((item) => item.name) || [],
+  const studyTypes = useMemo(() => {
+    return sortObjectData(data?.StudyByTypeData || {});
+  }, [data]);
+
+  const species = useMemo(() => {
+    return sortObjectData(data?.StudyBySpeciesData || {});
+  }, [data]);
+
+  const organs = useMemo(() => {
+    return [...(data?.StudyByOrganData || [])]
+        .filter((item) => item.name && Number(item.count) > 0)
+        .map((item) => ({
+          name: item.name,
+          count: Number(item.count),
+        }))
+        .sort((a, b) => b.count - a.count);
+  }, [data]);
+
+  const visibleOrgans = showAllOrgans ? organs : organs.slice(0, 18);
+
+  const articlesByYearData = {
+    labels: articlesByYear.map((item) => item.year),
     datasets: [
       {
         label: "Articles",
-        data: data?.StudyByOrganData?.map((item) => item.count) || [],
-        backgroundColor: "#004c78",
-        borderRadius: 4,
-        hoverBackgroundColor: "#003556",
-        categoryPercentage: 0.8,
-        barPercentage: 0.9,
+        data: articlesByYear.map((item) => item.count),
+        borderColor: primaryColor,
+        backgroundColor: "rgba(0, 76, 120, 0.12)",
+        pointBackgroundColor: primaryColor,
+        pointBorderColor: "#ffffff",
+        pointBorderWidth: 2,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.35,
+        fill: true,
       },
     ],
   };
 
-  // Organ chart pagination state
-  const [labelStartIndex, setLabelStartIndex] = useState(0);
-  const [visibleOrganData, setVisibleOrganData] = useState(null);
-
-  // Number of labels to show at once
-  const labelsPerView = 10;
-
-  // Calculate total number of labels
-  const totalLabels = studyByOrganData.labels.length;
-
-  // Calculate max start index to prevent showing empty spaces
-  const maxStartIndex = Math.max(0, totalLabels - labelsPerView);
-
-  // Update visible data whenever the organ data or start index changes
-  useEffect(() => {
-    updateVisibleOrganData();
-  }, [data, labelStartIndex]);
-
-  // Create a filtered version of the organ data with only the visible labels
-  const updateVisibleOrganData = () => {
-    if (
-      !studyByOrganData ||
-      !studyByOrganData.labels ||
-      studyByOrganData.labels.length === 0
-    ) {
-      setVisibleOrganData(null);
-      return;
-    }
-
-    const visibleLabels = studyByOrganData.labels.slice(
-      labelStartIndex,
-      labelStartIndex + labelsPerView
-    );
-
-    const visibleData = studyByOrganData.datasets.map((dataset) => ({
-      ...dataset,
-      data: dataset.data.slice(
-        labelStartIndex,
-        labelStartIndex + labelsPerView
-      ),
-    }));
-
-    setVisibleOrganData({
-      labels: visibleLabels,
-      datasets: visibleData,
-    });
+  const researchTopicChartData = {
+    labels: topResearchTopics.map((item) => item.name),
+    datasets: [
+      {
+        label: "Articles",
+        data: topResearchTopics.map((item) => item.value),
+        backgroundColor: generateContrastColors(topResearchTopics.length),
+        hoverBackgroundColor: primaryHoverColor,
+        borderRadius: 8,
+        borderWidth: 0,
+        barPercentage: 0.75,
+        categoryPercentage: 0.8,
+      },
+    ],
   };
 
-  // Navigation functions for organ chart
-  const showPreviousLabels = () => {
-    setLabelStartIndex(Math.max(0, labelStartIndex - labelsPerView));
-  };
-
-  const showNextLabels = () => {
-    setLabelStartIndex(
-      Math.min(maxStartIndex, labelStartIndex + labelsPerView)
-    );
-  };
-
-  // Check if navigation buttons should be enabled
-  const canGoBack = labelStartIndex > 0;
-  const canGoForward = labelStartIndex < maxStartIndex;
-
-  // Handle clicking handlers
-  const handleTopicClick = (topicIndex) => {
-    const researchTopic = researchByTopicData.labels[topicIndex];
-    navigate(`/articles?researchTopics=${encodeURIComponent(researchTopic)}`);
-  };
-
-  const handleStudyTypeClick = (typeIndex) => {
-    const study = studyByTypeData.labels[typeIndex];
-    navigate(`/articles?studyTypes=${encodeURIComponent(study)}`);
-  };
-
-  const handleSpeciesClick = (speciesIndex) => {
-    const specie = studyBySpeciesData.labels[speciesIndex];
-    navigate(`/articles?species=${encodeURIComponent(specie)}`);
-  };
-
-  const handleOrganClick = (elements) => {
-    if (elements.length > 0) {
-      // Account for the current offset when determining which organ was clicked
-      const organIndex = elements[0].index + labelStartIndex;
-      const organ = studyByOrganData.labels[organIndex];
-      navigate(`/articles?organs=${encodeURIComponent(organ)}`);
-    }
-  };
+  const totalStudyTypes = getObjectTotal(studyTypes);
+  const totalSpecies = getObjectTotal(species);
+  const maxSpeciesValue = Math.max(...species.map((item) => item.value), 1);
+  const maxOrganValue = Math.max(...organs.map((item) => item.count), 1);
 
   const handleYearClick = (yearIndex) => {
     const year = articlesByYearData.labels[yearIndex];
     navigate(`/articles?year=${encodeURIComponent(year)}`);
   };
 
+  const handleTopicClick = (topicIndex) => {
+    const researchTopic = researchTopicChartData.labels[topicIndex];
+    navigate(`/articles?researchTopics=${encodeURIComponent(researchTopic)}`);
+  };
+
+  const handleStudyTypeClick = (studyType) => {
+    navigate(`/articles?studyTypes=${encodeURIComponent(studyType)}`);
+  };
+
+  const handleSpeciesClick = (specie) => {
+    navigate(`/articles?species=${encodeURIComponent(specie)}`);
+  };
+
+  const handleOrganClick = (organ) => {
+    navigate(`/articles?organs=${encodeURIComponent(organ)}`);
+  };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 ">
-      {/* Articles by Year */}
-      <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col h-[450px]">
-        <div className="flex justify-between items-center mb-4 ">
-          <h2 className="text-lg font-bold ">Articles by Year</h2>
-          <div>
-            <FeedbackButton modern={true} />
-          </div>
-        </div>
-        <div className="flex-1 flex justify-center items-center">
-          <div className="w-full h-full">
-            <Bar
-              data={articlesByYearData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                onClick: (e, elements) => {
-                  if (elements.length > 0) {
-                    handleYearClick(elements[0].index);
-                  }
-                },
-                indexAxis: "x",
-                scales: {
-                  x: {
-                    title: {
-                      display: true,
-                      text: "Year",
-                      font: { weight: "bold" },
-                    },
-                    grid: { display: false },
-                    ticks: {
-                      autoSkip: false,
-                      maxRotation: 45,
-                      minRotation: 45,
-                    },
-                  },
-                  y: {
-                    title: {
-                      display: true,
-                      text: "Number of Articles",
-                      font: { weight: "bold" },
-                    },
-                    beginAtZero: true,
-                    grid: { color: "#f0f0f0" },
-                    ticks: { stepSize: 1 },
-                  },
-                },
-                plugins: {
-                  legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      title: (context) => `Year: ${context[0].label}`,
-                      label: (context) => `Articles: ${context.parsed.y}`,
-                    },
-                  },
-                },
-                elements: {
-                  bar: {
-                    borderRadius: 4,
-                    borderWidth: 0,
-                  },
-                },
-              }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Research by Topic */}
-      <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col h-[450px] relative">
-        <div className="flex justify-between items-center mb-4 ">
-          <h2 className="text-lg font-bold ">Study by Research Topic</h2>
-          <div>
-            <FeedbackButton modern={true} />
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col md:flex-row gap-4 relative">
-          {/* Chart Container - Centered Always */}
-          <div className="w-full h-[300px] md:h-full md:w-[70%] relative flex justify-center items-center">
-            <Pie
-              data={researchByTopicData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                onClick: (e, elements) => {
-                  if (elements.length > 0) {
-                    handleTopicClick(elements[0].index);
-                  }
-                },
-                plugins: {
-                  legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      label: function (context) {
-                        const label = context.label || "";
-                        const value = context.raw || 0;
-                        const total =
-                          context.chart.data.datasets[0].data.reduce(
-                            (a, b) => a + b,
-                            0
-                          );
-                        const percentage = Math.round((value / total) * 100);
-                        return `${label}: ${percentage}%`;
-                      },
-                    },
-                  },
-                },
-                layout: {
-                  padding: 10,
-                },
-              }}
-            />
-          </div>
-
-          {/* Custom Legend - Responsive Positioning */}
-          <div className="md:w-[30%] md:pl-4 overflow-auto custom-scrollbar">
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-md:flex max-md:flex-row max-md:flex-nowrap">
-              {researchByTopicData.labels.map((label, index) => (
-                <div
-                  key={label}
-                  onClick={() => handleTopicClick(index)}
-                  className="flex items-center p-2 max-md:min-w-[140px] max-md:flex-col max-md:text-center bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer transition-colors"
-                  role="button"
-                  aria-label={`View articles for ${label}`}
-                >
-                  <div
-                    className="w-3 h-3 mr-2 rounded-full shrink-0 max-md:mr-0 max-md:mb-1"
-                    style={{
-                      backgroundColor:
-                        researchByTopicData.datasets[0].backgroundColor[index],
-                    }}
-                  />
-                  <span className="text-xs font-medium text-gray-700 truncate max-md:max-w-[120px]">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Study by Type */}
-      {/* Study by Type */}
-      <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col h-[450px] relative">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold">Study by Type</h2>
-          <div>
-            <FeedbackButton modern={true} />
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col md:flex-row gap-4 relative">
-          {/* Chart Container */}
-          <div className="w-full h-[300px] md:h-full md:w-[70%] relative flex justify-center items-center">
-            <Doughnut
-              data={studyByTypeData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                onClick: (e, elements) => {
-                  if (elements.length > 0) {
-                    handleStudyTypeClick(elements[0].index);
-                  }
-                },
-                plugins: {
-                  legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      label: (context) => {
-                        const label = context.label || "";
-                        const value = context.parsed || 0;
-                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                        const percentage = ((value / total) * 100).toFixed(1);
-                        return `${label}: ${value} (${percentage}%)`;
-                      },
-                    },
-                  },
-                },
-                elements: {
-                  arc: {
-                    borderWidth: 2,
-                    borderColor: 'white',
-                  }
-                },
-                cutout: '50%',
-                animation: {
-                  animateRotate: true,
-                  duration: 1000,
-                }
-              }}
-            />
-          </div>
-
-          {/* Custom Legend - Same as Research Topic */}
-          <div className="md:w-[30%] md:pl-4 overflow-auto custom-scrollbar">
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-md:flex max-md:flex-row max-md:flex-nowrap">
-              {studyByTypeData.labels.map((label, index) => (
-                <div
-                  key={label}
-                  onClick={() => handleStudyTypeClick(index)}
-                  className="flex items-center p-2 max-md:min-w-[140px] max-md:flex-col max-md:text-center bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer transition-colors"
-                  role="button"
-                  aria-label={`View articles for ${label} studies`}
-                >
-                  <div
-                    className="w-3 h-3 mr-2 rounded-full shrink-0 max-md:mr-0 max-md:mb-1"
-                    style={{
-                      backgroundColor: studyByTypeData.datasets[0].backgroundColor[index],
-                    }}
-                  />
-                  <span className="text-xs font-medium text-gray-700 truncate max-md:max-w-[120px]">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Study by Species */}
-      <div className="bg-white p-4 rounded-lg shadow-lg flex flex-col h-[450px] relative">
-        <div className="flex justify-between items-center mb-4 ">
-          <h2 className="text-lg font-bold ">Study by Species</h2>
-          <div>
-            <FeedbackButton modern={true} />
-          </div>
-        </div>
-        <div className="flex-1 flex flex-col md:flex-row gap-4 relative">
-          {/* Chart Container */}
-          <div className="w-full h-[300px] md:h-full md:w-[70%] relative flex justify-center items-center">
-            <Doughnut
-              data={studyBySpeciesData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                onClick: (e, elements) => {
-                  if (elements.length > 0) {
-                    handleSpeciesClick(elements[0].index);
-                  }
-                },
-                plugins: {
-                  legend: { display: false },
-                  tooltip: {
-                    callbacks: {
-                      label: (context) => {
-                        const label = context.label || "";
-                        const value = context.parsed || 0;
-                        const total = context.dataset.data.reduce(
-                          (a, b) => a + b,
-                          0
-                        );
-                        const percentage = ((value / total) * 100).toFixed(1);
-                        return `${label}: ${value} (${percentage}%)`;
-                      },
-                    },
-                  },
-                },
-                layout: {
-                  padding: 10,
-                },
-                cutout: "60%", // Doughnut specific customization
-              }}
-            />
-          </div>
-
-          {/* Custom Legend - Same Structure */}
-          <div className="md:w-[30%] md:pl-4 overflow-auto custom-scrollbar">
-            <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-md:flex max-md:flex-row max-md:flex-nowrap">
-              {studyBySpeciesData.labels.map((label, index) => (
-                <div
-                  onClick={() => handleSpeciesClick(index)}
-                  key={label}
-                  className="flex items-center p-2 max-md:min-w-[140px] max-md:flex-col max-md:text-center bg-gray-50 rounded-md hover:bg-gray-100 cursor-pointer transition-colors"
-                  role="button"
-                  aria-label={`View articles for ${label} species`}
-                >
-                  <div
-                    className="w-3 h-3 mr-2 rounded-full shrink-0 max-md:mr-0 max-md:mb-1"
-                    style={{
-                      backgroundColor:
-                        studyBySpeciesData.datasets[0].backgroundColor[index],
-                    }}
-                  />
-                  <span className="text-xs font-medium text-gray-700 truncate max-md:max-w-[120px]">
-                    {label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Study by Organ */}
-      <div className="bg-white p-6 rounded-lg shadow-lg lg:col-span-2 flex flex-col lg:flex-row gap-6 h-auto lg:h-[450px]">
-        {/* Chart Section */}
-        <div className="w-full lg:w-1/2 h-[350px] lg:h-full">
-          <div className="flex justify-between items-center mb-4 ">
-            <h2 className="text-lg font-bold ">Study by Organ</h2>
+      <div className="space-y-8">
+        {/* Homepage Intro */}
+        <div className="bg-gradient-to-br from-[#004c78] to-[#003556] text-white p-6 rounded-2xl shadow-lg">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
             <div>
-              <FeedbackButton modern={true} />
-            </div>
-          </div>
+              <p className="text-sm uppercase tracking-wider text-white/70 mb-2">
+                Research Overview
+              </p>
 
-          <div className="w-full h-[calc(100%-80px)]">
-            {visibleOrganData ? (
-              <Bar
-                data={visibleOrganData}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  onClick: (e, elements) => handleOrganClick(elements),
-                  plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                      callbacks: {
-                        title: (context) => {
-                          // Account for the current offset when determining the tooltip title
-                          const tooltipIndex =
-                            context[0].dataIndex + labelStartIndex;
-                          return studyByOrganData.labels[tooltipIndex];
-                        },
-                        label: (context) => `${context.parsed.y} articles`,
-                      },
-                    },
-                  },
-                  scales: {
-                    x: {
-                      grid: { display: false },
-                      ticks: {
-                        maxRotation: 45,
-                        minRotation: 45,
-                        font: {
-                          size: 10, // Reduce font size for better readability
-                        },
-                      },
-                    },
-                    y: {
-                      beginAtZero: true,
-                      ticks: { precision: 0 },
-                    },
-                  },
-                  elements: {
-                    bar: {
-                      borderRadius: 4,
-                      hoverBackgroundColor: "#003556",
-                    },
-                  },
-                }}
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <p className="text-gray-500">Loading organ data...</p>
-              </div>
-            )}
-          </div>
+              <h2 className="text-2xl md:text-3xl font-bold">
+                Explore Molecular Hydrogen Research Insights
+              </h2>
 
-          {/* Chart Navigation */}
-          <div className="flex justify-between items-center mt-2 px-4">
-            <button
-              className={`p-2 rounded-full ${canGoBack
-                  ? "bg-gray-200 hover:bg-gray-300"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                }`}
-              onClick={showPreviousLabels}
-              disabled={!canGoBack}
-              aria-label="Show previous organs"
-            >
-              <FiChevronLeft className="h-5 w-5" />
-            </button>
-
-            <div className="text-sm text-gray-500">
-              {totalLabels > 0
-                ? `Showing ${labelStartIndex + 1}-${Math.min(
-                  labelStartIndex + labelsPerView,
-                  totalLabels
-                )} of ${totalLabels}`
-                : "No data available"}
+              <p className="text-white/80 mt-3 max-w-3xl">
+                Discover research trends, top study areas, study types, species,
+                and organ-based articles from our growing research database.
+              </p>
             </div>
 
-            <button
-              className={`p-2 rounded-full ${canGoForward
-                  ? "bg-gray-200 hover:bg-gray-300"
-                  : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                }`}
-              onClick={showNextLabels}
-              disabled={!canGoForward}
-              aria-label="Show next organs"
-            >
-              <FiChevronRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Info Section */}
-        <div className="w-full lg:w-1/2 h-full flex flex-col justify-center p-4 bg-gray-50 rounded-lg">
-          <div className="space-y-4">
-            <FiSearch className="h-8 w-8 text-primary mb-2" />
-            <h3 className="text-xl font-semibold">
-              Explore Molecular Hydrogen Research
-            </h3>
-            <p className="text-gray-600">
-              Dive deeper into our comprehensive database of molecular hydrogen
-              studies. Click any organ in the chart to view related research
-              articles, or use our advanced search to find specific studies.
-            </p>
-            <div className="flex flex-col gap-3 mt-4">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
-                className="flex items-center w-full max-w-52 gap-2 text-primary border border-primary rounded-md px-4 py-2 hover:bg-primary hover:text-white transition-colors"
-                onClick={() => navigate("/about")}
+                  className="flex items-center justify-center gap-2 bg-white text-primary rounded-lg px-4 py-2 font-medium hover:bg-gray-100 transition-colors"
+                  onClick={() => navigate("/about")}
               >
                 <FiInfo className="h-4 w-4" />
-               Explore More Data
+                Explore More Data
               </button>
-              
 
-                <button
-                className="flex items-center w-full max-w-52 gap-2 text-primary border border-primary rounded-md px-4 py-2 hover:bg-primary hover:text-white transition-colors"
-                onClick={() => 
-                {
-                  window.open("https://stagging.h2research.org/admin/", "_blank");
-                }
-                }
+              <button
+                  className="flex items-center justify-center gap-2 border border-white/40 text-white rounded-lg px-4 py-2 font-medium hover:bg-white hover:text-primary transition-colors"
+                  onClick={() => {
+                    window.open(
+                        `${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/`,
+                        "_blank"
+                    );
+                  }}
               >
                 <FiBook className="h-4 w-4" />
-               Add Your Article
+                Add Your Article
               </button>
-
             </div>
           </div>
         </div>
+
+        {/* Articles by Year + Research Topic */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Articles by Year */}
+          <div className="bg-white p-5 rounded-2xl shadow-lg flex flex-col h-[460px]">
+            <div className="flex justify-between items-start mb-5">
+              <div>
+                <div className="flex items-center gap-2 text-primary mb-1">
+                  <FiTrendingUp className="h-5 w-5" />
+                  <p className="text-sm font-semibold">Growth Trend</p>
+                </div>
+
+                <h2 className="text-xl font-bold">Articles by Year</h2>
+
+                <p className="text-sm text-gray-500 mt-1">
+                  Shows how research publication volume changes over time.
+                </p>
+              </div>
+
+              <FeedbackButton modern={true} />
+            </div>
+
+            <div className="flex-1">
+              {articlesByYear.length > 0 ? (
+                  <Line
+                      data={articlesByYearData}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: (e, elements) => {
+                          if (elements.length > 0) {
+                            handleYearClick(elements[0].index);
+                          }
+                        },
+                        plugins: {
+                          legend: { display: false },
+                          tooltip: {
+                            callbacks: {
+                              title: (context) => `Year: ${context[0].label}`,
+                              label: (context) => `Articles: ${context.parsed.y}`,
+                            },
+                          },
+                        },
+                        scales: {
+                          x: {
+                            title: {
+                              display: true,
+                              text: "Year",
+                              font: { weight: "bold" },
+                            },
+                            grid: { display: false },
+                            ticks: {
+                              autoSkip: false,
+                              maxRotation: 45,
+                              minRotation: 45,
+                            },
+                          },
+                          y: {
+                            beginAtZero: true,
+                            title: {
+                              display: true,
+                              text: "Number of Articles",
+                              font: { weight: "bold" },
+                            },
+                            grid: { color: "#f0f0f0" },
+                            ticks: { precision: 0 },
+                          },
+                        },
+                      }}
+                  />
+              ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-gray-500">
+                      No yearly article data available
+                    </p>
+                  </div>
+              )}
+            </div>
+          </div>
+
+          {/* Research Topic */}
+          <div className="bg-white p-5 rounded-2xl shadow-lg flex flex-col h-[460px]">
+            <div className="flex justify-between items-start mb-5">
+              <div>
+                <div className="flex items-center gap-2 text-primary mb-1">
+                  <FiBarChart2 className="h-5 w-5" />
+                  <p className="text-sm font-semibold">Top Research Areas</p>
+                </div>
+
+                <h2 className="text-xl font-bold">Top 10 Research Topics</h2>
+
+                <p className="text-sm text-gray-500 mt-1">
+                  Most studied research areas ranked by article count.
+                </p>
+              </div>
+
+              <FeedbackButton modern={true} />
+            </div>
+
+            <div className="flex-1">
+              {topResearchTopics.length > 0 ? (
+                  <Bar
+                      data={researchTopicChartData}
+                      options={{
+                        indexAxis: "y",
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        onClick: (e, elements) => {
+                          if (elements.length > 0) {
+                            handleTopicClick(elements[0].index);
+                          }
+                        },
+                        plugins: {
+                          legend: { display: false },
+                          tooltip: {
+                            callbacks: {
+                              label: (context) => `${context.parsed.x} articles`,
+                            },
+                          },
+                        },
+                        scales: {
+                          x: {
+                            beginAtZero: true,
+                            grid: { color: "#f0f0f0" },
+                            ticks: { precision: 0 },
+                            title: {
+                              display: true,
+                              text: "Number of Articles",
+                              font: { weight: "bold" },
+                            },
+                          },
+                          y: {
+                            grid: { display: false },
+                            ticks: {
+                              autoSkip: false,
+                              font: { size: 11 },
+                            },
+                          },
+                        },
+                      }}
+                  />
+              ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-gray-500">
+                      No research topic data available
+                    </p>
+                  </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Study Type Progress Cards */}
+        <div className="bg-white p-5 rounded-2xl shadow-lg">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <div className="flex items-center gap-2 text-primary mb-1">
+                <FiLayers className="h-5 w-5" />
+                <p className="text-sm font-semibold">Study Classification</p>
+              </div>
+
+              <h2 className="text-xl font-bold">Study by Type</h2>
+
+              <p className="text-sm text-gray-500 mt-1">
+                A quick breakdown of the main study types in the database.
+              </p>
+            </div>
+
+            <FeedbackButton modern={true} />
+          </div>
+
+          {studyTypes.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {studyTypes.map((item, index) => {
+                  const percentage = totalStudyTypes
+                      ? ((item.value / totalStudyTypes) * 100).toFixed(1)
+                      : 0;
+
+                  return (
+                      <button
+                          key={item.name}
+                          onClick={() => handleStudyTypeClick(item.name)}
+                          className="text-left p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-md transition-all"
+                      >
+                        <div className="flex justify-between items-start gap-3 mb-3">
+                          <div>
+                            <h3 className="font-semibold text-gray-800">
+                              {item.name}
+                            </h3>
+
+                            <p className="text-sm text-gray-500 mt-1">
+                              {item.value} articles
+                            </p>
+                          </div>
+
+                          <span className="text-sm font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">
+                      {percentage}%
+                    </span>
+                        </div>
+
+                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div
+                              className="h-full rounded-full"
+                              style={{
+                                width: `${percentage}%`,
+                                backgroundColor:
+                                    generateContrastColors(studyTypes.length)[index],
+                              }}
+                          />
+                        </div>
+                      </button>
+                  );
+                })}
+              </div>
+          ) : (
+              <div className="h-32 flex items-center justify-center">
+                <p className="text-gray-500">No study type data available</p>
+              </div>
+          )}
+        </div>
+
+        {/* Species Icon/Stat Cards */}
+        <div className="bg-white p-5 rounded-2xl shadow-lg">
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <div className="flex items-center gap-2 text-primary mb-1">
+                <FiUsers className="h-5 w-5" />
+                <p className="text-sm font-semibold">Study Subjects</p>
+              </div>
+
+              <h2 className="text-xl font-bold">Study by Species</h2>
+
+              <p className="text-sm text-gray-500 mt-1">
+                View which species are most commonly used in molecular hydrogen
+                studies.
+              </p>
+            </div>
+
+            <FeedbackButton modern={true} />
+          </div>
+
+          {species.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
+                {species.slice(0, 10).map((item, index) => {
+                  const percentage = totalSpecies
+                      ? ((item.value / totalSpecies) * 100).toFixed(1)
+                      : 0;
+
+                  const strength = Math.max(
+                      (item.value / maxSpeciesValue) * 100,
+                      8
+                  );
+
+                  return (
+                      <button
+                          key={item.name}
+                          onClick={() => handleSpeciesClick(item.name)}
+                          className="group p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-md transition-all text-left"
+                      >
+                        <div
+                            className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 text-white"
+                            style={{
+                              backgroundColor:
+                                  generateContrastColors(species.length)[index],
+                            }}
+                        >
+                          <FiUsers className="h-5 w-5" />
+                        </div>
+
+                        <h3 className="font-semibold text-gray-800 truncate">
+                          {item.name}
+                        </h3>
+
+                        <p className="text-2xl font-bold text-primary mt-2">
+                          {item.value}
+                        </p>
+
+                        <p className="text-xs text-gray-500 mt-1">
+                          {percentage}% of species studies
+                        </p>
+
+                        <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden mt-3">
+                          <div
+                              className="h-full bg-primary rounded-full"
+                              style={{ width: `${strength}%` }}
+                          />
+                        </div>
+                      </button>
+                  );
+                })}
+              </div>
+          ) : (
+              <div className="h-32 flex items-center justify-center">
+                <p className="text-gray-500">No species data available</p>
+              </div>
+          )}
+        </div>
+
+        {/* Organ Explorer */}
+        <div className="bg-white p-5 rounded-2xl shadow-lg">
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5 mb-6">
+            <div>
+              <div className="flex items-center gap-2 text-primary mb-1">
+                <FiGrid className="h-5 w-5" />
+                <p className="text-sm font-semibold">Interactive Explorer</p>
+              </div>
+
+              <h2 className="text-xl font-bold">Study by Organ</h2>
+
+              <p className="text-sm text-gray-500 mt-1 max-w-2xl">
+                Click any organ tag to explore related research articles. Bigger
+                numbers indicate more available studies.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <FeedbackButton modern={true} />
+
+              <button
+                  className="flex items-center gap-2 text-primary border border-primary rounded-lg px-4 py-2 hover:bg-primary hover:text-white transition-colors"
+                  onClick={() => navigate("/articles")}
+              >
+                <FiSearch className="h-4 w-4" />
+                Advanced Search
+              </button>
+            </div>
+          </div>
+
+          {visibleOrgans.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {visibleOrgans.map((item, index) => {
+                    const strength = Math.max(
+                        (item.count / maxOrganValue) * 100,
+                        10
+                    );
+
+                    return (
+                        <button
+                            key={item.name}
+                            onClick={() => handleOrganClick(item.name)}
+                            className="group p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-md transition-all text-left"
+                        >
+                          <div className="flex justify-between items-center gap-3 mb-3">
+                            <h3 className="font-semibold text-gray-800 truncate">
+                              {item.name}
+                            </h3>
+
+                            <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-primary bg-primary/10 px-2 py-1 rounded-full">
+                          {item.count}
+                        </span>
+
+                              <FiArrowRight className="h-4 w-4 text-gray-400 group-hover:text-primary transition-colors" />
+                            </div>
+                          </div>
+
+                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full rounded-full"
+                                style={{
+                                  width: `${strength}%`,
+                                  backgroundColor:
+                                      generateContrastColors(visibleOrgans.length)[index],
+                                }}
+                            />
+                          </div>
+                        </button>
+                    );
+                  })}
+                </div>
+
+                {organs.length > 18 && (
+                    <div className="flex justify-center mt-6">
+                      <button
+                          className="px-5 py-2 rounded-lg border border-primary text-primary hover:bg-primary hover:text-white transition-colors"
+                          onClick={() => setShowAllOrgans((prev) => !prev)}
+                      >
+                        {showAllOrgans ? "Show Less Organs" : "Show All Organs"}
+                      </button>
+                    </div>
+                )}
+              </>
+          ) : (
+              <div className="h-32 flex items-center justify-center">
+                <p className="text-gray-500">No organ data available</p>
+              </div>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 
