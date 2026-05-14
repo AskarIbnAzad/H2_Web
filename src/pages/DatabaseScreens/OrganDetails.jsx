@@ -178,40 +178,7 @@ const OrganDetails = () => {
                         >
                             {organ.article_count || 0} Studies
                         </Tag>
-
-                        {organ.primary_system && (
-                            <Tag
-                                icon={<ApartmentOutlined />}
-                                color="blue"
-                                style={{ borderRadius: 20, padding: "4px 16px" }}
-                            >
-                                {organ.primary_system}
-                            </Tag>
-                        )}
-
-                        {organ.human_study_occurrences > 0 && (
-                            <Tag
-                                icon={<ExperimentOutlined />}
-                                color="green"
-                                style={{ borderRadius: 20, padding: "4px 16px" }}
-                            >
-                                {organ.human_study_occurrences} Human Studies
-                            </Tag>
-                        )}
-
-                        <Tag style={{ borderRadius: 20, padding: "4px 16px" }}>
-                            Total Occurrences: {organ.total_occurrences || 0}
-                        </Tag>
                     </Space>
-
-                    {systemTags && (
-                        <div style={{ marginTop: 16 }}>
-                            <Text strong style={{ display: "block", marginBottom: 4 }}>
-                                System Associations:
-                            </Text>
-                            <Space wrap>{systemTags}</Space>
-                        </div>
-                    )}
                 </div>
 
                 <Divider />
@@ -272,19 +239,6 @@ const OrganDetails = () => {
                         <Divider />
                     </>
                 )}
-
-                {/* Additional metadata */}
-                <Descriptions bordered size="small" column={{ xs: 1, sm: 2 }}>
-                    <Descriptions.Item label="Total Studies">
-                        {organ.article_count || 0}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Human Study Occurrences">
-                        {organ.human_study_occurrences || 0}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Primary System">
-                        {organ.primary_system || "N/A"}
-                    </Descriptions.Item>
-                </Descriptions>
 
                 {/* View Related Studies button */}
                 <div className="mt-8 text-center">

@@ -235,8 +235,58 @@ const Articles = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const searchParam = params.get("search");
 
+    const searchParam = params.get("search");
+    const diseasesParams = params.getAll("diseases");
+    const organsParams = params.getAll("organs");
+
+    const allParamKeys = Array.from(params.keys());
+
+    const hasOnlyDiseases =
+        diseasesParams.length > 0 &&
+        allParamKeys.length === diseasesParams.length;
+
+    const hasOnlyOrgans =
+        organsParams.length > 0 &&
+        allParamKeys.length === organsParams.length;
+
+    // Case 1: URL has only diseases
+    if (hasOnlyDiseases) {
+      setSearchTerm("");
+      setSearchTerms([]);
+      setDebouncedSearchTerm([]);
+
+      setSelectedFilters({
+        diseases: diseasesParams,
+      });
+
+      setSearchLogic("AND");
+      setSortOrder("newest");
+      setIsHighlightArticle(false);
+      setPage(1);
+
+      return;
+    }
+
+    // Case 2: URL has only organs
+    if (hasOnlyOrgans) {
+      setSearchTerm("");
+      setSearchTerms([]);
+      setDebouncedSearchTerm([]);
+
+      setSelectedFilters({
+        organs: organsParams,
+      });
+
+      setSearchLogic("AND");
+      setSortOrder("newest");
+      setIsHighlightArticle(false);
+      setPage(1);
+
+      return;
+    }
+
+    // Normal search URL
     if (searchParam && searchParam.trim()) {
       const phrase = searchParam.trim();
 
@@ -291,17 +341,32 @@ const Articles = () => {
 
   // Helper function to find filter object by name or id
   const findFilterByValue = useCallback((filterType, value) => {
-    if (!filters.length || typeof value === 'object') return value;
+    if (!filters.length || typeof value === "object") return value;
 
-    const filterCategory = filters.find(f => f.name === filterType);
+    const filterCategory = filters.find((f) => f.name === filterType);
     if (!filterCategory?.options) return value;
 
-    // Try to find by name first, then by id
-    const filterOption = filterCategory.options.find(option =>
-      option.name === value || option.id === value
-    );
+    const findOptionRecursive = (options = []) => {
+      for (const option of options) {
+        if (
+            option.name === value ||
+            option.label === value ||
+            option.value === value ||
+            String(option.id) === String(value)
+        ) {
+          return option;
+        }
 
-    return filterOption || value;
+        if (option.children?.length) {
+          const found = findOptionRecursive(option.children);
+          if (found) return found;
+        }
+      }
+
+      return null;
+    };
+
+    return findOptionRecursive(filterCategory.options) || value;
   }, [filters]);
 
   useEffect(() => {

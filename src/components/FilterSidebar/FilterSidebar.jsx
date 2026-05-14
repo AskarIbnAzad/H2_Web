@@ -521,9 +521,17 @@ const FilterSidebar = ({
           }
           if (searchTerm && !matchesSearch && !childMatches) return null;
 
-          const isChecked = selectedFilters.disease?.some(item =>
-            typeof item === 'object' ? item.id === option.id : item === option.value
-          ) || false;
+          const isChecked =
+              selectedFilters.diseases?.some((item) =>
+                  typeof item === "object"
+                      ? item.id === option.id ||
+                      item.value === option.value ||
+                      item.label === option.label ||
+                      item.name === option.name
+                      : item === option.value ||
+                      item === option.label ||
+                      item === option.name
+              ) || false;
 
           return (
             <li key={uniqueKey} className={`mb-2 flex w-full justify-start flex-col${hasChildren && expandedDiseases[uniqueKey] ? ' border-l-4 border-[#004C78]' : ''}`} style={{ marginLeft: `${level * 24}px` }}>
@@ -534,7 +542,7 @@ const FilterSidebar = ({
                     id={`disease-${uniqueKey}`}
                     className="mr-1"
                     checked={isChecked}
-                    onChange={(e) => onFilterChange("disease", option, e.target.checked)}
+                    onChange={(e) => onFilterChange("diseases", option, e.target.checked)}
                   />
                   <label htmlFor={`disease-${uniqueKey}`} className="text-xs capitalize cursor-pointer select-none">
                     {option.label}
