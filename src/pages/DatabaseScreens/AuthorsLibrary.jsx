@@ -267,7 +267,7 @@ const handleTableChangeFeatured = (pg) => {
             render: (text, record) => (
                 <a
                     type="link"
-                    href={`https://molecularhydrogeninstitute.org/${record.orcid}/`}
+                    href={`${record.orcid}/`}
                     style={{ color: themeColor }}
                 >
                     <ProfileIcon />
