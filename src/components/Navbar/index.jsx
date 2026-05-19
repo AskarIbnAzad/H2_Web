@@ -168,6 +168,7 @@ import { FiChevronDown, FiMenu, FiX, FiSearch, FiMail, FiPhone, FiMapPin } from 
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 import logo from "../../assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import {useSelector} from "react-redux";
 // Mock data for menu items with mega menus
 // const menuItems = [
 //   {
@@ -494,7 +495,7 @@ const menuItems = [
       ]
     }
   },
- 
+
   {
     name: "User Portal",
     path: "#",
@@ -521,13 +522,14 @@ const menuItems = [
 ];
 
 const Professional3LayerNavbar = () => {
+  const { userAuth } = useSelector((state) => state.userAuth);
   const navigate = useNavigate()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeMobileSubmenu, setActiveMobileSubmenu] = useState(null);
-  
+
   // Sticky header state
   const [isSticky, setIsSticky] = useState(true);
 
@@ -628,15 +630,20 @@ const Professional3LayerNavbar = () => {
               <FaTwitter className="w-4 h-4 hover:text-[#004c78] cursor-pointer transition-colors" />
             </a>
           </div>
-          {/*<button onClick={() => location.href='https://stagging.h2research.org/admin/login'} className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">*/}
-          {/*  Login*/}
-          {/*</button>*/}
 
-              <a href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}>
-                <button className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
-                  Login
-                </button>
-              </a>
+              {userAuth ? (
+                  <a href={import.meta.env.VITE_ADMIN_PANEL_BASE_URL}>
+                    <button className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
+                      Dashboard
+                    </button>
+                  </a>
+              ) : (
+                  <a href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}>
+                    <button className="bg-[#004c78] text-white px-3 py-1 rounded text-xs transition-colors">
+                      Login
+                    </button>
+                  </a>
+              )}
 
             </div>
           </div>

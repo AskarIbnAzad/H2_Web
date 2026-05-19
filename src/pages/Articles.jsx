@@ -239,6 +239,7 @@ const Articles = () => {
     const searchParam = params.get("search");
     const diseasesParams = params.getAll("diseases");
     const organsParams = params.getAll("organs");
+    const speciesParams = params.getAll("species");
 
     const allParamKeys = Array.from(params.keys());
 
@@ -249,6 +250,10 @@ const Articles = () => {
     const hasOnlyOrgans =
         organsParams.length > 0 &&
         allParamKeys.length === organsParams.length;
+
+    const hasOnlySpecies =
+        speciesParams.length > 0 &&
+        allParamKeys.length === speciesParams.length;
 
     // Case 1: URL has only diseases
     if (hasOnlyDiseases) {
@@ -276,6 +281,24 @@ const Articles = () => {
 
       setSelectedFilters({
         organs: organsParams,
+      });
+
+      setSearchLogic("AND");
+      setSortOrder("newest");
+      setIsHighlightArticle(false);
+      setPage(1);
+
+      return;
+    }
+
+    // Case 3: URL has only species
+    if (hasOnlySpecies) {
+      setSearchTerm("");
+      setSearchTerms([]);
+      setDebouncedSearchTerm([]);
+
+      setSelectedFilters({
+        species: speciesParams,
       });
 
       setSearchLogic("AND");
