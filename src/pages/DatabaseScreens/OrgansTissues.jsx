@@ -287,6 +287,7 @@ const OrgansTissues = () => {
                             {/* Organ Image */}
                             {organ.image ? (
                                 <div className="mb-3 flex justify-center">
+                                  {console.log('imageBaseUrl', imageBaseUrl)}
                                   <img
                                       src={`${imageBaseUrl}${organ.image}`}
                                       alt={organ.name}

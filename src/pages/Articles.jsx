@@ -13,6 +13,7 @@ import ContributeStudyCTA from "../components/ContributeStudyCTA/ContributeStudy
 import {FaHeart} from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFolderArticles } from "../store/slice/folderSlice.js";
+import MHIArticlesSection from "../components/MHIArticlesSection/MHIArticlesSection.jsx";
 
 // Session storage key for preserving article list state
 const ARTICLES_STATE_KEY = 'articlesListState';
@@ -1845,8 +1846,8 @@ const Articles = () => {
               </>
               ) : (
               <>
-                <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-gray-600">
-                  Please login first to save this search.
+                <div className="mb-4 flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-gray-600">
+                  <span>Please login first to save this search.</span>
                   <a
                       href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}
                       className="px-3 py-1.5 rounded-lg bg-[#004C78] hover:bg-[#003A5C] text-white text-xs shadow-sm transition-colors text-center"
@@ -1859,6 +1860,7 @@ const Articles = () => {
               </div>
           </div>
       )}
+      <MHIArticlesSection />
     </div>
   );
 };

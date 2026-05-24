@@ -167,8 +167,8 @@ const SaveArticleButton = ({ articleId }) => {
                                 </>
                             ) : (
                                 <>
-                                    <div className="mb-4 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-gray-600">
-                                        Please login first to save this article.
+                                    <div className="mb-4 flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-gray-600">
+                                        <span>Please login first to save this article.</span>
                                         <a
                                             href={`${import.meta.env.VITE_ADMIN_PANEL_BASE_URL}/login`}
                                             className="px-3 py-1.5 rounded-lg bg-[#004C78] hover:bg-[#003A5C] text-white text-xs shadow-sm transition-colors text-center"
