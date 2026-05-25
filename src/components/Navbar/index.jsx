@@ -225,7 +225,7 @@ const Professional3LayerNavbar = () => {
   const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/navigation`)
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/navigation/link`)
         .then((res) => {
           const transformed = (res.data.data || []).map((item) => ({
             name:         item.name,
@@ -401,10 +401,13 @@ const Professional3LayerNavbar = () => {
                     className="flex items-center px-2 xl:px-3 py-6 text-gray-700 hover:text-[#004c78] font-medium transition-colors duration-200 group text-sm xl:text-base"
                   >
                     {item.name}
-                    {item.hasMegaMenu && (
-                      <FiChevronDown className={`ml-1 w-4 h-4 transition-transform duration-200 ${activeMegaMenu === item.name ? 'rotate-180' : ''
-                        }`} />
-                    )}
+                    {item.hasMegaMenu ? (
+                        <FiChevronDown
+                            className={`ml-1 w-4 h-4 transition-transform duration-200 ${
+                                activeMegaMenu === item.name ? "rotate-180" : ""
+                            }`}
+                        />
+                    ) : null}
                     {/* <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#004c78] transition-all duration-300 group-hover:w-full"></div> */}
                   </a>
                 </div>
