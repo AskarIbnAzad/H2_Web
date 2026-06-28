@@ -31,13 +31,13 @@ const SupportMHISection = () => {
     'Connect with leading H₂ researchers worldwide',
     'Monthly Q&A sessions with Dr. Tyler LeBaron',
     'Access exclusive research insights and resources',
-   
+
     'Join committees advancing hydrogen science',
     'Priority support and expert consultation'
   ];
 
   const impactStats = [
-    { number: '3,000+', label: 'Research Studies', icon: <DatabaseOutlined /> },
+    { number: '3,000+', label: 'Articles', icon: <DatabaseOutlined /> },
     { number: '50+', label: 'Countries Represented', icon: <TeamOutlined /> },
     { number: '500+', label: 'Community Members', icon: <UserOutlined /> },
     { number: '15+', label: 'Years of Research', icon: <BookOutlined /> }
