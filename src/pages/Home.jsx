@@ -107,7 +107,7 @@ const Home = () => {
             scientific publications (over 3,000) on hydrogen's therapeutic
             potential. Below you can see what’s been collected so far —
             categorized by organ, disease, method, and more. Browse the research
-            and discover what H₂ can do.
+            and discover what H₂ can do this.
           </p>
         </div>
 
